@@ -1,0 +1,33 @@
+Preliminary constraints
+
+*Policy*
+- There are three kinds of users: Pet Owner, Care Taker, and PCS Administrator (Covering constraint). 
+- Pet owners and care takers may use the same account (overlapping constraint). 
+- A caretaker can either be a part timer or a full timer (Covering, but not overlapping). 
+- Full time caretaker can take care of up to 5 pets at any point in time. 
+- A part time caretaker can take care of up to 2 pets unless he has a good rating (4 out of 5), but no more than 5. 
+- Pet owner and care taker must agree on the transport method. 
+- Pet owner must pay the amount upfront by cash or credit card. 
+- A pet owner can write more than one review but only one review per transaction. 
+- Each full time caretaker must work a minimum of 2 x 150 consecutive days a year. 
+- Full time caretaker cannot apply for leave if he has at least one pet under him (no emergency leave). 
+- Full time caretaker always accepts the job immediately if possible. 
+- Part time care takers must specify their availability for the current year and next year. 
+- PCS specifies the base price multiplier for each rating level.
+- The care taker can decide on the daily price for each pet type that they can care for, but it should never fall below the base price specified by PCS. 
+- Salary depends on how many pets are taken care of in a month for how many days. 
+
+*Data Constraint*
+- Every user can be identified by their username. Their password, area and phone number must be recorded.
+- Every PCS Administrator has his position in the company recorded. 
+- An owner can pre-register their credit card. The credit card number is recorded. 
+- Each owner can own one or more pets. 
+- Each pet belongs to a category, and they have special requirements (e.g. daily walk and types of food). 
+- Each pet is owned by a pet owner, and the pet name identifies the pet uniquely from all the pets from the same pet owner. If the pet owner account is deleted, you need not keep track of his pets anymore. 
+- A care taker must not take care of pets that they cannot care for. 
+- Each care taker must be able to care for at least one type of pet. 
+- Each pet category can be identified by the type and the base price must be recorded.
+- Pet owner username, pet name, care taker username, start date and end date uniquely identify a care service. 
+- For each transaction, the success status and daily price are also recorded. The daily price is only applicable to the period of transaction. 
+- Each part time care taker can specify the dates that they are available. If the part time care taker’s account is deleted, you need not keep track of his availability anymore.
+- Each full time care taker can apply for leave indicating the date and reason. If the full time care taker’s account is deleted, you need not keep track of his leave anymore.
