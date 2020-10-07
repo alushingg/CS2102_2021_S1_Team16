@@ -1,0 +1,43 @@
+form {
+    display:flex;
+    flex-direction: column;
+    background-color: white;
+    width: 25%;
+    padding: 30px 10px 80px 10px;
+}
+
+input {
+    margin: 10px 0px;
+    padding: 10px;
+    width:80%;
+}
+
+div.aligner {
+    display:block;
+    text-align: center;
+}
+
+#signupForm {
+    display: inline-flex;
+    justify-content: center;
+}
+
+#title {
+    text-align: center;
+    margin: 40px 20px;
+}
+
+#phoneDiv {
+    width: 40%;
+}
+
+#areaDiv {
+    width: 55%;
+}
+
+#phone_area {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 6%;
+}

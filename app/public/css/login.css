@@ -1,0 +1,24 @@
+form {
+    display:block;
+    flex-direction: column;
+    text-align: center;
+    margin: 20px;
+    background-color: white;
+    padding: 60px 20px 100px 20px;
+    width: 20%;
+}
+
+input {
+    margin: 10px;
+    width: 80%;
+}
+
+#loginForm {
+    display: inline-flex;
+    justify-content: center;
+}
+
+#title {
+    text-align: center;
+    margin: 40px 20px;
+}
