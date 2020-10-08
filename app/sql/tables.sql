@@ -25,7 +25,7 @@ CREATE TABLE users (
 		PRIMARY KEY,
 	password VARCHAR NOT NULL,
 	name VARCHAR NOT NULL,
-	phone_number INTEGER NOT NULL,
+	phone_number INTEGER NOT NULL UNIQUE,
 	area VARCHAR NOT NULL
 );
 
@@ -89,7 +89,7 @@ CREATE TABLE pet_owner (
 		PRIMARY KEY
 		REFERENCES users(username)
 		ON DELETE cascade,
-	credit_card INTEGER
+	credit_card NUMERIC
 );
 
 CREATE TABLE own_pet_belong (
@@ -109,13 +109,13 @@ CREATE TABLE special_requirement (
 );
 
 CREATE TABLE has (
- 	pouname VARCHAR,
- 	pname VARCHAR,
+ 	username VARCHAR,
+ 	name VARCHAR,
  	rtype VARCHAR,
  	requirement VARCHAR,
- 	FOREIGN KEY (pouname, pname) REFERENCES own_pet_belong(username, name),
+ 	FOREIGN KEY (username, name) REFERENCES own_pet_belong(username, name),
  	FOREIGN KEY (rtype, requirement) REFERENCES special_requirement(rtype, requirement),
- 	PRIMARY KEY (pouname, pname, rtype, requirement)
+ 	PRIMARY KEY (username, name, rtype, requirement)
 );
 
 CREATE TABLE period (
@@ -126,19 +126,19 @@ CREATE TABLE period (
 );
 
 CREATE TABLE take_care (
-	pouname VARCHAR,
+	username VARCHAR,
 	name VARCHAR,
 	start_date DATE,
 	end_date DATE,
 	ctuname VARCHAR REFERENCES care_taker(username),
-	has_paid BOOLEAN NOT NULL,
+	has_paid BOOLEAN,
 	daily_price NUMERIC,
-	is_successful BOOLEAN NOT NULL,
+	is_successful BOOLEAN NOT NULL DEFAULT FALSE,
 	review VARCHAR,
-	rating INTEGER,
+	rating INTEGER CHECK (rating >= 1 AND rating <= 5),
 	transfer_method VARCHAR,
 	payment_mode VARCHAR,
-	FOREIGN KEY (pouname, name) REFERENCES own_pet_belong(username, name),
+	FOREIGN KEY (username, name) REFERENCES own_pet_belong(username, name),
 	FOREIGN KEY (start_date, end_date) REFERENCES period(start_date, end_date),
-	PRIMARY KEY (pouname, name, start_date, end_date, ctuname)
+	PRIMARY KEY (username, name, start_date, end_date, ctuname)
 );
