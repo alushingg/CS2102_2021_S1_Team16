@@ -113,7 +113,7 @@ CREATE TABLE has (
  	name VARCHAR,
  	rtype VARCHAR,
  	requirement VARCHAR,
- 	FOREIGN KEY (username, name) REFERENCES own_pet_belong(username, name),
+ 	FOREIGN KEY (username, name) REFERENCES own_pet_belong(username, name) ON DELETE cascade,
  	FOREIGN KEY (rtype, requirement) REFERENCES special_requirement(rtype, requirement),
  	PRIMARY KEY (username, name, rtype, requirement)
 );
