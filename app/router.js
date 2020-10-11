@@ -6,7 +6,19 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'PCS Team 16' });
+  res.render('index', { title: 'PCS Team 16', auth: false });
+});
+
+router.get('/about', function(req, res, next) {
+  res.render('about', { title: 'PCS Team 16', auth: true });
+});
+
+router.get('/pricing', function(req, res, next) {
+  res.render('pricing', { title: 'PCS Team 16', auth: false });
+});
+
+router.get('/caretaker', function(req, res, next) {
+  res.render('caretaker', { title: 'PCS Team 16', auth: false });
 });
 
 router.get('/login', function(req, res, next) {

@@ -11,20 +11,21 @@ a:hover {
   color: gray;
 }
 
-a.here {
-  text-decoration: underline;
-}
-
 body {
   background-color: rgb(252, 239, 224);
   margin: 0px;
   font-family: 'Roboto','Segoe UI', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   color: black;
 }
 
 img {
   object-fit: contain;
+}
+
+header, footer {
+    background-color: green;
+    color: white;
 }
 
 header { 
@@ -36,10 +37,33 @@ header {
   justify-content: flex-start;
   align-items: center;
 
-  background-color: white;
   font-size: 16px;
-  font-weight: bold;
 }
+
+header a:link {
+    color: white;
+}
+  
+header a:visited {
+    color: white;
+}
+
+header a:hover {
+    color: rgb(200, 200, 200);
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    position: fixed;
+    bottom: 0px;
+    height: 60px;
+    width: 100%;
+  
+    font-size: 14px;
+  }
 
 hr {
   width: 90%;
@@ -54,6 +78,13 @@ ul.nav_links  {
 .nav_links li {
   display: inline-block;
   padding: 0px 10px;
+}
+
+.nav_right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 10px;
 }
 
 div.content {
@@ -77,20 +108,6 @@ div.content .card {
 .spacing {
   height: 70px;
   width: 100%;
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: fixed;
-  bottom: 0px;
-  height: 60px;
-  width: 100%;
-
-  background-color: white;
-  font-size: 14px;
 }
 
 p {
