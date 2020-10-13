@@ -1,2 +1,2 @@
-\i ./sql/tables.sql;
-\i ./sql/seeds.sql;
+\i ./tables.sql;
+\i ./seeds.sql;

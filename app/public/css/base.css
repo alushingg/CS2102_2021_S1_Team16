@@ -116,6 +116,10 @@ p {
   line-height: 150%;
 }
 
+p.error_message {
+  color:red;
+}
+
 button {
   background: none;
   border: none;
