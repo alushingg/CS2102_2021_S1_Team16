@@ -21,13 +21,16 @@ exports.editProfile = function(requestBody, callback) {
     const user = userController.getUser().getUsername();
     var modifiedfields = '';
     var updated = '';
+    var count = 0;
     console.log("Name: " + requestBody.name + " Password: " + requestBody.password + " Phone: " + requestBody.phone + " area: " + requestBody.area);
     if (requestBody.name) {
+        count = count + 1;
         console.log("Name: " + requestBody.name)
         updated = updated + "'" + requestBody.name + "'";
         modifiedfields = modifiedfields + 'name';
     }
     if (requestBody.password) {
+        count = count + 1;
         if (updated.length != 0) {
             updated = updated + ', ';
             modifiedfields = modifiedfields + ', ';
@@ -36,6 +39,7 @@ exports.editProfile = function(requestBody, callback) {
         modifiedfields = modifiedfields + 'password';
     }
     if (requestBody.phone) {
+        count = count + 1;
         if (updated.length != 0) {
             updated = updated + ', ';
             modifiedfields = modifiedfields + ', ';
@@ -44,6 +48,7 @@ exports.editProfile = function(requestBody, callback) {
         modifiedfields = modifiedfields + 'phone_number';
     }
     if (requestBody.area) {
+        count = count + 1;
         if (updated.length != 0) {
             updated = updated + ', ';
             modifiedfields = modifiedfields + ', ';
@@ -51,7 +56,12 @@ exports.editProfile = function(requestBody, callback) {
         updated = updated + "'" + requestBody.area + "'";
         modifiedfields = modifiedfields + 'area';
     }
-    const query = "UPDATE users SET(" + modifiedfields + ") = (" + updated + ") WHERE username= '" + user + "';"
+    if (count > 1) {
+        modifiedfields = "(" + modifiedfields + ")";
+        updated = "(" + updated + ")";
+    }
+
+    const query = "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + user + "';"
     console.log("Query: " + query);
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
