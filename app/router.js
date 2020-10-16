@@ -55,14 +55,39 @@ router.get('/logout', function(req, res, next) {
     res.redirect('/');
 });
 
-router.get('/profile_po', function(req, res, next) {
-  petownerController.showProfile((data) => {
-    petownerController.showPet((dataP) => {
-      res.render('profile_po', { title: 'Profile', auth: req.session.authenticated, data: data, dataP: dataP });
+router.get('/profile', function(req, res, next) {
+  const isOwner = userController.getUser().getIsOwner();
+  const isCaretaker = userController.getUser().getIsCaretaker();
+  const isAdmin = userController.getUser().getIsAdmin();
+  if (isAdmin) {
+    res.render('profile_a', { title: 'Profile', auth: req.session.authenticated });
+  } else if (isOwner && isCaretaker) {
+    res.render('profile_poct', { title: 'Profile', auth: req.session.authenticated });
+  } else if (isOwner) {
+    petownerController.showProfile((data) => {
+      petownerController.showPet((dataP) => {
+        res.render('profile_po', { title: 'Profile', auth: req.session.authenticated, data: data, dataP: dataP });
+      })
     })
-  })
+  } else if (isCaretaker) {
+    res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated });
+  }
 });
 
+router.get('/pastorders', function(req, res, next) {
+  const isOwner = userController.getUser().getIsOwner();
+  const isCaretaker = userController.getUser().getIsCaretaker();
+  const isAdmin = userController.getUser().getIsAdmin();
+  if (isOwner && isCaretaker) {
+    res.render('pastorders_poct', { title: 'Past Orders', auth: req.session.authenticated });
+  } else if (isOwner) {
+    petownerController.showPastOrders((data) => {
+      res.render('pastorders_po', { title: 'Past Orders', auth: req.session.authenticated, data: data });
+    })
+  } else if (isCaretaker) {
+    res.render('pastorders_ct', { title: 'Past Orders', auth: req.session.authenticated });
+  }
+});
 
 router.route('/db')
   .get(dbController.queryGet)
