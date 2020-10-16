@@ -34,13 +34,13 @@ router.get('/caretaker', function(req, res, next) {
   res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: false });
 }).post('/caretaker', function(req, res, next) {
   req.session.ptype = req.body.type;
+  req.session.sdate = req.body.start_date;
+  req.session.edate = req.body.end_date;
   res.redirect('availability');
 });
 
 router.get('/availability', function(req, res, next) {
-  availabilityController.findCaretaker(req.session.ptype, (result) => {
-    console.log(req.session.ptype);
-    console.log(result);
+  availabilityController.findCaretaker(req.session.ptype, req.session.sdate, req.session.edate, (result) => {
     res.render('availability', { title: 'Availability', auth: req.session.authenticated, isAdmin: false, data: result });
   })
 })
@@ -53,7 +53,7 @@ router.get('/login', function(req, res, next) {
   loginController.getCredentials(req.body, (result) => {
     console.log("Result:");
     console.log(result);
-    if(loginController.checkCredentials(result)) {
+    if (loginController.checkCredentials(result)) {
       loginController.getUserType(result[0].username, (isOwner, isCaretaker, isAdmin) => {
         // Authenticate the user
         loginController.authUser(result[0], isOwner, isCaretaker, isAdmin, req.session);

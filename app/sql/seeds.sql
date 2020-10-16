@@ -185,12 +185,12 @@ INSERT INTO specify_availability (username, date) VALUES ('mromaineg', '2020-07-
 INSERT INTO specify_availability (username, date) VALUES ('mromaineg', '2021-07-20');
 INSERT INTO specify_availability (username, date) VALUES ('voh', '2020-10-11');
 INSERT INTO specify_availability (username, date) VALUES ('voh', '2020-01-30');
-INSERT INTO specify_availability (username, date) VALUES ('voh',  '2020-10-13');
-INSERT INTO specify_availability (username, date) VALUES ('voh',  '2021-02-13');
-INSERT INTO specify_availability (username, date) VALUES ('sfendlowi',  '2020-10-15');
-INSERT INTO specify_availability (username, date) VALUES ('sfendlowi',  '2021-10-15');
-INSERT INTO specify_availability (username, date) VALUES ('jcanadasj',  '2020-02-14');
-INSERT INTO specify_availability (username, date) VALUES ('jcanadasj',  '2021-02-14');
+INSERT INTO specify_availability (username, date) VALUES ('voh', '2020-10-13');
+INSERT INTO specify_availability (username, date) VALUES ('voh', '2021-02-13');
+INSERT INTO specify_availability (username, date) VALUES ('sfendlowi', '2020-10-15');
+INSERT INTO specify_availability (username, date) VALUES ('sfendlowi', '2021-10-15');
+INSERT INTO specify_availability (username, date) VALUES ('jcanadasj', '2020-02-14');
+INSERT INTO specify_availability (username, date) VALUES ('jcanadasj', '2021-02-14');
 INSERT INTO specify_availability (username, date) VALUES ('fbagehotk', '2020-02-13');
 INSERT INTO specify_availability (username, date) VALUES ('fbagehotk', '2021-02-13');
 
