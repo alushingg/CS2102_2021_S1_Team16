@@ -45,7 +45,25 @@
             </table>
 
             <br>
-            <h3><p><a href="/edit_profile" class="button">Edit Profile</a></p></h3>
+            <td style="border:transparent;"><button type="button" onclick="window.location.href='/edit_profile'">Edit Profile</button></td>
+            <style>
+                  button {
+                    border: none;
+                    color: white;
+                    padding: 10px 10px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 14px;
+                    cursor: pointer;
+                    background-color: #4CAF50;
+                  }
+            </style>
+
+            <form method="POST" action="/profile_po">
+                <td style="border:transparent;"><button type="submit" onclick="return confirm('Are you sure to delete?');">Delete Profile</button></td>
+            </form>
+
 
 
         <footer>

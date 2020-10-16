@@ -79,6 +79,20 @@ exports.editProfile = function(requestBody, callback) {
     });
 }
 
-
+exports.deleteProfile = function(callback) {
+    console.log("Delete Profile")
+    const user = userController.getUser().getUsername();
+    const query = "DELETE" + " FROM users WHERE username = '" + user + "';"
+    console.log("Query: " + query)
+    dbController.queryGet(query, (result) => {
+        if(result.status == 200) {
+            callback(result.body.rows);
+        } else {
+            console.log("Failed.");
+            console.log("Status code: " + result.status);
+            callback([]);
+        }
+    });
+};
 
 

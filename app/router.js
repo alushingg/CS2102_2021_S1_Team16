@@ -62,6 +62,12 @@ router.get('/profile_po', function(req, res, next) {
       res.render('profile_po', { title: 'Profile', auth: req.session.authenticated, data: data, dataP: dataP });
     })
   })
+}).post('/profile_po', function(req, res, next) {
+  editProfileController.deleteProfile((result) => {
+    console.log("Delete profile Result: ")
+    console.log(result);
+  });
+  res.redirect('/logout');
 });
 
 router.get('/edit_profile', function(req, res, next) {
