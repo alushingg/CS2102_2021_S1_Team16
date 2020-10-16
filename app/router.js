@@ -4,6 +4,7 @@ const signupController = require('./controllers/signupController');
 const userController = require('./controllers/userController');
 const dbController = require('./controllers/dbController');
 const petownerController = require('./controllers/petownerController');
+const editProfileController = require("./controllers/editProfileController");
 const router = express.Router();
 
 /* GET home page. */
@@ -63,6 +64,17 @@ router.get('/profile_po', function(req, res, next) {
   })
 });
 
+router.get('/edit_profile', function(req, res, next) {
+  editProfileController.showCurrentProfile((data) => {
+      res.render('edit_profile', { title: 'Edit Profile', auth: req.session.authenticated, data: data});
+  })
+}).post('/edit_profile', function(req, res, next) {
+  editProfileController.editProfile(req.body, (result) => {
+    console.log("Edit profile Result: ")
+    console.log(result);
+  });
+  res.redirect('profile_po');
+});
 
 router.route('/db')
   .get(dbController.queryGet)
