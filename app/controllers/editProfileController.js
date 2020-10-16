@@ -19,10 +19,11 @@ exports.showCurrentProfile = function(callback) {
 
 exports.editProfile = function(requestBody, callback) {
     const user = userController.getUser().getUsername();
+    var query ='';
     var modifiedfields = '';
     var updated = '';
     var count = 0;
-    console.log("Name: " + requestBody.name + " Password: " + requestBody.password + " Phone: " + requestBody.phone + " area: " + requestBody.area);
+    console.log("Name: " + requestBody.name + " Password: " + requestBody.password + " Phone: " + requestBody.phone + " area: " + requestBody.area + "Credit Card: " + requestBody.creditcard);
     if (requestBody.name) {
         count = count + 1;
         console.log("Name: " + requestBody.name)
@@ -61,7 +62,11 @@ exports.editProfile = function(requestBody, callback) {
         updated = "(" + updated + ")";
     }
 
-    const query = "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + user + "';"
+    if (requestBody.creditcard) {
+        query = "UPDATE pet_owner SET" + " credit_card = " + requestBody.creditcard + " WHERE username= '" + user + "';"
+    }
+
+    query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + user + "';"
     console.log("Query: " + query);
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
