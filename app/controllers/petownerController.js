@@ -35,8 +35,8 @@ exports.showPet = function(callback) {
 
 exports.showPastOrders = function(callback) {
 	const user = userController.getUser().getUsername();
-	const query = "SELECT name, extract(day FROM start_date) as start_day, extract(month FROM start_date) as start_month, extract(year FROM start_date) as start_year, "
-				+ "extract(day FROM end_date) as end_day, extract(month FROM end_date) as end_month, extract(year FROM end_date) as end_year, "
+	const query = "SELECT name, EXTRACT(day FROM start_date) as start_day, EXTRACT(month FROM start_date) as start_month, EXTRACT(year FROM start_date) as start_year, "
+				+ "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, "
 				+ "ctuname, has_paid, daily_price, review, rating, transfer_method, payment_mode "
 				+ "FROM take_care "
 				+ "WHERE username = '" + user + "';"

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('./components/htmlHead'); %>
+    </head>
+
+    <body>
+        
+        <!-- <%- include('./components/backToTopBtn'); %> -->
+        
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+
+        <!-- Content here -->
+        <h1>Availability</h1>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+        </style>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Care Taker Username</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Area</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Job Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i<data.length; i++) { %>
+                <tr>
+                    <td><%= data[i].username %></td>
+                    <td><%= data[i].name %></td>
+                    <td><%= data[i].phone_number %></td>
+                    <td><%= data[i].area %></td>
+                    <% if (!data[i].rating) { %>
+                        <td>-</td>
+                    <% } else { %>
+                        <td><%= data[i].rating %></td>
+                    <% } %>
+                    <td><%= data[i].price %></td>
+                    <td><%= data[i].job_type %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
+</html>

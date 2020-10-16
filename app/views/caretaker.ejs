@@ -2,18 +2,61 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
-        <link rel='stylesheet' href='/css/caretaker.css' />
+        <!-- <link rel='stylesheet' href='/css/caretaker.css' /> -->
     </head>
+
+    <style>
+      button {
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #4CAF50;
+      }
+    </style>
 
     <body>        
       <header>
           <%- include('./components/header'); %>
       </header>
 
-      <div class="spacing"></div>
-      
-      <div class="content">
-      </div>
+      <h1>Find a Care Taker</h1>
+      <body>
+        <div class="content">
+          <div id="findCaretakerForm">
+            <form method="POST" action="/caretaker">
+              <p>Pet Type: </p>
+              <p>
+                  <label><input type="radio" name="type" value="Cat" checked/> Cat</label><br>
+                  <label><input type="radio" name="type" value="Dog" /> Dog</label><br>
+                  <label><input type="radio" name="type" value="Rabbit" /> Rabbit</label><br>
+                  <label><input type="radio" name="type" value="Hamster" /> Hamster</label><br>
+                  <label><input type="radio" name="type" value="Fish" /> Fish</label><br>
+                  <label><input type="radio" name="type" value="Tortoise" /> Tortoise</label><br>
+                  <label><input type="radio" name="type" value="Frog" /> Frog</label><br>
+                  <label><input type="radio" name="type" value="Terappin" /> Terrapin</label><br>
+                  <label><input type="radio" name="type" value="Bird" /> Bird</label><br>
+                  <label><input type="radio" name="type" value="Insect" /> Insect</label><br>
+                  <label><input type="radio" name="type" value="Guinea Pig" /> Guinea Pig</label><br>
+                  <label><input type="radio" name="type" value="Reptile" /> Reptile</label><br>
+              </p>
+         <!--      <div class="form-group">
+                <label for="start_date">Start Date: </label>
+                <input type="text" id="start_date" placeholder="Start Date" required>
+              </div>
+              <div class="form-group">
+                <label for="end_date">End Date: </label>
+              <input type="text" id="end_date" placeholder="End Date" required>
+              </div> -->
+              <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+          </div>
+        </div>
+      </body>
 
       <footer>
           <%- include('./components/footer'); %>

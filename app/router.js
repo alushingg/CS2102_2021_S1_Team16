@@ -5,6 +5,7 @@ const userController = require('./controllers/userController');
 const dbController = require('./controllers/dbController');
 const petownerController = require('./controllers/petownerController');
 const adminController = require('./controllers/adminController');
+const availabilityController = require('./controllers/availabilityController');
 const router = express.Router();
 
 /* GET home page. */
@@ -22,16 +23,27 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/about', function(req, res, next) {
-  res.render('about', { title: 'PCS Team 16', auth: req.session.authenticated });
+  res.render('about', { title: 'PCS Team 16', auth: req.session.authenticated, isAdmin: false });
 });
 
 router.get('/pricing', function(req, res, next) {
-  res.render('pricing', { title: 'PCS Team 16', auth: req.session.authenticated });
+  res.render('pricing', { title: 'PCS Team 16', auth: req.session.authenticated, isAdmin: false });
 });
 
 router.get('/caretaker', function(req, res, next) {
-  res.render('caretaker', { title: 'PCS Team 16', auth: req.session.authenticated });
+  res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: false });
+}).post('/caretaker', function(req, res, next) {
+  req.session.ptype = req.body.type;
+  res.redirect('availability');
 });
+
+router.get('/availability', function(req, res, next) {
+  availabilityController.findCaretaker(req.session.ptype, (result) => {
+    console.log(req.session.ptype);
+    console.log(result);
+    res.render('availability', { title: 'Availability', auth: req.session.authenticated, isAdmin: false, data: result });
+  })
+})
 
 router.get('/login', function(req, res, next) {
   const pageInfo = loginController.getPageInfo();
