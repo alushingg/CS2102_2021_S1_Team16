@@ -63,4 +63,6 @@ function isStartBeforeEnd(sdate, edate) {
     if (eyear < syear || emonth < smonth || eday < sday) {
     	return false;
     }
+    
+    return true;
 };

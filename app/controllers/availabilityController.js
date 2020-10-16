@@ -17,7 +17,6 @@ exports.findCaretaker = function(type, sdate, edate, callback) {
 					+ "FROM specify_availability s "
 					+ "WHERE s.username = p.username AND (date >= DATE('" + sdate + "') AND date <= DATE('" + edate + "'))) "
 				+ "= (DATE('" + edate + "') - DATE('" + sdate + "')) + 1;";
-	console.log(query);
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
