@@ -27,19 +27,44 @@
             <% } %>
 
             <h1>Pet Information</h1>
-            <table class="table">
+            <style>
+                table, th, td {
+                  border: 1px solid black;
+                  border-collapse: collapse;
+                }
+            </style>
+            <table style="width:100%;">
                 <thead>
                     <tr>
                         <th scope="col">Pet name</th>
                         <th scope="col">Type</th>
+                        <th scope="col">Diet</th>
+                        <th scope="col">Walk</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <% var prev = ''%>
                     <% for(var i=0; i<dataP.length; i++) { %>
-                    <tr>
-                        <td><%= dataP[i].name %></td>
-                        <td><%= dataP[i].type %></td>
-                    </tr>
+                        <% var pet = dataP[i].name %>
+                        <% var diet = '' %>
+                        <% var walk = '' %>
+                        <% for(var j=0; j<dataP.length;j++) { %>
+                            <% if (dataP[j].rtype == 'diet' && dataP[j].name == pet) { %>
+                                <% diet += dataP[j].requirement + ', ' %>
+                            <% } %>
+                            <% if (dataP[j].rtype == 'walk' && dataP[j].name == pet) { %>
+                                <% walk += dataP[j].requirement + ', ' %>
+                            <% } %>
+                        <% } %>
+                        <% if (pet != prev) { %>
+                            <tr>
+                                <td><%= dataP[i].name %></td>
+                                <td><%= dataP[i].type %></td>
+                                <td><%= diet = diet == ''? diet : diet.substring(0, diet.length - 2) %></td>
+                                <td><%= walk = walk == ''? walk : walk.substring(0, walk.length - 2) %></td>
+                            </tr>
+                            <% prev = pet %>
+                        <% } %>
                     <% } %>
                 </tbody>
             </table>
