@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('./components/htmlHead'); %>
+    </head>
+
+    <body>
+        
+        <!-- <%- include('./components/backToTopBtn'); %> -->
+        
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+
+        <!-- Content here -->
+        <body>
+            <h1>Current Profile</h1>
+            <p>Username: <%= data[0].username %></p>
+            <p>Password: <%= data[0].password %></p>
+            <p>Name: <%= data[0].name %></p>
+            <p>Phone number: <%= data[0].phone_number %></p>
+            <p>Area: <%= data[0].area %></p>
+            <% if (!data[0].credit_card) { %>
+                <p>Credit card number: -</p>
+            <% } else { %>
+                <p>Credit card number: <%= data[0].credit_card %></p>
+            <% } %>
+
+            <div class="content">
+                  <div class="spacing"></div>
+                  <div id="editProfilePOForm">
+                    <form method="POST" action="/edit_profile">
+                      <h3 id="title">Edit Profile</h3>
+                      <div class="aligner">
+                          <input type="text" id="name" name="name" placeholder="Name">
+                      </div>
+                      <div class="aligner">
+                          <input type="text" id="password" name="password" placeholder="Password">
+                      </div>
+                      <div class="aligner" id="phone_area">
+                          <div id="phoneDiv">
+                              <input type="text" id="phone" name="phone" placeholder="Phone number">
+                          </div>
+                          <div id="areaDiv">
+                              <input type="text" id="area" name="area" placeholder="Residential District">
+                          </div>
+                          <div id="CreditCardDiv">
+                              <input type="text" id="creditcard" name="creditcard" placeholder="Credit Card Number">
+                          </div>
+                      </div>
+
+                      <div class="aligner">
+                          <input type="submit" value="Edit Profile">
+                      </div>
+                  </form>
+                  </div>
+                </div>
+
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
+</html>
