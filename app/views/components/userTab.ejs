@@ -1,7 +1,9 @@
 <nav>
     <ul class="nav_links">
         <li><a href="/profile">Profile</a></li>
-        <li><a href="/pastorders">Past Orders</a></li>
+        <%if (isAdmin === false) { %>
+        	<li><a href="/pastorders">Past Orders</a></li>
+        <% } %>
     </ul>
 </nav>
 <a class="nav_links nav_right" href="/logout">Logout</a>
