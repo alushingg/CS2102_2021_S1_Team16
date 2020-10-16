@@ -2,7 +2,8 @@ const express = require('express');
 const loginController = require('./controllers/loginController');
 const signupController = require('./controllers/signupController');
 const userController = require('./controllers/userController');
-const dbController = require('./controllers/dbController')
+const dbController = require('./controllers/dbController');
+const petownerController = require('./controllers/petownerController');
 const router = express.Router();
 
 /* GET home page. */
@@ -53,6 +54,15 @@ router.get('/logout', function(req, res, next) {
     req.session.destroy(loginController.logoutUser());
     res.redirect('/');
 });
+
+router.get('/profile_po', function(req, res, next) {
+  petownerController.showProfile((data) => {
+    petownerController.showPet((dataP) => {
+      res.render('profile_po', { title: 'Profile', auth: req.session.authenticated, data: data, dataP: dataP });
+    })
+  })
+});
+
 
 router.route('/db')
   .get(dbController.queryGet)

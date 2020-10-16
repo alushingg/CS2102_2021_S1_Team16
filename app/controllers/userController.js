@@ -12,6 +12,7 @@ exports.trackUser = function(userData) {
         'isCaretaker': false,
         'isAdmin': false
     });
+    this.user = user;
     console.log(user);
 };
 

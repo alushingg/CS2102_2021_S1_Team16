@@ -133,7 +133,7 @@ CREATE TABLE take_care (
 	ctuname VARCHAR REFERENCES care_taker(username),
 	has_paid BOOLEAN,
 	daily_price NUMERIC,
-	is_successful BOOLEAN NOT NULL DEFAULT FALSE,
+	is_completed BOOLEAN NOT NULL DEFAULT FALSE,
 	review VARCHAR,
 	rating INTEGER CHECK (rating >= 1 AND rating <= 5),
 	transfer_method VARCHAR,
