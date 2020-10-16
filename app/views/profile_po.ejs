@@ -27,11 +27,29 @@
             <% } %>
 
             <h1>Pet Information</h1>
+            <td style="border:transparent;">
+                <button class="button button1" onclick="window.location.href='/petupdate'">Edit</button>
+                <button class="button button2">Delete</button>
+            </td>
             <style>
-                table, th, td {
+                th, td {
                   border: 1px solid black;
-                  border-collapse: collapse;
                 }
+                table {
+                    border-collapse: collapse;
+                }
+                .button {
+                  border: none;
+                  color: white;
+                  padding: 10px 10px;
+                  text-align: center;
+                  text-decoration: none;
+                  display: inline-block;
+                  font-size: 14px;
+                  cursor: pointer;
+                }
+                .button1 {background-color: #4CAF50;} /* Green */
+                .button2 {background-color: #FF0030;} /* Red */
             </style>
             <table style="width:100%;">
                 <thead>
@@ -58,8 +76,8 @@
                         <% } %>
                         <% if (pet != prev) { %>
                             <tr>
-                                <td><%= dataP[i].name %></td>
-                                <td><%= dataP[i].type %></td>
+                                <td ><%= dataP[i].name %></td>
+                                <td ><%= dataP[i].type %></td>
                                 <td><%= diet = diet == ''? diet : diet.substring(0, diet.length - 2) %></td>
                                 <td><%= walk = walk == ''? walk : walk.substring(0, walk.length - 2) %></td>
                             </tr>

@@ -5,6 +5,7 @@ const userController = require('./controllers/userController');
 const dbController = require('./controllers/dbController');
 const petownerController = require('./controllers/petownerController');
 const adminController = require('./controllers/adminController');
+const petupdateController = require('./controllers/petupdateController');
 const router = express.Router();
 
 /* GET home page. */
@@ -99,6 +100,20 @@ router.get('/pastorders', function(req, res, next) {
   } else if (isCaretaker) {
     res.render('pastorders_ct', { title: 'Past Orders', auth: req.session.authenticated, isAdmin: false });
   }
+});
+
+router.get('/petupdate', function(req, res, next) {
+    const isOwner = userController.getUser().getIsOwner();
+    const isCaretaker = userController.getUser().getIsCaretaker();
+    petupdateController.getPets((data) => {
+        res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data});
+    });
+}).post('/petupdate', function(req, res, next) {
+     petupdateController.editPet(req.body, (result) => {
+       console.log("Edit pet Result: ")
+       console.log(result);
+     });
+     res.redirect('profile');
 });
 
 router.route('/db')
