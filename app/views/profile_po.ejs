@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('./components/htmlHead'); %>
+    </head>
+
+    <body>
+        
+        <!-- <%- include('./components/backToTopBtn'); %> -->
+        
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+
+        <!-- Content here -->
+        <body>
+            <h1>Profile</h1>
+            <p>Username: <%= data[0].username %></p>
+            <p>Password: <%= data[0].password %></p>
+            <p>Name: <%= data[0].name %></p>
+            <p>Phone number: <%= data[0].phone_number %></p>
+            <p>Area: <%= data[0].area %></p>
+            <% if (!data[0].credit_card) { %>
+                <p>Credit card number: -</p>
+            <% } else { %>
+                <p>Credit card number: <%= data[0].credit_card %></p>
+            <% } %>
+
+            <h1>Pet Information</h1>
+            <style>
+                table, th, td {
+                  border: 1px solid black;
+                  border-collapse: collapse;
+                }
+            </style>
+            <table style="width:100%;">
+                <thead>
+                    <tr>
+                        <th scope="col">Pet name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Diet</th>
+                        <th scope="col">Walk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% var prev = ''%>
+                    <% for(var i=0; i<dataP.length; i++) { %>
+                        <% var pet = dataP[i].name %>
+                        <% var diet = '' %>
+                        <% var walk = '' %>
+                        <% for(var j=0; j<dataP.length;j++) { %>
+                            <% if (dataP[j].rtype == 'diet' && dataP[j].name == pet) { %>
+                                <% diet += dataP[j].requirement + ', ' %>
+                            <% } %>
+                            <% if (dataP[j].rtype == 'walk' && dataP[j].name == pet) { %>
+                                <% walk += dataP[j].requirement + ', ' %>
+                            <% } %>
+                        <% } %>
+                        <% if (pet != prev) { %>
+                            <tr>
+                                <td><%= dataP[i].name %></td>
+                                <td><%= dataP[i].type %></td>
+                                <td><%= diet = diet == ''? diet : diet.substring(0, diet.length - 2) %></td>
+                                <td><%= walk = walk == ''? walk : walk.substring(0, walk.length - 2) %></td>
+                            </tr>
+                            <% prev = pet %>
+                        <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+
+            <br>
+            <td style="border:transparent;"><button type="button" onclick="window.location.href='/edit_profile'">Edit Profile</button></td>
+            <style>
+                  button {
+                    border: none;
+                    color: white;
+                    padding: 10px 10px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 14px;
+                    cursor: pointer;
+                    background-color: #4CAF50;
+                  }
+            </style>
+
+            <form method="POST" action="/profile_po">
+                <td style="border:transparent;"><button type="submit" onclick="return confirm('Are you sure to delete?');">Delete Profile</button></td>
+            </form>
+
+
+
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
+</html>

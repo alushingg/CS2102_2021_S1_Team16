@@ -18,15 +18,15 @@ class User {
         return this.name;
     }
 
-    isOwner() {
+    getIsOwner() {
         return this.isOwner;
     }
 
-    isCaretaker() {
+    getIsCaretaker() {
         return this.isCaretaker;
     }
 
-    isAdmin() {
+    getIsAdmin() {
         return this.isAdmin;
     }
 }

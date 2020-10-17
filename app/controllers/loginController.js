@@ -38,8 +38,33 @@ exports.checkCredentials = function(credentials) {
     return credentials.length === 1;
 }
 
-exports.authUser = function(userData, session) {
-    userController.trackUser(userData);
+exports.getUserType = function(username, callback) {
+    const po_query = "SELECT * FROM pet_owner WHERE username = '" + username + "';";
+    const ct_query = "SELECT * FROM care_taker WHERE username = '" + username + "';";
+    const a_query = "SELECT * FROM pcs_admin WHERE username = '" + username + "';";
+    var isOwner = false;
+    var isCaretaker = false;
+    var isAdmin = false;
+    dbController.queryGet(po_query, (result) => {
+        if(result.body.rows.length === 1) {
+            isOwner = true;
+        }
+        dbController.queryGet(ct_query, (result) => {
+            if(result.body.rows.length === 1) {
+                isCaretaker = true;
+            }
+            dbController.queryGet(a_query, (result) => {
+                if(result.body.rows.length === 1) {
+                    isAdmin = true;
+                }
+                callback(isOwner, isCaretaker, isAdmin);
+            });
+        });
+    });
+}
+
+exports.authUser = function(userData, isOwner, isCaretaker, isAdmin, session) {
+    userController.trackUser(userData, isOwner, isCaretaker, isAdmin);
     session.authenticated = true;
 }
 
