@@ -12,8 +12,7 @@ const router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if (req.session.authenticated) {
-    const isAdmin = userController.getUser().getIsAdmin();
-    if (isAdmin) {
+    if (userController.getUser().isAdmin()) {
       res.render('index', { title: 'PCS Team 16', auth: req.session.authenticated, isAdmin: true });
     } else {
       res.render('index', { title: 'PCS Team 16', auth: req.session.authenticated, isAdmin: false });
@@ -80,9 +79,11 @@ router.get('/logout', function(req, res, next) {
 });
 
 router.get('/profile', function(req, res, next) {
-  const isOwner = userController.getUser().getIsOwner();
-  const isCaretaker = userController.getUser().getIsCaretaker();
-  const isAdmin = userController.getUser().getIsAdmin();
+
+  const isOwner = userController.getUser().isOwner();
+  const isCaretaker = userController.getUser().isCaretaker();
+  const isAdmin = userController.getUser().isAdmin();
+
   if (isAdmin) {
     adminController.showProfile((data) => {
       res.render('profile_a', { title: 'Profile', auth: req.session.authenticated, isAdmin: true, data: data });
@@ -119,8 +120,8 @@ router.get('/edit_profile', function(req, res, next) {
 });
 
 router.get('/pastorders', function(req, res, next) {
-    const isOwner = userController.getUser().getIsOwner();
-    const isCaretaker = userController.getUser().getIsCaretaker();
+    const isOwner = userController.getUser().isOwner();
+    const isCaretaker = userController.getUser().isCaretaker();
     if (isOwner && isCaretaker) {
         res.render('pastorders_poct', {title: 'Past Orders', auth: req.session.authenticated, isAdmin: false});
     } else if (isOwner) {
