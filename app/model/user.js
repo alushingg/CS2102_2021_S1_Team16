@@ -5,9 +5,9 @@ class User {
         this.name = userData.name;
         this.phone_no = userData.phone,
         this.area = userData.area,
-        this.isOwner = userData.isOwner;
-        this.isCaretaker = userData.isCaretaker;
-        this.isAdmin = userData.isAdmin;
+        this.is_owner = userData.isOwner;
+        this.is_caretaker = userData.isCaretaker;
+        this.is_admin = userData.isAdmin;
     }
 
     getUsername() {
@@ -18,16 +18,16 @@ class User {
         return this.name;
     }
 
-    getIsOwner() {
-        return this.isOwner;
+    isOwner() {
+        return this.is_owner;
     }
 
-    getIsCaretaker() {
-        return this.isCaretaker;
+    isCaretaker() {
+        return this.is_caretaker;
     }
 
-    getIsAdmin() {
-        return this.isAdmin;
+    isAdmin() {
+        return this.is_admin;
     }
 }
 
