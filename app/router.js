@@ -168,6 +168,14 @@ router.get('/petadd', function(req, res, next) {
      });
 });
 
+router.post('/:petname', function(req, res, next) {
+    petupdateController.deletePet(req, (result) => {
+        console.log("Delete pet Result: ")
+        console.log(result);
+    });
+    res.redirect("/profile");
+});
+
 router.route('/db')
   .get(dbController.queryGet)
   .post(dbController.queryPost)

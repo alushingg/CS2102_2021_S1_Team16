@@ -87,7 +87,9 @@
                                 <td><%= walk = walk == ''? walk : walk.substring(0, walk.length - 2) %></td>
                                 <td style="border:transparent;">
                                     <button class="button button1" onclick="window.location.href='<%= encodeURIComponent(dataP[i].name)%>/update'">Edit</button>
-                                    <button class="button button2" >Delete</button>
+                                    <form method="POST" action="/<%= encodeURIComponent(dataP[i].name)%>" style="display:inline;">
+                                        <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                             <% prev = pet %>

@@ -50,3 +50,21 @@ exports.editPet = function(requestBody, requestParam, callback) {
         }
     });
 }
+
+exports.deletePet = function(req, callback) {
+    const { petname } = req.params;
+    const user = userController.getUser().getUsername();
+    console.log("Name: " + petname);
+
+    const query = "DELETE from own_pet_belong WHERE username='" + user + "' AND name='" + petname + "';";
+    console.log("Query: " + query);
+    dbController.queryGet(query, (result) => {
+        if(result.status == 200) {
+            callback(result.body.rows, "");
+        } else {
+            console.log("Failed.");
+            console.log("Status code: " + result.status);
+            callback([]);
+        }
+    });
+}
