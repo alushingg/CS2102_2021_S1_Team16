@@ -138,7 +138,7 @@ CREATE TABLE take_care (
 	rating INTEGER CHECK (rating >= 1 AND rating <= 5),
 	transfer_method VARCHAR,
 	payment_mode VARCHAR,
-	FOREIGN KEY (username, name) REFERENCES own_pet_belong(username, name),
+	FOREIGN KEY (username, name) REFERENCES own_pet_belong(username, name) ON DELETE CASCADE,
 	FOREIGN KEY (start_date, end_date) REFERENCES period(start_date, end_date),
 	PRIMARY KEY (username, name, start_date, end_date, ctuname)
 );
