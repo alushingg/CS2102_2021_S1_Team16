@@ -139,18 +139,16 @@ router.get('/pastorders', function(req, res, next) {
     }
 });
 
-router.get('/petupdate', function(req, res, next) {
-    const isOwner = userController.getUser().getIsOwner();
-    const isCaretaker = userController.getUser().getIsCaretaker();
-    petupdateController.getPets((data) => {
-        res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data});
+router.get('/:petname/update', function(req, res, next) {
+    petupdateController.trackPet(req, (data, petname) => {
+        res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data, petname:petname});
     });
-}).post('/petupdate', function(req, res, next) {
-     petupdateController.editPet(req.body, (result) => {
+}).post('/:petname/update', function(req, res, next) {
+     petupdateController.editPet(req.body, req.params, (result) => {
        console.log("Edit pet Result: ")
        console.log(result);
      });
-     res.redirect('profile');
+     res.redirect('/profile');
 });
 
 router.route('/db')

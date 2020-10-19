@@ -3,7 +3,6 @@
     <head>
         <%- include('./components/htmlHead'); %>
     </head>
-
     <body>
         
         <!-- <%- include('./components/backToTopBtn'); %> -->
@@ -28,7 +27,6 @@
 
             <h1>Pet Information</h1>
             <td style="border:transparent;">
-                <button class="button button1" onclick="window.location.href='/petupdate'">Edit</button>
                 <button class="button button2">Delete</button>
             </td>
             <style>
@@ -80,6 +78,7 @@
                                 <td ><%= dataP[i].type %></td>
                                 <td><%= diet = diet == ''? diet : diet.substring(0, diet.length - 2) %></td>
                                 <td><%= walk = walk == ''? walk : walk.substring(0, walk.length - 2) %></td>
+                                <td style="border:transparent;"><button class="button button1" onclick="window.location.href='<%= encodeURIComponent(dataP[i].name)%>/update'">Edit</button></td>
                             </tr>
                             <% prev = pet %>
                         <% } %>

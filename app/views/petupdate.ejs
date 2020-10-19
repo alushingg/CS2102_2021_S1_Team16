@@ -17,19 +17,27 @@
     		<script src="javascripts/formsScript.js"></script>
     </head>
     <body>
-        <h1><%= title%></h1>
-    		<form method="POST" action="/petupdate">
-    			<div class="form-group">
-    				<label for="name">Pet Name: </label>
-    				<select name="name" id="name">
-    				  <% for(var i = 0; i < data.length; i++) {%>
-                        <option><%= data[i].name %></option>
-                       <% } %>
-                    </select>
-    			</div>
+        <h1><%= title%> : <%= petname%> </h1>
+    		<form method="POST" action="/<%= petname%>/update">
     			<div class="form-group">
                     <p>Diet: </p>
                                   <p>
+                                  <% var food = ["Dry", "Canned", "Semi-moist", "Fresh", "Home cooked", "Raw", "Milk", "Grain", "None"]; %>
+                                  <% var done = false; %>
+                                  <% for (var i = 0; i < data.length; i++) { %>
+                                  <%    if (data[i].rtype == "diet") {%>
+                                  <%        for (var j = 0; j < 9; j++) { %>
+                                  <%            if (data[i].requirement == food[j]) { %>
+                                                    <label><input type="radio" name="diet" value="<%= food[j]%>" checked/> <%= food[j]%></label><br>
+                                  <%            } else { %>
+                                                    <label><input type="radio" name="diet" value="<%= food[j]%>" /> <%= food[j]%></label><br>
+                                  <%           } %>
+                                  <%        } %>
+                                  <%        done = true; %>
+                                  <%        break; //assuming only one diet per pet %>
+                                  <%    } %>
+                                  <%} %>
+                                  <% if (!done) {%>
                                       <label><input type="radio" name="diet" value="Dry" /> Dry</label><br>
                                       <label><input type="radio" name="diet" value="Canned" /> Canned</label><br>
                                       <label><input type="radio" name="diet" value="Semi-moist" /> Semi-moist</label><br>
@@ -39,18 +47,36 @@
                                       <label><input type="radio" name="diet" value="Milk" /> Milk</label><br>
                                       <label><input type="radio" name="diet" value="Grain" /> Grain</label><br>
                                       <label><input type="radio" name="diet" value="None" checked/> None</label><br>
+                                   <%} %>
                                   </p>
     			</div>
                 <div class="form-group">
                     <p>Walk: </p>
                                   <p>
-                                      <label><input type="radio" name="walk" value="Daily" checked/> Daily</label><br>
+                                   <% var walking = ["Daily", "Twice a day", "Thrice a day", "Weekly", "Twice a week", "Thrice a week", "None"]; %>
+                                    <% var done = false; %>
+                                    <% for (var i = 0; i < data.length; i++) { %>
+                                    <%    if (data[i].rtype == "walk") {%>
+                                    <%        for (var j = 0; j < 7; j++) { %>
+                                    <%            if (data[i].requirement == walking[j]) { %>
+                                                      <label><input type="radio" name="walk" value="<%= walking[j]%>" checked/> <%= walking[j]%></label><br>
+                                    <%            } else { %>
+                                                      <label><input type="radio" name="walk" value="<%= walking[j]%>" /> <%= walking[j]%></label><br>
+                                    <%           } %>
+                                    <%        } %>
+                                    <%        done = true; %>
+                                    <%        break; //assuming only one walk per pet %>
+                                    <%    } %>
+                                    <%} %>
+                                    <% if (!done) {%>
+                                      <label><input type="radio" name="walk" value="Daily" /> Daily</label><br>
                                       <label><input type="radio" name="walk" value="Twice a day" /> Twice a day</label><br>
                                       <label><input type="radio" name="walk" value="Thrice a day" /> Thrice a day</label><br>
                                       <label><input type="radio" name="walk" value="Weekly" /> Weekly</label><br>
                                       <label><input type="radio" name="walk" value="Twice a week" /> Twice a week</label><br>
                                       <label><input type="radio" name="walk" value="Thrice a week" /> Thrice a week</label><br>
                                       <label><input type="radio" name="walk" value="None" checked/> None</label><br>
+                                    <% } %>
                                   </p>
                 </div>
     			<button type="submit" class="btn btn-primary">Submit</button>
