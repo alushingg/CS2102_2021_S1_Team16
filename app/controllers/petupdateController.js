@@ -6,7 +6,7 @@ exports.trackPet = function(req, callback) {
     const user = userController.getUser().getUsername();
     const { petname } = req.params;
     const query = "SELECT h.rtype, h.requirement" +
-                    " FROM own_pet_belong o LEFT JOIN has h ON o.username = h.username" +
+                    " FROM own_pet_belong o NATURAL JOIN has h" +
                     " WHERE o.username = '" + user + "' AND o.name = '" + petname + "';";
     dbController.queryGet(query, (result) => {
          if(result.status == 200) {
@@ -26,7 +26,7 @@ exports.editPet = function(requestBody, requestParam, callback) {
     const { petname } = requestParam;
     var modifiedfields = '';
     var updated = '';
-    console.log("Name: " + requestBody.name + " Diet: " + requestBody.diet + " Walk: " + requestBody.walk);
+    console.log("Name: " + petname + " Diet: " + requestBody.diet + " Walk: " + requestBody.walk);
 
     updated = "DELETE FROM has WHERE username='" + user + "' AND name='" + petname + "';";
     if (requestBody.diet != 'None') {

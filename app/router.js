@@ -7,6 +7,7 @@ const petownerController = require('./controllers/petownerController');
 const editProfileController = require("./controllers/editProfileController");
 const adminController = require('./controllers/adminController');
 const petupdateController = require('./controllers/petupdateController');
+const petaddController = require('./controllers/petaddController');
 const availabilityController = require('./controllers/availabilityController');
 const router = express.Router();
 
@@ -100,7 +101,7 @@ router.get('/profile', function(req, res, next) {
   } else if (isCaretaker) {
     res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false });
   }
-}).post('/profile_po', function(req, res, next) {
+}).post('/profile', function(req, res, next) {
     editProfileController.deleteProfile((result) => {
         console.log("Delete profile Result: ")
         console.log(result);
@@ -146,6 +147,18 @@ router.get('/:petname/update', function(req, res, next) {
 }).post('/:petname/update', function(req, res, next) {
      petupdateController.editPet(req.body, req.params, (result) => {
        console.log("Edit pet Result: ")
+       console.log(result);
+     });
+     res.redirect('/profile');
+});
+
+router.get('/petadd', function(req, res, next) {
+    petaddController.getPets((data) => {
+        res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, data: data});
+    });
+}).post('/petadd', function(req, res, next) {
+     petaddController.addPet(req.body, (result) => {
+       console.log("Add Pet Result: ")
        console.log(result);
      });
      res.redirect('/profile');
