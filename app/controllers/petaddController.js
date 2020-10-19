@@ -2,24 +2,6 @@ const dbController = require('./dbController');
 const userController = require('./userController');
 
 
-exports.getPets = function(callback) {
-    const user = userController.getUser().getUsername();
-    const query = "SELECT name, type" +
-                    " FROM own_pet_belong" +
-                    " WHERE o.username = '" + user + "';";
-    dbController.queryGet(query, (result) => {
-         if(result.status == 200) {
-            console.log(query);
-             callback(result.body.rows, petname);
-         } else {
-             console.log("Failed.");
-             console.log("Status code: " + result.status);
-             callback([], "");
-         }
-     });
-};
-
-
 exports.addPet = function(requestBody, callback) {
     const user = userController.getUser().getUsername();
     console.log("Name: " + requestBody.petname + " Type: "+ requestBody.type +
@@ -41,11 +23,11 @@ exports.addPet = function(requestBody, callback) {
     console.log("Query: " + query);
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
-            callback(result.body.rows);
+            callback(result.body.rows, "");
         } else {
             console.log("Failed.");
             console.log("Status code: " + result.status);
-            callback([]);
+            callback([], result.err.message);
         }
     });
 }

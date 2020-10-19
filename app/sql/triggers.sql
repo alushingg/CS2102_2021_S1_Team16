@@ -5,8 +5,7 @@ CREATE OR REPLACE FUNCTION check_pet()
         SELECT COUNT(*) INTO ctx
         FROM own_pet_belong o
         WHERE NEW.username = o.username
-            AND NEW.name = o.name
-            AND NEW.type = o.type;
+            AND NEW.name = o.name;
         IF ctx > 0 THEN
             RAISE EXCEPTION 'This pet already exists!';
         ELSE

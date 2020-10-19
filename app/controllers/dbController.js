@@ -8,6 +8,7 @@ exports.queryGet = function (query, callback) {
         if(error) {
             callback({
                 status: 404,
+                err: error,
             });
         } else {
             callback({

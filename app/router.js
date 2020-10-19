@@ -153,15 +153,19 @@ router.get('/:petname/update', function(req, res, next) {
 });
 
 router.get('/petadd', function(req, res, next) {
-    petaddController.getPets((data) => {
-        res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, data: data});
-    });
+     res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: ""});
 }).post('/petadd', function(req, res, next) {
-     petaddController.addPet(req.body, (result) => {
+     petaddController.addPet(req.body, (result, err) => {
        console.log("Add Pet Result: ")
        console.log(result);
+       //if pet exists already, trigger will return error
+       if (err != "") {
+            console.log(err);
+            res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: err});
+       } else {
+             res.redirect('/profile');
+       }
      });
-     res.redirect('/profile');
 });
 
 router.route('/db')
