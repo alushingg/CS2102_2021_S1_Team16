@@ -6,8 +6,7 @@ const dbController = require('./controllers/dbController');
 const petownerController = require('./controllers/petownerController');
 const editProfileController = require("./controllers/editProfileController");
 const adminController = require('./controllers/adminController');
-const petupdateController = require('./controllers/petupdateController');
-const petaddController = require('./controllers/petaddController');
+const petController = require('./controllers/petController');
 const availabilityController = require('./controllers/availabilityController');
 const router = express.Router();
 
@@ -141,11 +140,11 @@ router.get('/pastorders', function(req, res, next) {
 });
 
 router.get('/:petname/update', function(req, res, next) {
-    petupdateController.trackPet(req, (data, petname) => {
+    petController.trackPet(req, (data, petname) => {
         res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data, petname:petname});
     });
 }).post('/:petname/update', function(req, res, next) {
-     petupdateController.editPet(req.body, req.params, (result) => {
+     petController.editPet(req.body, req.params, (result) => {
        console.log("Edit pet Result: ")
        console.log(result);
      });
@@ -155,7 +154,7 @@ router.get('/:petname/update', function(req, res, next) {
 router.get('/petadd', function(req, res, next) {
      res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: ""});
 }).post('/petadd', function(req, res, next) {
-     petaddController.addPet(req.body, (result, err) => {
+     petController.addPet(req.body, (result, err) => {
        console.log("Add Pet Result: ")
        console.log(result);
        //if pet exists already, trigger will return error
@@ -169,7 +168,7 @@ router.get('/petadd', function(req, res, next) {
 });
 
 router.post('/:petname', function(req, res, next) {
-    petupdateController.deletePet(req, (result) => {
+    petController.deletePet(req, (result) => {
         console.log("Delete pet Result: ")
         console.log(result);
     });
