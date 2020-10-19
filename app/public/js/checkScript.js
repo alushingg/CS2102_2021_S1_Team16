@@ -89,10 +89,10 @@ function hasStartDatePassed(dateString) {
     if (sdate.getFullYear() < currdate.getFullYear())
         return true;
 
-    if (sdate.getFullYear() === currdate.getFullYear() && sdate.getMonth() < currdate.getMonth())
+    if (sdate.getFullYear() === currdate.getFullYear() && sdate.getMonth() - 1 < currdate.getMonth())
         return true;
 
-    if (sdate.getFullYear() === currdate.getFullYear() && sdate.getMonth() === currdate.getMonth() && sdate.getDate() < currdate.getDate()) {
+    if (sdate.getFullYear() === currdate.getFullYear() && sdate.getMonth() - 1 === currdate.getMonth() && sdate.getDate() < currdate.getDate()) {
         return true;
     }
     return false;

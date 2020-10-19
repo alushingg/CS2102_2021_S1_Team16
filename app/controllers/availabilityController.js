@@ -32,7 +32,7 @@ exports.findCaretaker = function(type, sdate, edate, callback) {
         					+ "AND ((t1.start_date >= DATE('" + sdate + "') AND t1.start_date <= DATE('" + edate + "')) "
          						+ "OR (t1.end_date >= DATE('" + sdate + "') AND t1.end_date <= DATE('" + edate + "')))) < 5));";
   	dbController.queryGet(query, (result) => {
-  		console.log(query);
+  		//console.log(query);
         if(result.status == 200) {
             callback(result.body.rows);
         } else {
