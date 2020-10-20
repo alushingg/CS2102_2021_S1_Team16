@@ -1,8 +1,10 @@
 <nav>
     <ul class="nav_links">
         <li><a href="/profile">Profile</a></li>
-        <%if (isAdmin === false) { %>
-        	<li><a href="/pastorders">Past Orders</a></li>
+        <%if (isAdmin) { %>
+        	<li><a href="/getmonthlyreport">Monthly Report</a></li>
+        <% } else { %>
+			<li><a href="/pastorders">Past Orders</a></li>
         <% } %>
     </ul>
 </nav>

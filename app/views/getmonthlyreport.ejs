@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('./components/htmlHead'); %>
+        <script src="js/getMonthlyReportScript.js"></script>
+    </head>
+
+    <style>
+      button {
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #4CAF50;
+      }
+    </style>
+
+    <body>
+        
+        <!-- <%- include('./components/backToTopBtn'); %> -->
+        
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+
+        <!-- Content here -->
+        <h1>Get Monthly Report</h1>
+        <form id="getMonthlyReportForm" method="POST" action="/getmonthlyreport">
+          <div class="form-group">
+            <label for="month">Month: </label>
+            <input type="text" id="month" name="month" placeholder="MM" required>
+          </div>
+          <div class="form-group">
+            <label for="year">Year: </label>
+          <input type="text" id="year" name="year" placeholder="YYYY" required>
+          </div>
+          <button type="submit" class="button">Submit</button>
+        </form>
+
+        <script>
+          (function() {
+            window.addEventListener('load', function() {
+              var forms = [document.getElementById('getMonthlyReportForm')];
+              var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', check, false);
+              });
+            }, false);
+          })();
+        </script>
+
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
+</html>

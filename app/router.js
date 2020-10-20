@@ -32,7 +32,11 @@ router.get('/pricing', function(req, res, next) {
 });
 
 router.get('/caretaker', function(req, res, next) {
-  res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: false });
+  if (!userController.getUser() || !userController.getUser().isAdmin()) {
+    res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: false });
+  } else {
+    res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: true });
+  }
 }).post('/caretaker', function(req, res, next) {
   req.session.ptype = req.body.type;
   req.session.sdate = req.body.start_date;
@@ -44,7 +48,7 @@ router.get('/availability', function(req, res, next) {
   availabilityController.findCaretaker(req.session.ptype, req.session.sdate, req.session.edate, (result) => {
     res.render('availability', { title: 'Availability', auth: req.session.authenticated, isAdmin: false, data: result });
   })
-})
+});
 
 router.get('/login', function(req, res, next) {
   const pageInfo = loginController.getPageInfo();
@@ -139,11 +143,11 @@ router.get('/pastorders', function(req, res, next) {
     }
 });
 
-router.get('/:petname/update', function(req, res, next) {
+router.get('/pet/:petname/update', function(req, res, next) {
     petController.trackPet(req, (data, petname) => {
-        res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data, petname:petname});
+        res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data, petname: petname});
     });
-}).post('/:petname/update', function(req, res, next) {
+}).post('/pet/:petname/update', function(req, res, next) {
      petController.editPet(req.body, req.params, (result) => {
        console.log("Edit pet Result: ")
        console.log(result);
@@ -167,12 +171,33 @@ router.get('/petadd', function(req, res, next) {
      });
 });
 
-router.post('/:petname', function(req, res, next) {
+router.post('/pet/:petname/delete', function(req, res, next) {
     petController.deletePet(req, (result) => {
         console.log("Delete pet Result: ")
         console.log(result);
     });
     res.redirect("/profile");
+});
+
+router.get('/getmonthlyreport', function(req, res, next) {
+  if (userController.getUser() && userController.getUser().isAdmin()) {
+    res.render('getmonthlyreport', { title: 'Monthly Report', auth: req.session.authenticated, isAdmin: true });
+  }
+}).post('/getmonthlyreport', function(req, res, next) {
+  req.session.month = req.body.month;
+  req.session.year = req.body.year;
+  res.redirect('monthlyreport');
+});
+
+router.get('/monthlyreport', function(req, res, next) {
+  if (userController.getUser() && userController.getUser().isAdmin()) {
+    adminController.getMonthlyCtReport(req.session.month, req.session.year, (dataC) => {
+      adminController.getMonthlyReport(req.session.month, req.session.year, (data) => {
+        res.render('monthlyreport', { title: 'Monthly Report', auth: req.session.authenticated, isAdmin: true, 
+          month: req.session.month, year: req.session.year, dataC: dataC, data: data });
+      })
+    })
+  }
 });
 
 router.route('/db')
