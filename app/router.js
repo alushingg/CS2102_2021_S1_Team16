@@ -200,6 +200,17 @@ router.get('/monthlyreport', function(req, res, next) {
   }
 });
 
+router.get('/summary', function(req, res, next) {
+  if (userController.getUser() && userController.getUser().isAdmin()) {
+    adminController.getMthSummary((data) => {
+      adminController.getSummary((dataT, dataP, dataPd, dataS, dataE, dataPf) => {
+        res.render('summary', { title: 'Summary', auth: req.session.authenticated, isAdmin: true, data: data, 
+          dataT: dataT, dataP: dataP, dataPd: dataPd, dataS: dataS, dataE: dataE, dataPf, dataPf });
+      })
+    })
+  }
+});
+
 router.route('/db')
   .get(dbController.queryGet)
   .post(dbController.queryPost)

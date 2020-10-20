@@ -13,11 +13,8 @@
         </header>
 
         <!-- Content here -->
-        <% if (month.length < 2) { %>
-            <h1>Monthly Report: <%= month.padStart(2, '0') %> <%= year %></h1>
-        <% } else { %>
-            <h1>Monthly Report: <%= month %> <%= year %></h1>
-        <% } %>
+        <% var  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; %>
+        <h1>Monthly Report: <%= months[month - 1] %> <%= year %></h1>
 
         <style>
             table, th, td {
@@ -55,11 +52,11 @@
         <p>Total number of pets: <%= data[0].total_pets %></p>
         <p>Total number of pet days: <%= data[0].total_pet_days %></p>
         <p>Total salary to be paid: $<%= data[0].total_salary %></p>
-        <p>Total earnings: $<%= data[0].earnings %></p>
-        <% if (data[0].earnings - data[0].total_salary < 0) { %>
-            <p>Total profit: -$<%= Math.abs(data[0].earnings - data[0].total_salary) %></p>
+        <p>Total earnings: $<%= data[0].total_earnings %></p>
+        <% if (data[0].total_earnings - data[0].total_salary < 0) { %>
+            <p>Total profit: -$<%= Math.abs(data[0].total_earnings - data[0].total_salary) %></p>
         <% } else { %>
-            <p>Total profit: $<%= Math.abs(data[0].earnings - data[0].total_salary) %></p>
+            <p>Total profit: $<%= Math.abs(data[0].total_earnings - data[0].total_salary) %></p>
         <% } %>
 
         <footer>

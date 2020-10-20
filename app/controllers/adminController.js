@@ -18,44 +18,7 @@ exports.showProfile = function(callback) {
 };
 
 exports.getMonthlyCtReport = function(month, year, callback) {
-    const query = "SELECT f.username, 'Full Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
-                    + "SUM(t.end_date - t.start_date + 1) AS pet_days, 3000 AS salary "
-                + "FROM full_time f INNER JOIN take_care t ON f.username = t.ctuname "
-                + "WHERE has_paid "
-                    + "AND EXTRACT(month FROM t.end_date) = " + month + " "
-                    + "AND EXTRACT(year FROM t.end_date) = " + year + " "
-                + "GROUP BY f.username "
-                + "HAVING COUNT(*) <= 60 "
-                + "UNION "
-                + "SELECT f.username, 'Full Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
-                    + "SUM(t.end_date - t.start_date + 1) AS pet_days, "
-                    + "(3000 + (SELECT SUM(0.8 * daily_price * (end_date - start_date + 1)) FROM take_care t1 "
-                                + "WHERE t1.ctuname = f.username "
-                                    + "AND has_paid "
-                                    + "AND EXTRACT(month FROM t1.end_date) = " + month + " "
-                                    + "AND EXTRACT(year FROM t1.end_date) = " + year + " "
-                                + "GROUP BY (t1.start_date, t1.end_date) "
-                                + "ORDER BY t1.end_date ASC, t1.start_date ASC "
-                                + "OFFSET 60)) AS salary "
-                + "FROM full_time f INNER JOIN take_care t ON f.username = t.ctuname "
-                + "WHERE has_paid "
-                    + "AND EXTRACT(month FROM t.end_date) = " + month + " "
-                    + "AND EXTRACT(year FROM t.end_date) = " + year + " "
-                + "GROUP BY f.username "
-                + "HAVING COUNT(*) > 60 "
-                + "UNION "
-                + "SELECT p.username, 'Part Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
-                    + "SUM(t.end_date - t.start_date + 1) AS pet_days, "
-                    + "(SELECT SUM(0.75 * daily_price * (end_date - start_date + 1)) FROM take_care t1 "
-                        + "WHERE t1.ctuname = p.username "
-                            + "AND has_paid "
-                            + "AND EXTRACT(month FROM t1.end_date) = " + month + " "
-                            + "AND EXTRACT(year FROM t1.end_date) = " + year + ") AS salary "
-                + "FROM part_time p INNER JOIN take_care t ON p.username = t.ctuname "
-                + "WHERE has_paid "
-                    + "AND EXTRACT(month FROM t.end_date) = " + month + " "
-                    + "AND EXTRACT(year FROM t.end_date) = " + year + " "
-                + "GROUP BY p.username;";
+    const query = "SELECT * FROM ct_report WHERE month = " + month + " AND year = " + year + ";";
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
@@ -68,52 +31,9 @@ exports.getMonthlyCtReport = function(month, year, callback) {
 };
 
 exports.getMonthlyReport = function(month, year, callback) {
-    const query = "WITH ct_report AS "
-                    + "(SELECT f.username, 'Full Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
-                        + "SUM(t.end_date - t.start_date + 1) AS pet_days, 3000 AS salary "
-                    + "FROM full_time f INNER JOIN take_care t ON f.username = t.ctuname "
-                    + "WHERE has_paid "
-                        + "AND EXTRACT(month FROM t.end_date) = " + month + " "
-                        + "AND EXTRACT(year FROM t.end_date) = " + year + " "
-                    + "GROUP BY f.username "
-                    + "HAVING COUNT(*) <= 60 "
-                    + "UNION "
-                    + "SELECT f.username, 'Full Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
-                        + "SUM(t.end_date - t.start_date + 1) AS pet_days, "
-                        + "(3000 + (SELECT SUM(0.8 * daily_price * (end_date - start_date + 1)) FROM take_care t1 "
-                                    + "WHERE t1.ctuname = f.username "
-                                        + "AND has_paid "
-                                        + "AND EXTRACT(month FROM t1.end_date) = " + month + " "
-                                        + "AND EXTRACT(year FROM t1.end_date) = " + year + " "
-                                    + "GROUP BY (t1.start_date, t1.end_date) "
-                                    + "ORDER BY t1.end_date ASC, t1.start_date ASC "
-                                    + "OFFSET 60)) AS salary "
-                    + "FROM full_time f INNER JOIN take_care t ON f.username = t.ctuname "
-                    + "WHERE has_paid "
-                        + "AND EXTRACT(month FROM t.end_date) = " + month + " "
-                        + "AND EXTRACT(year FROM t.end_date) = " + year + " "
-                    + "GROUP BY f.username "
-                    + "HAVING COUNT(*) > 60 "
-                    + "UNION "
-                    + "SELECT p.username, 'Part Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
-                        + "SUM(t.end_date - t.start_date + 1) AS pet_days, "
-                        + "(SELECT SUM(0.75 * daily_price * (end_date - start_date + 1)) FROM take_care t1 "
-                            + "WHERE t1.ctuname = p.username "
-                                + "AND has_paid "
-                                + "AND EXTRACT(month FROM t1.end_date) = " + month + " "
-                                + "AND EXTRACT(year FROM t1.end_date) = " + year + ") AS salary "
-                    + "FROM part_time p INNER JOIN take_care t ON p.username = t.ctuname "
-                    + "WHERE has_paid "
-                        + "AND EXTRACT(month FROM t.end_date) = " + month + " "
-                        + "AND EXTRACT(year FROM t.end_date) = " + year + " "
-                    + "GROUP BY p.username) "
-                + "SELECT COALESCE(SUM(transactions), 0) AS total_transactions, COALESCE(SUM(pets), 0) AS total_pets, COALESCE(SUM(pet_days), 0) AS total_pet_days, "
-                    + "COALESCE(SUM(salary), 0) AS total_salary, COALESCE((SELECT SUM(daily_price * (end_date - start_date + 1)) "
-                                                    + "FROM take_care t "
-                                                    + "WHERE has_paid "
-                                                        + "AND EXTRACT(month FROM t.end_date) = " + month + " "
-                                                        + "AND EXTRACT(year FROM t.end_date) = " + year + "), 0) AS earnings "
-                + "FROM ct_report;";
+    const query = "SELECT COALESCE(SUM(transactions), 0) AS total_transactions, COALESCE(SUM(pets), 0) AS total_pets, COALESCE(SUM(pet_days), 0) AS total_pet_days, "
+                    + "COALESCE(SUM(salary), 0) AS total_salary, COALESCE(SUM(earnings), 0) AS total_earnings "
+                + "FROM ct_report WHERE month = " + month + " AND year = " + year + ";";
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
@@ -124,3 +44,86 @@ exports.getMonthlyReport = function(month, year, callback) {
         }
     });
 };
+
+exports.getMthSummary = function(callback) {
+    const query = "SELECT to_char(to_timestamp (r.month::TEXT, 'MM'), 'Mon') AS month, r.year, SUM(r.transactions) AS total_transactions, "
+                    + "SUM(r.pets) AS total_pets, SUM(r.pet_days) AS total_pet_days, "
+                    + "SUM(r.salary) AS total_salary, SUM(r.earnings) AS total_earnings "
+                + "FROM ct_report r "
+                + "WHERE (r.year = EXTRACT(year FROM now()) AND r.month < EXTRACT(month FROM now())) "
+                    + "OR (r.year = EXTRACT(year FROM now()) - 1 AND r.month >= EXTRACT(month FROM now())) "
+                + "GROUP BY (r.month, r.year) "
+                + "ORDER BY (r.year, r.month) ASC;";
+    dbController.queryGet(query, (result) => {
+        if(result.status == 200) {
+            callback(result.body.rows);
+        } else {
+            console.log("Failed.");
+            console.log("Status code: " + result.status);
+            callback([]);
+        }
+    });
+};
+
+exports.getSummary = function(callback) {
+    const query = "SELECT to_char(to_timestamp (month::TEXT, 'MM'), 'Mon') AS tmonth, year AS tyear, SUM(transactions) AS transactions "
+                + "FROM ct_report "
+                + "WHERE (year = EXTRACT(year FROM now()) AND month < EXTRACT(month FROM now())) "
+                    + "OR (year = EXTRACT(year FROM now()) - 1 AND month >= EXTRACT(month FROM now())) "
+                + "GROUP BY (month, year) "
+                + "ORDER BY (SUM(transactions), year, month) DESC "
+                + "LIMIT 1; "
+                + "SELECT to_char(to_timestamp (month::TEXT, 'MM'), 'Mon') AS pmonth, year AS pyear, SUM(pets) AS pets "
+                + "FROM ct_report "
+                + "WHERE (year = EXTRACT(year FROM now()) AND month < EXTRACT(month FROM now())) "
+                    + "OR (year = EXTRACT(year FROM now()) - 1 AND month >= EXTRACT(month FROM now())) "
+                + "GROUP BY (month, year) "
+                + "ORDER BY (SUM(pets), year, month) DESC "
+                + "LIMIT 1; "
+                + "SELECT to_char(to_timestamp (month::TEXT, 'MM'), 'Mon') AS pdmonth, year AS pdyear, SUM(pet_days) AS pet_days "
+                + "FROM ct_report "
+                + "WHERE (year = EXTRACT(year FROM now()) AND month < EXTRACT(month FROM now())) "
+                    + "OR (year = EXTRACT(year FROM now()) - 1 AND month >= EXTRACT(month FROM now())) "
+                + "GROUP BY (month, year) "
+                + "ORDER BY (SUM(pet_days), year, month) DESC "
+                + "LIMIT 1; "
+                + "SELECT to_char(to_timestamp (month::TEXT, 'MM'), 'Mon') AS smonth, year AS syear, SUM(salary) AS salary "
+                + "FROM ct_report "
+                + "WHERE (year = EXTRACT(year FROM now()) AND month < EXTRACT(month FROM now())) "
+                    + "OR (year = EXTRACT(year FROM now()) - 1 AND month >= EXTRACT(month FROM now())) "
+                + "GROUP BY (month, year) "
+                + "ORDER BY (SUM(salary), year, month) DESC "
+                + "LIMIT 1; "
+                + "SELECT to_char(to_timestamp (month::TEXT, 'MM'), 'Mon') AS emonth, year AS eyear, SUM(earnings) AS earnings "
+                + "FROM ct_report "
+                + "WHERE (year = EXTRACT(year FROM now()) AND month < EXTRACT(month FROM now())) "
+                    + "OR (year = EXTRACT(year FROM now()) - 1 AND month >= EXTRACT(month FROM now())) "
+                + "GROUP BY (month, year) "
+                + "ORDER BY (SUM(earnings), year, month) DESC "
+                + "LIMIT 1; "
+                + "SELECT to_char(to_timestamp (month::TEXT, 'MM'), 'Mon') AS pfmonth, year AS pfyear, (SUM(earnings) - SUM(salary)) AS profit "
+                + "FROM ct_report "
+                + "WHERE (year = EXTRACT(year FROM now()) AND month < EXTRACT(month FROM now())) "
+                    + "OR (year = EXTRACT(year FROM now()) - 1 AND month >= EXTRACT(month FROM now())) "
+                + "GROUP BY (month, year) "
+                + "ORDER BY ((SUM(earnings) - SUM(salary)), year, month) DESC "
+                + "LIMIT 1;";
+    dbController.queryGet(query, (result) => {
+        if(result.status == 200) {
+            callback(result.body[0].rows, result.body[1].rows, result.body[2].rows, result.body[3].rows, result.body[4].rows, result.body[5].rows);
+        } else {
+            console.log("Failed.");
+            console.log("Status code: " + result.status);
+            callback([]);
+        }
+    });
+};
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('./components/htmlHead'); %>
+    </head>
+
+    <body>
+        
+        <!-- <%- include('./components/backToTopBtn'); %> -->
+        
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+
+        <!-- Content here -->
+        <h1>Summary (Past 12 Months)</h1>
+
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+        </style>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Month</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Total Transactions</th>
+                    <th scope="col">Total Pets</th>
+                    <th scope="col">Total Pet Days</th>
+                    <th scope="col">Total Salary</th>
+                    <th scope="col">Total Earnings</th>
+                    <th scope="col">Profit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i<data.length; i++) { %>
+                <tr>
+                    <td><%= data[i].month %></td>
+                    <td><%= data[i].year %></td>
+                    <td><%= data[i].total_transactions %></td>
+                    <td><%= data[i].total_pets %></td>
+                    <td><%= data[i].total_pet_days %></td>
+                    <td><%= data[i].total_salary %></td>
+                    <td><%= data[i].total_earnings %></td>
+                    <td><%= data[i].total_earnings - data[i].total_salary %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <p>Month with most transactions: <%= dataT[0].tmonth %> <%= dataT[0].tyear %> (<%= dataT[0].transactions %> transactions) </p>
+        <p>Month with most pets: <%= dataP[0].pmonth %> <%= dataP[0].pyear %> (<%= dataP[0].pets %> pets) </p>
+        <p>Month with most pet days: <%= dataPd[0].pdmonth %> <%= dataPd[0].pdyear %> (<%= dataPd[0].pet_days %> pet days)</p>
+        <p>Month with highest salary: <%= dataS[0].smonth %> <%= dataS[0].syear %> ($<%= dataS[0].salary %>)</p>
+        <p>Month with highest earnings: <%= dataE[0].emonth %> <%= dataE[0].eyear %> ($<%= dataE[0].earnings %>)</p>
+        <% if (dataPf[0].profit < 0) { %>
+            <p>Month with highest profit: <%= dataPf[0].pfmonth %> <%= dataPf[0].pfyear %> (-$<%= Math.abs(dataPf[0].profit) %>)</p>
+        <% } else { %>
+            <p>Month with highest profit: <%= dataPf[0].pfmonth %> <%= dataPf[0].pfyear %> ($<%= dataPf[0].profit %>)</p>
+        <% } %>
+
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
+</html>
