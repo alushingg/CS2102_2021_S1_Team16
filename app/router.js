@@ -113,14 +113,34 @@ router.get('/profile', function(req, res, next) {
 });
 
 router.get('/edit_profile', function(req, res, next) {
-  editProfileController.showCurrentProfile((data) => {
-      res.render('edit_profile', { title: 'Edit Profile', auth: req.session.authenticated, isAdmin: false, data: data});
-  })
+  const isOwner = userController.getUser().isOwner();
+  const isCaretaker = userController.getUser().isCaretaker();
+  const isAdmin = userController.getUser().isAdmin();
+  if (isAdmin) {
+    editProfileController.showCurrentAdminProfile(([data, usertype]) => {
+      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, isAdmin: true, data: data, usertype: usertype});
+    })
+  } else if (isOwner) {
+    editProfileController.showCurrentPOProfile(([data, usertype]) => {
+      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, isAdmin: false, data: data, usertype: usertype});
+    })
+  }
 }).post('/edit_profile', function(req, res, next) {
-  editProfileController.editProfile(req.body, (result) => {
-    console.log("Edit profile Result: ")
-    console.log(result);
-  });
+  const isOwner = userController.getUser().isOwner();
+  const isCaretaker = userController.getUser().isCaretaker();
+  const isAdmin = userController.getUser().isAdmin();
+  if (isOwner) {
+    editProfileController.editPOProfile(req.body, (result) => {
+      console.log("Edit profile Result: ")
+      console.log(result);
+    });
+  } else if (isAdmin) {
+    editProfileController.editAdminProfile(req.body, (result) => {
+      console.log("Edit profile Result: ")
+      console.log(result);
+    });
+  }
+
   res.redirect('profile');
 });
 
