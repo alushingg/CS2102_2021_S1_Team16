@@ -6,6 +6,7 @@ const dbController = require('./controllers/dbController');
 const petownerController = require('./controllers/petownerController');
 const editProfileController = require("./controllers/editProfileController");
 const adminController = require('./controllers/adminController');
+const petController = require('./controllers/petController');
 const availabilityController = require('./controllers/availabilityController');
 const router = express.Router();
 
@@ -99,7 +100,7 @@ router.get('/profile', function(req, res, next) {
   } else if (isCaretaker) {
     res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false });
   }
-}).post('/profile_po', function(req, res, next) {
+}).post('/profile', function(req, res, next) {
     editProfileController.deleteProfile((result) => {
         console.log("Delete profile Result: ")
         console.log(result);
@@ -136,6 +137,42 @@ router.get('/pastorders', function(req, res, next) {
     } else if (isCaretaker) {
         res.render('pastorders_ct', {title: 'Past Orders', auth: req.session.authenticated, isAdmin: false});
     }
+});
+
+router.get('/:petname/update', function(req, res, next) {
+    petController.trackPet(req, (data, petname) => {
+        res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data, petname:petname});
+    });
+}).post('/:petname/update', function(req, res, next) {
+     petController.editPet(req.body, req.params, (result) => {
+       console.log("Edit pet Result: ")
+       console.log(result);
+     });
+     res.redirect('/profile');
+});
+
+router.get('/petadd', function(req, res, next) {
+     res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: ""});
+}).post('/petadd', function(req, res, next) {
+     petController.addPet(req.body, (result, err) => {
+       console.log("Add Pet Result: ")
+       console.log(result);
+       //if pet exists already, trigger will return error
+       if (err != "") {
+            console.log(err);
+            res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: err});
+       } else {
+             res.redirect('/profile');
+       }
+     });
+});
+
+router.post('/:petname', function(req, res, next) {
+    petController.deletePet(req, (result) => {
+        console.log("Delete pet Result: ")
+        console.log(result);
+    });
+    res.redirect("/profile");
 });
 
 router.route('/db')

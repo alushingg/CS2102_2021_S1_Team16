@@ -22,11 +22,17 @@ function check(event) {
 		event.stopPropagation();
 		return false;
 	}
+    if (hasStartDatePassed(sdate)) {
+        alert("Start date has passed");
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    } 
 }
 
 function isValidDate(dateString) {
     // First check for the pattern
-    if(!/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(dateString))
+    if (!/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(dateString))
         return false;
 
     // Parse the date parts to integers
@@ -36,13 +42,13 @@ function isValidDate(dateString) {
     var year = parseInt(parts[0], 10);
 
     // Check the ranges of month and year
-    if(year < 1000 || year > 3000 || month == 0 || month > 12)
+    if (year < 1000 || year > 3000 || month == 0 || month > 12)
         return false;
 
     var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
     // Adjust for leap years
-    if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+    if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
         monthLength[1] = 29;
 
     // Check the range of the day
@@ -60,9 +66,34 @@ function isStartBeforeEnd(sdate, edate) {
     var emonth = parseInt(eparts[1], 10);
     var eyear = parseInt(eparts[0], 10);
 
-    if (eyear < syear || emonth < smonth || eday < sday) {
-    	return false;
-    }
-    
+    if (eyear < syear)
+        return false;
+
+    if (eyear === syear && emonth < smonth)
+        return false;
+
+    if (eyear === syear && emonth === smonth && eday < sday)
+        return false;
+
     return true;
+};
+
+function hasStartDatePassed(dateString) {
+    var currdate = new Date();
+    var parts = dateString.split("-");
+    var day = parseInt(parts[2], 10);
+    var month = parseInt(parts[1], 10);
+    var year = parseInt(parts[0], 10);
+    var sdate = new Date(year, month, day);
+
+    if (sdate.getFullYear() < currdate.getFullYear())
+        return true;
+
+    if (sdate.getFullYear() === currdate.getFullYear() && sdate.getMonth() - 1 < currdate.getMonth())
+        return true;
+
+    if (sdate.getFullYear() === currdate.getFullYear() && sdate.getMonth() - 1 === currdate.getMonth() && sdate.getDate() < currdate.getDate()) {
+        return true;
+    }
+    return false;
 };
