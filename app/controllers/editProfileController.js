@@ -45,7 +45,7 @@ exports.editProfile = function(requestBody, callback) {
             updated = updated + ', ';
             modifiedfields = modifiedfields + ', ';
         }
-        updated = updated + "'" + requestBody.phone + "'";
+        updated = updated + requestBody.phone;
         modifiedfields = modifiedfields + 'phone_number';
     }
     if (requestBody.area) {
@@ -65,8 +65,11 @@ exports.editProfile = function(requestBody, callback) {
     if (requestBody.creditcard) {
         query = "UPDATE pet_owner SET" + " credit_card = " + requestBody.creditcard + " WHERE username= '" + user + "';"
     }
+    
+    if (count > 0) {
+        query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + user + "';"
+    }
 
-    query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + user + "';"
     console.log("Query: " + query);
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {

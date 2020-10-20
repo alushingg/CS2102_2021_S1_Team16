@@ -118,12 +118,3 @@ exports.getSummary = function(callback) {
         }
     });
 };
-
-
-
-
-
-
-
-
-
