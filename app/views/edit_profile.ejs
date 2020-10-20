@@ -2,6 +2,7 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
+        <script src="js/editProfileScript.js"></script>
     </head>
 
     <body>
@@ -32,41 +33,52 @@
             <% } %>
 
             <div class="content">
-                  <div class="spacing"></div>
-                  <div id="editProfilePOForm">
-                    <form method="POST" action="/edit_profile">
-                      <h3 id="title">Edit Profile</h3>
-                      <div class="aligner">
+              <div class="spacing"></div>
+              <div id="editProfilePOForm">
+                <form id="editProfileForm" method="POST" action="/edit_profile">
+                  <h3 id="title">Edit Profile</h3>
+                  <div class="aligner">
+                      <div id="nameDiv">
                           <input type="text" id="name" name="name" placeholder="Name">
                       </div>
-                      <div class="aligner">
-                          <input type="text" id="password" name="password" placeholder="Password">
-                      </div>
-                      <div class="aligner" id="phone_area">
-                          <div id="phoneDiv">
-                              <input type="text" id="phone" name="phone" placeholder="Phone number">
-                          </div>
-                          <div id="areaDiv">
-                              <input type="text" id="area" name="area" placeholder="Residential District">
-                          </div>
-                          <% if (usertype == 'Admin') { %>
-                              <div id="PositionDiv">
-                                  <input type="text" id="position" name="position" placeholder="Position">
-                              </div>
-                          <% } %>
-                          <% if (usertype == 'Owner') { %>
-                              <div id="CreditCardDiv">
-                                  <input type="text" id="creditcard" name="creditcard" placeholder="Credit Card Number">
-                              </div>
-                          <% } %>
+                      <div id="passwordDiv">
+                          <input type="password" id="password" name="password" placeholder="Password">
                       </div>
 
-                      <div class="aligner">
-                          <input type="submit" value="Edit Profile">
+                      <div id="phoneDiv">
+                          <input type="text" id="phone" name="phone" placeholder="Phone number">
                       </div>
-                  </form>
+                      <div id="areaDiv">
+                          <input type="text" id="area" name="area" placeholder="Area">
+                      </div>
+                      <% if (usertype == 'Admin') { %>
+                          <div id="PositionDiv">
+                              <input type="text" id="position" name="position" placeholder="Position">
+                          </div>
+                      <% } %>
+                      <% if (usertype == 'Owner') { %>
+                          <div id="creditCardDiv">
+                              <input type="text" id="creditcard" name="creditcard" placeholder="Credit card number">
+                          </div>
+                      <% } %>
                   </div>
-                </div>
+                  <div class="aligner">
+                      <input type="submit" value="Edit Profile">
+                  </div>
+              </form>
+              </div>
+            </div>
+
+            <script>
+              (function() {
+                window.addEventListener('load', function() {
+                  var forms = [document.getElementById('editProfileForm')];
+                  var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', check, false);
+                  });
+                }, false);
+              })();
+            </script>
 
         <footer>
             <%- include('./components/footer'); %>
