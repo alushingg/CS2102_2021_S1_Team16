@@ -90,11 +90,13 @@ INSERT INTO users (username, password, name, phone_number, area) VALUES ('thaack
 INSERT INTO users (username, password, name, phone_number, area) VALUES ('rskerme24', 'e2xPorKjDc', 'Rosemarie Skerme', '92398807', 'Pasir Ris');
 INSERT INTO users (username, password, name, phone_number, area) VALUES ('tdevitt25', 'EUj7fWJ4Oxy', 'Titos Devitt', '92398808', 'Pasir Ris');
 INSERT INTO users (username, password, name, phone_number, area) VALUES ('gwennam26', 'Nx7SoLLnp3yP', 'Georas Wennam', '92398809', 'Pasir Ris');
+INSERT INTO users (username, password, name, phone_number, area) VALUES ('root', 'root12345', 'root', '91234321', 'Pasir Ris');
 
 INSERT INTO pcs_admin  (username, position) VALUES ('thaacker23', 'CEO');
 INSERT INTO pcs_admin  (username, position) VALUES ('rskerme24', 'Manager');
 INSERT INTO pcs_admin  (username, position) VALUES ('tdevitt25', 'Executive');
 INSERT INTO pcs_admin  (username, position) VALUES ('gwennam26', 'Intern');
+INSERT INTO pcs_admin  (username, position) VALUES ('root', 'Root');
 
 INSERT INTO care_taker (username) VALUES ('ggyrgorcewicx0');
 INSERT INTO care_taker (username) VALUES ('kborgbartolo1');

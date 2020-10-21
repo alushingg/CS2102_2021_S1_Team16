@@ -231,6 +231,23 @@ router.get('/summary', function(req, res, next) {
   }
 });
 
+router.get('/addadmin', function(req, res, next) {
+  if (userController.getUser() && userController.getUser().isAdmin()) {
+     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true , error: ""});
+  }
+}).post('/addadmin', function(req, res, next) {
+      adminController.addAdmin(req.body, (result, err) => {
+         console.log("Add admin Result: ")
+         console.log(result);
+        //if admin exists already, trigger will return error
+        if (err != "") {
+             console.log(err);
+             res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: false, error: err});
+        } else {
+              res.redirect('/');
+        }
+      });
+});
 router.route('/db')
   .get(dbController.queryGet)
   .post(dbController.queryPost)

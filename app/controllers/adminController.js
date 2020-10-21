@@ -119,3 +119,24 @@ exports.getSummary = function(callback) {
         }
     });
 };
+
+exports.addAdmin = function(requestBody, callback) {
+    const user = userController.getUser().getUsername();
+    console.log("Username: " + requestBody.username + " Pwd: "+ requestBody.password +
+            " Name: " + requestBody.name + " Phone: " + requestBody.phone +
+            " Area: " + requestBody.area + " Position: " + requestBody.position);
+    var added = `INSERT INTO users VALUES('${requestBody.username}', '${requestBody.password}', '${requestBody.name}',` +
+                `'${requestBody.phone}', '${requestBody.area}');` +
+                `INSERT INTO pcs_admin VALUES('${requestBody.username}', '${requestBody.position}');`
+    const query = added;
+    console.log("Query: " + query);
+    dbController.queryGet(query, (result) => {
+        if(result.status == 200) {
+            callback(result.body.rows, "");
+        } else {
+            console.log("Failed.");
+            console.log("Status code: " + result.status);
+            callback([], result.err.message);
+        }
+    });
+}

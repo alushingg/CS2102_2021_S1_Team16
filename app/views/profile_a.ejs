@@ -16,9 +16,11 @@
         <h1 style="display:inline-block;">Profile</h1>
                     <td style="border:transparent;">
                         <button class="button button1" onclick="window.location.href='/edit_profile'">Edit Profile</button>
+                        <% if (data[0].username != 'root') { %>
                         <form method="POST" action="/profile" style="display:inline;">
                             <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
                         </form>
+                        <% } %>
                     </td>
             <p>Username: <%= data[0].username %></p>
             <p>Password: <%= data[0].password %></p>

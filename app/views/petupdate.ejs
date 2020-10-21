@@ -19,6 +19,9 @@
       }
     </style>
     <body>
+        <header>
+            <%- include('./components/header'); %>
+        </header>
         <h1><%= title%> : <%= petname%> </h1>
     		<form method="POST" action="/pet/<%= petname%>/update">
     			<div class="form-group">
