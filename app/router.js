@@ -24,19 +24,18 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/about', function(req, res, next) {
-  res.render('about', { title: 'PCS Team 16', auth: req.session.authenticated, isAdmin: false });
+  var isAdmin = userController.getUser() && userController.getUser().isAdmin();
+  res.render('about', { title: 'PCS Team 16', auth: req.session.authenticated, isAdmin: isAdmin });
 });
 
 router.get('/pricing', function(req, res, next) {
-  res.render('pricing', { title: 'PCS Team 16', auth: req.session.authenticated, isAdmin: false });
+  var isAdmin = userController.getUser() && userController.getUser().isAdmin();
+  res.render('pricing', { title: 'PCS Team 16', auth: req.session.authenticated, isAdmin: isAdmin });
 });
 
 router.get('/caretaker', function(req, res, next) {
-  if (!userController.getUser() || !userController.getUser().isAdmin()) {
-    res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: false });
-  } else {
-    res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: true });
-  }
+  var isAdmin = userController.getUser() && userController.getUser().isAdmin();
+  res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: isAdmin });
 }).post('/caretaker', function(req, res, next) {
   req.session.ptype = req.body.type;
   req.session.sdate = req.body.start_date;
@@ -45,8 +44,9 @@ router.get('/caretaker', function(req, res, next) {
 });
 
 router.get('/availability', function(req, res, next) {
+  var isAdmin = userController.getUser() && userController.getUser().isAdmin();
   availabilityController.findCaretaker(req.session.ptype, req.session.sdate, req.session.edate, (result) => {
-    res.render('availability', { title: 'Availability', auth: req.session.authenticated, isAdmin: false, data: result });
+    res.render('availability', { title: 'Availability', auth: req.session.authenticated, isAdmin: isAdmin, data: result });
   })
 });
 
