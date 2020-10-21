@@ -48,7 +48,8 @@ exports.getMonthlyReport = function(month, year, callback) {
 exports.getMthSummary = function(callback) {
     const query = "SELECT to_char(to_timestamp (r.month::TEXT, 'MM'), 'Mon') AS month, r.year, SUM(r.transactions) AS total_transactions, "
                     + "SUM(r.pets) AS total_pets, SUM(r.pet_days) AS total_pet_days, "
-                    + "SUM(r.salary) AS total_salary, SUM(r.earnings) AS total_earnings "
+                    + "CAST(SUM(r.salary) AS DECIMAL(100,2)) AS total_salary, CAST(SUM(r.earnings) AS DECIMAL(100,2)) AS total_earnings, "
+                    + "CAST((SUM(r.earnings) - SUM(r.salary)) AS DECIMAL(100,2)) AS profit "
                 + "FROM ct_report r "
                 + "WHERE (r.year = EXTRACT(year FROM now()) AND r.month < EXTRACT(month FROM now())) "
                     + "OR (r.year = EXTRACT(year FROM now()) - 1 AND r.month >= EXTRACT(month FROM now())) "
