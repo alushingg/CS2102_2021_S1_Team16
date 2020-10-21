@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Page Title -->
+    <%- include('./components/htmlHead'); %>
+    <title>Update Pet Information</title>
+</head>
+<style>
+      button {
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #4CAF50;
+      }
+    </style>
+<body>
+<header>
+    <%- include('./components/header'); %>
+</header>
+<h1><%= title%> for <%= ctuname%></h1>
+<p>Duration: <%= start %> to <%= end %></p>
+<% if (data.length) { %>
+<form method="POST" action="/bid/<%= ctuname%>">
+    <div class="form-group">
+        <p>Pet name: </p>
+        <p>
+            <select name="petname" id="petname">
+                <% for(var i = 0; i < data.length; i++) { %>
+                <option value="<%= data[i].name%>"><%= data[i].name%></option>
+                <% } %>
+            </select>
+        </p>
+    </div>
+    <div class="form-group">
+        <p>Transfer method: </p>
+        <p>
+            <label><input type="radio" name="transfer" value="Pick up" checked/> Pick up</label><br>
+            <label><input type="radio" name="transfer" value="Deliver" /> Deliver</label><br>
+            <label><input type="radio" name="transfer" value="PCS" /> PCS</label><br>
+        </p>
+    </div>
+    <div class="form-group">
+        <p>Payment mode: </p>
+        <p>
+            <label><input type="radio" name="payment" value="Card" checked/> Credit Card</label><br>
+            <label><input type="radio" name="payment" value="Cash" /> Cash</label><br>
+        </p>
+    </div>
+    <button type="submit" class="button">Submit</button>
+</form>
+<% } else { %>
+    <p>You do not have any <%= type%>. </p>
+    <button onclick="window.location.href='/availability'" class="button">Back</button>
+<% } %>
+<footer>
+    <%- include('./components/footer'); %>
+</footer>
+</body>
+</html>

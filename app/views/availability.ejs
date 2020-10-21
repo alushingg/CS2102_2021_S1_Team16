@@ -15,10 +15,23 @@
         <!-- Content here -->
         <h1>Availability</h1>
         <style>
-            table, th, td {
+            th, td {
               border: 1px solid black;
-              border-collapse: collapse;
             }
+            table {
+                border-collapse: collapse;
+            }
+            button {
+                border: none;
+                color: white;
+                padding: 10px 10px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                cursor: pointer;
+                background-color: #4CAF50;
+          }
         </style>
         <table class="table">
             <thead>
@@ -46,6 +59,11 @@
                     <% } %>
                     <td><%= data[i].price %></td>
                     <td><%= data[i].job_type %></td>
+                    <% if (auth && !isAdmin) { %>
+                    <td style="border: transparent;">
+                        <button class="button" onclick="window.location.href='/bid/<%= data[i].username%>'">Bid</button>
+                    </td>
+                    <% } %>
                 </tr>
                 <% } %>
             </tbody>
