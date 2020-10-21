@@ -4,8 +4,9 @@ const signupController = require('./controllers/signupController');
 const userController = require('./controllers/userController');
 const dbController = require('./controllers/dbController');
 const petownerController = require('./controllers/petownerController');
-const editProfileController = require("./controllers/editProfileController");
+const caretakerController = require('./controllers/caretakerController');
 const adminController = require('./controllers/adminController');
+const editProfileController = require("./controllers/editProfileController");
 const petController = require('./controllers/petController');
 const availabilityController = require('./controllers/availabilityController');
 const router = express.Router();
@@ -102,7 +103,21 @@ router.get('/profile', function(req, res, next) {
       })
     })
   } else if (isCaretaker) {
-    res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false });
+    const user = userController.getUser().getUsername();
+    caretakerController.showProfile(user, (data) => {
+      caretakerController.showPricing(user, (dataP) => {
+        caretakerController.showAvailability(user, (dataA) => {
+          caretakerController.showReview(user, (dataR) => {
+            console.log(data);
+            console.log(dataP);
+            console.log(dataA);
+            console.log(dataR);
+            res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false, 
+              data: data, dataP: dataP, dataA: dataA, dataR: dataR });
+          })
+        })
+      })
+    })
   }
 }).post('/profile', function(req, res, next) {
     editProfileController.deleteProfile((result) => {

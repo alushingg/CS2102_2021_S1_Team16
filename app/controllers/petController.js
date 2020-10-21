@@ -1,7 +1,6 @@
 const dbController = require('./dbController');
 const userController = require('./userController');
 
-
 exports.trackPet = function(req, callback) {
     const user = userController.getUser().getUsername();
     const { petname } = req.params;
