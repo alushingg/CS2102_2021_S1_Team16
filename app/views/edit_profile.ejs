@@ -15,22 +15,22 @@
 
         <!-- Content here -->
         <body>
-            <h1>Current Profile</h1>
-            <p>Username: <%= data[0].username %></p>
-            <p>Password: <%= data[0].password %></p>
-            <p>Name: <%= data[0].name %></p>
-            <p>Phone number: <%= data[0].phone_number %></p>
-            <p>Area: <%= data[0].area %></p>
-            <% if (usertype == 'Admin') { %>
-                <p>Position: <%= data[0].position %></p>
-            <% } %>
-            <% if (usertype == 'Owner') { %>
-                <% if (!data[0].credit_card) { %>
-                    <p>Credit card number: -</p>
-                <% } else { %>
-                    <p>Credit card number: <%= data[0].credit_card %></p>
-                <% } %>
-            <% } %>
+<!--            <h1>Current Profile</h1>-->
+<!--            <p>Username: <%= data[0].username %></p>-->
+<!--            <p>Password: <%= data[0].password %></p>-->
+<!--            <p>Name: <%= data[0].name %></p>-->
+<!--            <p>Phone number: <%= data[0].phone_number %></p>-->
+<!--            <p>Area: <%= data[0].area %></p>-->
+<!--            <% if (usertype == 'Admin') { %>-->
+<!--                <p>Position: <%= data[0].position %></p>-->
+<!--            <% } %>-->
+<!--            <% if (usertype == 'Owner') { %>-->
+<!--                <% if (!data[0].credit_card) { %>-->
+<!--                    <p>Credit card number: -</p>-->
+<!--                <% } else { %>-->
+<!--                    <p>Credit card number: <%= data[0].credit_card %></p>-->
+<!--                <% } %>-->
+<!--            <% } %>-->
 
             <div class="content">
               <div class="spacing"></div>
@@ -38,26 +38,60 @@
                 <form id="editProfileForm" method="POST" action="/edit_profile">
                   <h3 id="title">Edit Profile</h3>
                   <div class="aligner">
+<!--                      <div id="nameDiv">-->
+<!--                          <input type="text" id="name" name="name" placeholder="Name">-->
+<!--                      </div>-->
+<!--                      <div id="passwordDiv">-->
+<!--                          <input type="password" id="password" name="password" placeholder="Password">-->
+<!--                      </div>-->
+<!--                      <div id="phoneDiv">-->
+<!--                          <input type="text" id="phone" name="phone" placeholder="Phone number">-->
+<!--                      </div>-->
+<!--                      <div id="areaDiv">-->
+<!--                          <input type="text" id="area" name="area" placeholder="Area">-->
+<!--                      </div>-->
                       <div id="nameDiv">
-                          <input type="text" id="name" name="name" placeholder="Name">
+                          <p>Name: </p>
+                          <input type="text" id="name" name="name" value='<%= data[0].name%>' placeholder="Name" required>
                       </div>
                       <div id="passwordDiv">
-                          <input type="password" id="password" name="password" placeholder="Password">
+                          <p>Password: </p>
+                          <input type="password" id="password" name="password" value='<%= data[0].password%>' placeholder="Password" required>
+                          <!-- An element to toggle between password visibility -->
+                          <input type="checkbox" onclick="myFunction()">Show Password
+                          <script>
+                              function myFunction() {
+                                  var x = document.getElementById("password");
+                                  if (x.type === "password") {
+                                    x.type = "text";
+                                  } else {
+                                    x.type = "password";
+                                  }
+                                }
+                          </script>
                       </div>
                       <div id="phoneDiv">
-                          <input type="text" id="phone" name="phone" placeholder="Phone number">
+                          <p>Phone number: </p>
+                          <input type="text" id="phone" name="phone" value='<%= data[0].phone_number%>' placeholder="Phone number" required>
                       </div>
                       <div id="areaDiv">
-                          <input type="text" id="area" name="area" placeholder="Area">
+                          <p>Area: </p>
+                          <input type="text" id="area" name="area" value='<%= data[0].area%>' placeholder="Area" required>
                       </div>
                       <% if (usertype == 'Admin') { %>
                           <div id="PositionDiv">
-                              <input type="text" id="position" name="position" placeholder="Position">
+                              <p>Position in company: </p>
+                              <input type="text" id="position" name="position" value='<%= data[0].position%>' placeholder="Position" required>
                           </div>
                       <% } %>
                       <% if (usertype == 'Owner') { %>
                           <div id="creditCardDiv">
-                              <input type="text" id="creditcard" name="creditcard" placeholder="Credit card number">
+                              <p>Credit card number: </p>
+                              <% if (!data[0].credit_card) { %>
+                                    <input type="text" id="creditcard" name="creditcard" placeholder="Credit card number">
+                              <% } else { %>
+                                    <input type="text" id="creditcard" name="creditcard" value='<%= data[0].credit_card%>' placeholder="Credit card number">
+                              <% } %>
                           </div>
                       <% } %>
                   </div>

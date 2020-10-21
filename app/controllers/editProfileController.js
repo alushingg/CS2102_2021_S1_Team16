@@ -81,6 +81,9 @@ exports.editPOProfile = function(requestBody, callback) {
 
     if (requestBody.creditcard) {
         query = "UPDATE pet_owner SET" + " credit_card = " + requestBody.creditcard + " WHERE username= '" + user + "';"
+    } else {
+        query = "UPDATE pet_owner SET" + " credit_card = NULL WHERE username= '" + user + "';"
+
     }
     
     if (count > 0) {

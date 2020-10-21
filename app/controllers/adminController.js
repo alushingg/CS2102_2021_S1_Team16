@@ -132,7 +132,7 @@ exports.addAdmin = function(requestBody, callback) {
     console.log("Query: " + query);
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
-            callback(result.body.rows, "");
+            callback(result.body.rows, "Success!");
         } else {
             console.log("Failed.");
             console.log("Status code: " + result.status);

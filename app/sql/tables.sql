@@ -25,7 +25,7 @@ CREATE TABLE users (
 		PRIMARY KEY,
 	password VARCHAR NOT NULL,
 	name VARCHAR NOT NULL,
-	phone_number INTEGER NOT NULL UNIQUE,
+	phone_number INTEGER NOT NULL,
 	area VARCHAR NOT NULL
 );
 

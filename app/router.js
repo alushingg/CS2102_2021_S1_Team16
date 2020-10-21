@@ -233,19 +233,14 @@ router.get('/summary', function(req, res, next) {
 
 router.get('/addadmin', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
-     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true , error: ""});
+     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true , msg: ""});
   }
 }).post('/addadmin', function(req, res, next) {
-      adminController.addAdmin(req.body, (result, err) => {
+      adminController.addAdmin(req.body, (result, msg) => {
          console.log("Add admin Result: ")
          console.log(result);
-        //if admin exists already, trigger will return error
-        if (err != "") {
-             console.log(err);
-             res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: false, error: err});
-        } else {
-              res.redirect('/');
-        }
+         console.log(msg);
+         res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true, msg: msg});
       });
 });
 router.route('/db')
