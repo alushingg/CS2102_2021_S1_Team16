@@ -9,6 +9,7 @@ const adminController = require('./controllers/adminController');
 const editProfileController = require("./controllers/editProfileController");
 const petController = require('./controllers/petController');
 const availabilityController = require('./controllers/availabilityController');
+const bidController = require('./controllers/bidController');
 const router = express.Router();
 
 /* GET home page. */
@@ -50,6 +51,23 @@ router.get('/availability', function(req, res, next) {
     res.render('availability', { title: 'Availability', auth: req.session.authenticated, isAdmin: isAdmin, data: result });
   })
 });
+
+router.get('/bid/:ctuname', function(req, res, next) {
+  var isAdmin = userController.getUser() && userController.getUser().isAdmin();
+  bidController.getPets(req.session.ptype, (result) => {
+    const { ctuname } = req.params;
+    res.render('bid', { title: 'Bid', auth: req.session.authenticated, isAdmin: isAdmin, data: result,
+            start: req.session.sdate, end: req.session.edate, type: req.session.ptype, ctuname: ctuname});
+  });
+}).post('/bid/:ctuname', function(req, res, next) {
+  var isAdmin = userController.getUser() && userController.getUser().isAdmin();
+  bidController.addBid(req, req.session.ptype, req.session.sdate, req.session.edate, (result) => {
+          console.log("Add bid Result: ")
+          console.log(result);
+  });
+  res.redirect('/pastorders');
+});
+
 
 router.get('/login', function(req, res, next) {
   const pageInfo = loginController.getPageInfo();
