@@ -20,7 +20,7 @@
             }
         </style>
 
-        <h1>Profile</h1>
+        <h1><%= title %></h1>
         <p>Username: <%= data[0].username %></p>
         <p>Name: <%= data[0].name %></p>
         <p>Phone number: <%= data[0].phone_number %></p>
@@ -51,12 +51,11 @@
         <% } else { %>
             <h1>Availability</h1>
         <% } %>
-        <% var  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; %>
         <table class="table">
             <tbody>
                 <% for(var i=0; i<dataA.length; i++) { %>
                 <tr>
-                    <td><%= dataA[i].day %> <%= months[dataA[i].month -1] %> <%= dataA[i].year %></td>
+                    <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
                 </tr>
                 <% } %>
             </tbody>
@@ -64,9 +63,16 @@
 
         <h1>Review</h1>
         <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Reviewer</th>
+                    <th scope="col">Review</th>
+                </tr>
+            </thead>
             <tbody>
                 <% for(var i=0; i<dataR.length; i++) { %>
                 <tr>
+                    <td><%= dataR[i].username %></td>
                     <td><%= dataR[i].review %></td>
                 </tr>
                 <% } %>

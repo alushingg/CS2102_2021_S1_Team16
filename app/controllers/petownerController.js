@@ -39,7 +39,8 @@ exports.showPastOrders = function(callback) {
 				+ "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, "
 				+ "ctuname, has_paid, daily_price, review, rating, transfer_method, payment_mode "
 				+ "FROM take_care "
-				+ "WHERE username = '" + user + "';";
+				+ "WHERE username = '" + user + "' "
+                + "ORDER BY (start_date, end_date) DESC;";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);

@@ -108,10 +108,6 @@ router.get('/profile', function(req, res, next) {
       caretakerController.showPricing(user, (dataP) => {
         caretakerController.showAvailability(user, (dataA) => {
           caretakerController.showReview(user, (dataR) => {
-            console.log(data);
-            console.log(dataP);
-            console.log(dataA);
-            console.log(dataR);
             res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false, 
               data: data, dataP: dataP, dataA: dataA, dataR: dataR });
           })
@@ -133,11 +129,11 @@ router.get('/edit_profile', function(req, res, next) {
   const isAdmin = userController.getUser().isAdmin();
   if (isAdmin) {
     editProfileController.showCurrentAdminProfile(([data, usertype]) => {
-      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, isAdmin: true, data: data, usertype: usertype});
+      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, isAdmin: true, data: data, usertype: usertype });
     })
   } else if (isOwner) {
     editProfileController.showCurrentPOProfile(([data, usertype]) => {
-      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, isAdmin: false, data: data, usertype: usertype});
+      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, isAdmin: false, data: data, usertype: usertype });
     })
   }
 }).post('/edit_profile', function(req, res, next) {
@@ -163,7 +159,7 @@ router.get('/pastorders', function(req, res, next) {
     const isOwner = userController.getUser().isOwner();
     const isCaretaker = userController.getUser().isCaretaker();
     if (isOwner && isCaretaker) {
-        res.render('pastorders_poct', {title: 'Past Orders', auth: req.session.authenticated, isAdmin: false});
+        res.render('pastorders_poct', {title: 'Past Orders', auth: req.session.authenticated, isAdmin: false });
     } else if (isOwner) {
         petownerController.showPastOrders((data) => {
             res.render('pastorders_po', {
@@ -174,13 +170,13 @@ router.get('/pastorders', function(req, res, next) {
             });
         })
     } else if (isCaretaker) {
-        res.render('pastorders_ct', {title: 'Past Orders', auth: req.session.authenticated, isAdmin: false});
+        res.render('pastorders_ct', {title: 'Past Orders', auth: req.session.authenticated, isAdmin: false });
     }
 });
 
 router.get('/pet/:petname/update', function(req, res, next) {
     petController.trackPet(req, (data, petname) => {
-        res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data, petname: petname});
+        res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data, petname: petname });
     });
 }).post('/pet/:petname/update', function(req, res, next) {
      petController.editPet(req.body, req.params, (result) => {
@@ -191,7 +187,7 @@ router.get('/pet/:petname/update', function(req, res, next) {
 });
 
 router.get('/petadd', function(req, res, next) {
-     res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: ""});
+     res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: "" });
 }).post('/petadd', function(req, res, next) {
      petController.addPet(req.body, (result, err) => {
        console.log("Add Pet Result: ")
@@ -199,7 +195,7 @@ router.get('/petadd', function(req, res, next) {
        //if pet exists already, trigger will return error
        if (err != "") {
             console.log(err);
-            res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: err});
+            res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, isAdmin: false, error: err });
        } else {
              res.redirect('/profile');
        }
@@ -216,7 +212,7 @@ router.post('/pet/:petname/delete', function(req, res, next) {
 
 router.get('/getmonthlyreport', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
-    res.render('getmonthlyreport', { title: 'Monthly Report', auth: req.session.authenticated, isAdmin: true });
+    res.render('getmonthlyreport', { title: 'Get Monthly Report', auth: req.session.authenticated, isAdmin: true });
   }
 }).post('/getmonthlyreport', function(req, res, next) {
   req.session.month = req.body.month;
@@ -248,16 +244,17 @@ router.get('/summary', function(req, res, next) {
 
 router.get('/addadmin', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
-     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true , msg: ""});
+     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true , msg: "" });
   }
 }).post('/addadmin', function(req, res, next) {
       adminController.addAdmin(req.body, (result, msg) => {
          console.log("Add admin Result: ")
          console.log(result);
          console.log(msg);
-         res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true, msg: msg});
+         res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true, msg: msg });
       });
 });
+
 router.route('/db')
   .get(dbController.queryGet)
   .post(dbController.queryPost)

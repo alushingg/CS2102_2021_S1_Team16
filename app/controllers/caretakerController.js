@@ -44,7 +44,6 @@ exports.showAvailability = function(user, callback) {
 				+ "FROM specify_availability WHERE username = '" + user + "' "
 				+ "ORDER BY date);";
   	dbController.queryGet(query, (result) => {
-  		console.log(query);
         if(result.status == 200) {
             callback(result.body.rows);
         } else {
@@ -56,7 +55,7 @@ exports.showAvailability = function(user, callback) {
 };
 
 exports.showReview = function(user, callback) {
-  	const query = "SELECT review "
+  	const query = "SELECT username, review "
 				+ "FROM take_care "
 				+ "WHERE ctuname = '" + user + "' AND review IS NOT NULL;";
   	dbController.queryGet(query, (result) => {
