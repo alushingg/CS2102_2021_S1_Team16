@@ -55,6 +55,9 @@
         </form>
 
         <script>
+           if ("<%= error%>" != "") {
+            alert('<%= error%>');
+           }
           (function() {
             window.addEventListener('load', function() {
               var forms = [document.getElementById('findCaretakerForm')];

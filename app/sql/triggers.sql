@@ -105,7 +105,7 @@ CREATE OR REPLACE FUNCTION check_bid()
             OR (t.end_date >= NEW.start_date AND t.end_date <= NEW.end_date));
 
         IF ctx > 0 THEN
-            RAISE EXCEPTION 'WRONG PERIOD';
+            RAISE EXCEPTION 'Clash with existing orders!';
         ELSE
             SELECT COUNT(*) INTO ft
             FROM full_time
@@ -120,7 +120,7 @@ CREATE OR REPLACE FUNCTION check_bid()
          		IF ok < 5 THEN
          		    RETURN NEW;
          		ELSE
-         		    RAISE EXCEPTION 'EXCEED 5 FT';
+         		    RAISE EXCEPTION 'Sorry... Please choose another caretaker.';
          		END IF;
             ELSE
                 SELECT AVG(t.rating) INTO rating
@@ -132,7 +132,7 @@ CREATE OR REPLACE FUNCTION check_bid()
                 ELSIF rating >= 4 AND ok < 5 THEN
                     RETURN NEW;
                 ELSE
-                    RAISE EXCEPTION 'EXCEED 2 OR 5 PT';
+                    RAISE EXCEPTION 'Sorry... Please choose another caretaker.';
                 END IF;
             END IF;
         END IF;

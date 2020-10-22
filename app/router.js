@@ -37,7 +37,7 @@ router.get('/pricing', function(req, res, next) {
 
 router.get('/caretaker', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
-  res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: isAdmin });
+  res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: isAdmin, error: "" });
 }).post('/caretaker', function(req, res, next) {
   req.session.ptype = req.body.type;
   req.session.sdate = req.body.start_date;
@@ -64,8 +64,12 @@ router.get('/bid/:ctuname', function(req, res, next) {
   bidController.addBid(req, req.session.ptype, req.session.sdate, req.session.edate, (result) => {
           console.log("Add bid Result: ")
           console.log(result);
+          if (result != "") {
+            res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: isAdmin, error: result });
+          } else {
+            res.redirect('/pastorders');
+          }
   });
-  res.redirect('/pastorders');
 });
 
 

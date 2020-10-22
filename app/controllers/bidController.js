@@ -38,17 +38,17 @@ exports.addBid = function(req, type, sdate, edate, callback) {
             console.log(query);
             dbController.queryGet(query, (result) => {
                 if (result.status == 200) {
-                    callback(result.body.rows);
+                    callback("");
                 } else {
                     console.log("Failed.");
                     console.log("Status code: " + result.status);
-                    callback([]);
+                    callback(result.err.message);
                 }
             });
         } else {
             console.log("Failed.");
             console.log("Status code: " + result.status);
-            callback([]);
+            callback("");
         }
     });
 
