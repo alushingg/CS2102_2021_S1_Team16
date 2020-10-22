@@ -18,7 +18,7 @@ function checkPO(event) {
 	}
 }
 
-function checkAdmin(event) {
+function checkAdd(event) {
 	// Get Values
 	var phone = document.getElementById('phone').value;
 

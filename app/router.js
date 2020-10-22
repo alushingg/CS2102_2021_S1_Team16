@@ -265,12 +265,22 @@ router.get('/addadmin', function(req, res, next) {
      res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true , msg: "" });
   }
 }).post('/addadmin', function(req, res, next) {
-      adminController.addAdmin(req.body, (result, msg) => {
-         console.log("Add admin Result: ")
-         console.log(result);
-         console.log(msg);
-         res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true, msg: msg });
-      });
+  adminController.addAdmin(req.body, (result, msg) => {
+     console.log("Add admin Result: ")
+     console.log(result);
+     console.log(msg);
+     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, isAdmin: true, msg: msg });
+  });
+});
+
+router.get('/addcaretaker', function(req, res, next) {
+  if (userController.getUser() && userController.getUser().isAdmin()) {
+     res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, isAdmin: true , msg: "" });
+  }
+}).post('/addcaretaker', function(req, res, next) {
+  adminController.addCaretaker(req.body, (msg) => {
+     res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, isAdmin: true, msg: msg });
+  });
 });
 
 router.route('/db')

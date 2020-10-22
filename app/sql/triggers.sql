@@ -39,6 +39,36 @@ CREATE TRIGGER add_user
 BEFORE INSERT ON users
 FOR EACH ROW EXECUTE PROCEDURE check_user();
 
+CREATE OR REPLACE FUNCTION check_caretaker()
+    RETURNS TRIGGER AS
+    $$ DECLARE ctx_a INTEGER;
+    DECLARE ctx_c INTEGER;
+    BEGIN
+        SELECT COUNT(*) INTO ctx_a
+        FROM pcs_admin a
+        WHERE NEW.username = a.username;
+
+        SELECT COUNT(*) INTO ctx_c
+        FROM care_taker c
+        WHERE NEW.username = c.username;
+
+        IF ctx_a > 0 THEN
+            RAISE EXCEPTION 'Admin cannot be a care taker!';
+        ELSE
+            IF ctx_c > 0 THEN
+                RAISE EXCEPTION 'This care taker already exists!';
+            ELSE
+                RETURN NEW;
+            END IF;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS add_caretaker ON care_taker;
+CREATE TRIGGER add_caretaker
+BEFORE INSERT ON care_taker
+FOR EACH ROW EXECUTE PROCEDURE check_caretaker();
+
 CREATE OR REPLACE FUNCTION check_period()
     RETURNS TRIGGER AS
     $$ DECLARE ctx INTEGER;

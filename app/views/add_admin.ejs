@@ -15,11 +15,10 @@
 
 <!-- Content here -->
 <body>
+<h1 id="title"><%= title %></h1>
 <div class="content">
-    <div class="spacing"></div>
     <div>
         <form id="addAdminForm" method="POST" action="/addadmin">
-            <h3 id="title"><%= title %></h3>
             <div class="aligner">
                 <div id="usernameDiv">
                     <p>Username: </p>
@@ -32,6 +31,17 @@
                 <div id="passwordDiv">
                     <p>Password: </p>
                     <input type="password" id="password" name="password" placeholder="Password" required>
+                    <input type="checkbox" onclick="myFunction()">Show Password
+                    <script>
+                        function myFunction() {
+                            var x = document.getElementById("password");
+                            if (x.type === "password") {
+                                x.type = "text";
+                            } else {
+                                x.type = "password";
+                            }
+                        }
+                    </script>
                 </div>
                 <div id="phoneDiv">
                     <p>Phone number: </p>
@@ -41,7 +51,7 @@
                     <p>Area: </p>
                     <input type="text" id="area" name="area" placeholder="Area" required>
                 </div>
-                <div id="PositionDiv">
+                <div id="positionDiv">
                     <p>Position in company: </p>
                     <input type="text" id="position" name="position" placeholder="Position" required>
                 </div>
@@ -55,17 +65,17 @@
 </div>
 
 <script>
-      (function() {
+    (function() {
         window.addEventListener('load', function() {
-          var forms = [document.getElementById('addAdminForm')];
-          var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', checkAdmin, false);
-          });
+            var forms = [document.getElementById('addAdminForm')];
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', checkAdd, false);
+            });
         }, false);
-      })();
-      if ("<%= msg%>" != "") {
+    })();
+    if ("<%= msg%>" != "") {
         alert('<%= msg%>');
-      }
+    }
 </script>
 
 <footer>

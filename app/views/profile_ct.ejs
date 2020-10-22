@@ -26,58 +26,78 @@
         <p>Phone number: <%= data[0].phone_number %></p>
         <p>Area: <%= data[0].area %></p>
         <p>Job type: <%= data[0].job_type %></p>
-        <p>Average rating: <%= data[0].rating %></p>
+        <% if (!data[0].rating) { %>
+            <p>Average rating: -</p>
+        <% } else { %>
+            <p>Average rating: <%= data[0].rating %></p>
+        <% } %>
 
         <h1>Pricing</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Pet type</th>
-                    <th scope="col">Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for(var i=0; i<dataP.length; i++) { %>
-                <tr>
-                    <td><%= dataP[i].type %></td>
-                    <td><%= dataP[i].price %></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+        <% if (dataP.length == 0) { %>
+            <p>No pricing.</p>
+        <% } else { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Pet type</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<dataP.length; i++) { %>
+                    <tr>
+                        <td><%= dataP[i].type %></td>
+                        <td><%= dataP[i].price %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
 
         <% if (data[0].job_type == 'Full Time') { %>
             <h1>Leave</h1>
         <% } else { %>
             <h1>Availability</h1>
         <% } %>
-        <table class="table">
-            <tbody>
-                <% for(var i=0; i<dataA.length; i++) { %>
-                <tr>
-                    <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+        <% if (dataA.length == 0) { %>
+            <% if (data[0].job_type == 'Full Time') { %>
+                <p>No leave.</p>
+            <% } else { %>
+                <p>No availability.</p>
+            <% } %>
+        <% } else { %>
+            <table class="table">
+                <tbody>
+                    <% for(var i=0; i<dataA.length; i++) { %>
+                    <tr>
+                        <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
 
         <h1>Review</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Reviewer</th>
-                    <th scope="col">Review</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for(var i=0; i<dataR.length; i++) { %>
-                <tr>
-                    <td><%= dataR[i].username %></td>
-                    <td><%= dataR[i].review %></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+        <% if (dataR.length == 0) { %>
+            <p>No review.</p>
+        <% } else { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Reviewer</th>
+                        <th scope="col">Review</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<dataR.length; i++) { %>
+                    <tr>
+                        <td><%= dataR[i].username %></td>
+                        <td><%= dataR[i].review %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
 
         <footer>
             <%- include('./components/footer'); %>

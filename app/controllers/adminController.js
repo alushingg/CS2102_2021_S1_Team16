@@ -125,9 +125,9 @@ exports.addAdmin = function(requestBody, callback) {
     console.log("Username: " + requestBody.username + " Pwd: "+ requestBody.password +
             " Name: " + requestBody.name + " Phone: " + requestBody.phone +
             " Area: " + requestBody.area + " Position: " + requestBody.position);
-    var added = `INSERT INTO users VALUES('${requestBody.username}', '${requestBody.password}', '${requestBody.name}',` +
-                `'${requestBody.phone}', '${requestBody.area}');` +
-                `INSERT INTO pcs_admin VALUES('${requestBody.username}', '${requestBody.position}');`
+    var added = `INSERT INTO users VALUES ('${requestBody.username}', '${requestBody.password}', '${requestBody.name}', ` +
+                `${requestBody.phone}, '${requestBody.area}'); ` +
+                `INSERT INTO pcs_admin VALUES ('${requestBody.username}', '${requestBody.position}'); `;
     const query = added;
     console.log("Query: " + query);
     dbController.queryGet(query, (result) => {
@@ -139,4 +139,59 @@ exports.addAdmin = function(requestBody, callback) {
             callback([], result.err.message);
         }
     });
+}
+
+exports.addCaretaker = function(requestBody, callback) {
+    const user = userController.getUser().getUsername();
+    if (requestBody.existing) {
+        var query3 = `SELECT 1 FROM users WHERE username = '${requestBody.username}';`;
+        dbController.queryGet(query3, (result) => {
+            if (result.body.rows.length != 0) { // user exists
+                var query2 = `INSERT INTO care_taker VALUES ('${requestBody.username}');`;
+                if (requestBody.type == 'fulltime') {
+                    query2 += `INSERT INTO full_time VALUES ('${requestBody.username}');`;
+                } else {
+                    query2 += `INSERT INTO part_time VALUES ('${requestBody.username}');`;
+                }
+                dbController.queryGet(query2, (result2) => {
+                    console.log("Query2: " + query2);
+                    if(result2.status == 200) {
+                        callback("Success!");
+                    } else {
+                        console.log("Failed.");
+                        console.log("Status code: " + result2.status);
+                        callback(result2.err.message);
+                    }
+                });
+            } else {
+                callback("This user does not exists!");
+            }
+        });
+    } else {
+        var query = `INSERT INTO users VALUES ('${requestBody.username}', '${requestBody.password}', '${requestBody.name}', ` +
+                    `${requestBody.phone}, '${requestBody.area}'); `
+        dbController.queryGet(query, (result) => {
+            if (result.err) { // user exists
+                callback(result.err.message);
+            } else {
+                var query2 = `INSERT INTO care_taker VALUES ('${requestBody.username}');`;
+                if (requestBody.type == 'fulltime') {
+                    query2 += `INSERT INTO full_time VALUES ('${requestBody.username}');`;
+                } else {
+                    query2 += `INSERT INTO part_time VALUES ('${requestBody.username}');`;
+                }
+                dbController.queryGet(query2, (result2) => {
+                    console.log("Query: " + query);
+                    console.log("Query2: " + query2);
+                    if(result2.status == 200) {
+                        callback("Success!");
+                    } else {
+                        console.log("Failed.");
+                        console.log("Status code: " + result2.status);
+                        callback(result2.err.message);
+                    }
+                });
+            }
+        });
+    }
 }
