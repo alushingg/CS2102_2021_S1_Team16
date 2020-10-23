@@ -24,6 +24,9 @@
 </header>
 <h1><%= title%> for <%= ctuname%></h1>
 <p>Duration: <%= start %> to <%= end %></p>
+<p>Daily price: $<%=  price[0].price %></p>
+<p>Total price: $<%=  price[0].total_price %></p>
+
 <% if (data.length) { %>
 <form method="POST" action="/bid/<%= ctuname%>">
     <div class="form-group">

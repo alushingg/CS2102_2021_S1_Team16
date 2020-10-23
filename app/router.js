@@ -37,7 +37,7 @@ router.get('/pricing', function(req, res, next) {
 
 router.get('/caretaker', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
-  res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: isAdmin, error: "" });
+  res.render('caretaker', { title: 'Find Care Taker', auth: req.session.authenticated, isAdmin: isAdmin, error: "" });
 }).post('/caretaker', function(req, res, next) {
   req.session.ptype = req.body.type;
   req.session.sdate = req.body.start_date;
@@ -54,9 +54,9 @@ router.get('/availability', function(req, res, next) {
 
 router.get('/bid/:ctuname', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
-  bidController.getPets(req.session.ptype, (result) => {
+  bidController.getPets(req, req.session.ptype, req.session.sdate, req.session.edate, (pet, price) => {
     const { ctuname } = req.params;
-    res.render('bid', { title: 'Bid', auth: req.session.authenticated, isAdmin: isAdmin, data: result,
+    res.render('bid', { title: 'Bid', auth: req.session.authenticated, isAdmin: isAdmin, data: pet, price: price, 
             start: req.session.sdate, end: req.session.edate, type: req.session.ptype, ctuname: ctuname});
   });
 }).post('/bid/:ctuname', function(req, res, next) {
@@ -65,7 +65,7 @@ router.get('/bid/:ctuname', function(req, res, next) {
           console.log("Add bid Result: ")
           console.log(result);
           if (result != "") {
-            res.render('caretaker', { title: 'Find Caretaker', auth: req.session.authenticated, isAdmin: isAdmin, error: result });
+            res.render('caretaker', { title: 'Find Care Taker', auth: req.session.authenticated, isAdmin: isAdmin, error: result });
           } else {
             res.redirect('/pastorders');
           }

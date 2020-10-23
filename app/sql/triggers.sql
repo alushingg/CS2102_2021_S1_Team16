@@ -93,6 +93,7 @@ FOR EACH ROW EXECUTE PROCEDURE check_period();
 CREATE OR REPLACE FUNCTION check_bid()
     RETURNS TRIGGER AS
     $$ DECLARE ctx INTEGER;
+    DECLARE cat INTEGER;
     DECLARE ft INTEGER;
     DECLARE ok INTEGER;
     DECLARE rating INTEGER;
@@ -107,32 +108,43 @@ CREATE OR REPLACE FUNCTION check_bid()
         IF ctx > 0 THEN
             RAISE EXCEPTION 'Clash with existing orders!';
         ELSE
-            SELECT COUNT(*) INTO ft
-            FROM full_time
-            WHERE username = NEW.ctuname;
+            SELECT COUNT(*) INTO cat
+            FROM own_pet_belong o
+            WHERE o.username = NEW.username
+                AND o.name = NEW.name
+                AND o.type IN (SELECT c.type
+                                FROM can_care c
+                                WHERE c.username = NEW.ctuname);
 
-            SELECT COUNT(*) INTO ok
-            FROM take_care t
-            WHERE t.ctuname = NEW.ctuname
-                AND ((t.start_date >= NEW.start_date AND t.start_date <= NEW.end_date)
-                    OR (t.end_date >= NEW.start_date AND t.end_date <= NEW.end_date));
-            IF ft > 0 THEN
-         		IF ok < 5 THEN
-         		    RETURN NEW;
-         		ELSE
-         		    RAISE EXCEPTION 'Sorry... Please choose another caretaker.';
-         		END IF;
+            IF cat = 0 THEN
+                RAISE EXCEPTION 'Sorry... Care taker cannot care for pet type. Please choose another caretaker.';
             ELSE
-                SELECT AVG(t.rating) INTO rating
+                SELECT COUNT(*) INTO ft
+                FROM full_time
+                WHERE username = NEW.ctuname;
+
+                SELECT COUNT(*) INTO ok
                 FROM take_care t
-                GROUP BY t.ctuname
-                HAVING t.ctuname = NEW.ctuname;
-                IF rating < 4 AND ok < 2 THEN
-                    RETURN NEW;
-                ELSIF rating >= 4 AND ok < 5 THEN
-                    RETURN NEW;
+                WHERE t.ctuname = NEW.ctuname
+                    AND ((t.start_date >= NEW.start_date AND t.start_date <= NEW.end_date)
+                        OR (t.end_date >= NEW.start_date AND t.end_date <= NEW.end_date));
+                IF ft > 0 THEN
+                    IF ok < 5 THEN
+                        RETURN NEW;
+                    ELSE
+                        RAISE EXCEPTION 'Sorry... Care taker not available. Please choose another caretaker.';
+                    END IF;
                 ELSE
-                    RAISE EXCEPTION 'Sorry... Please choose another caretaker.';
+                    SELECT AVG(t.rating) INTO rating
+                    FROM take_care t
+                    WHERE t.ctuname = NEW.ctuname;
+                    IF (rating IS NULL OR rating < 4) AND ok < 2 THEN
+                        RETURN NEW;
+                    ELSIF rating >= 4 AND ok < 5 THEN
+                        RETURN NEW;
+                    ELSE
+                        RAISE EXCEPTION 'Sorry... Care taker not available. Please choose another caretaker.';
+                    END IF;
                 END IF;
             END IF;
         END IF;
