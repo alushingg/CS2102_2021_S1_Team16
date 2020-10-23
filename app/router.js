@@ -56,9 +56,20 @@ router.get('/bid/:ctuname', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
   bidController.getPets(req, req.session.ptype, req.session.sdate, req.session.edate, (pet, price) => {
     const { ctuname } = req.params;
-    res.render('bid', { title: 'Bid', auth: req.session.authenticated, isAdmin: isAdmin, data: pet, price: price, 
-            start: req.session.sdate, end: req.session.edate, type: req.session.ptype, ctuname: ctuname});
+//    res.render('bid', { title: 'Bid', auth: req.session.authenticated, isAdmin: isAdmin, pet: pet, price: price,
+//            start: req.session.sdate, end: req.session.edate, type: req.session.ptype, ctuname: ctuname});
+      caretakerController.showProfile(ctuname, (data) => {
+            caretakerController.showReview(ctuname, (dataR) => {
+//              res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false,
+//                data: data, dataP: dataP, dataA: dataA, dataR: dataR });
+                res.render('bid', { title: 'Bid', auth: req.session.authenticated, isAdmin: isAdmin, pet: pet, price: price,
+                            start: req.session.sdate, end: req.session.edate, type: req.session.ptype, ctuname: ctuname,
+                            data: data, dataR: dataR});
+            })
+
+       })
   });
+
 }).post('/bid/:ctuname', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
   bidController.addBid(req, req.session.ptype, req.session.sdate, req.session.edate, (result) => {

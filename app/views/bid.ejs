@@ -17,24 +17,36 @@
         cursor: pointer;
         background-color: #4CAF50;
       }
-    </style>
+      table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+       }
+</style>
+
 <body>
 <header>
     <%- include('./components/header'); %>
 </header>
+<div style="float: right; padding:0px 200px 0px 0px">
 <h1><%= title%> for <%= ctuname%></h1>
-<p>Duration: <%= start %> to <%= end %></p>
+<p id="duration"></p>
 <p>Daily price: $<%=  price[0].price %></p>
 <p>Total price: $<%=  price[0].total_price %></p>
-
+<script>
+    function pad(str) {
+        var date = new Date(str);
+        return date.toLocaleDateString('en-CA');
+    }
+    document.getElementById("duration").innerHTML = "Duration: " + pad('<%= start%>') + " to " + pad('<%= end%>');
+</script>
 <% if (data.length) { %>
 <form method="POST" action="/bid/<%= ctuname%>">
     <div class="form-group">
         <p>Pet name: </p>
         <p>
             <select name="petname" id="petname">
-                <% for(var i = 0; i < data.length; i++) { %>
-                <option value="<%= data[i].name%>"><%= data[i].name%></option>
+                <% for(var i = 0; i < pet.length; i++) { %>
+                <option value="<%= pet[i].name%>"><%= pet[i].name%></option>
                 <% } %>
             </select>
         </p>
@@ -60,6 +72,42 @@
     <p>You do not have any <%= type%>. </p>
     <button onclick="window.location.href='/availability'" class="button">Back</button>
 <% } %>
+</div>
+<div style="float: left; padding: 0px 0px 0px 200px">
+    <h1>Care taker Profile</h1>
+    <p>Username: <%= data[0].username %></p>
+    <p>Name: <%= data[0].name %></p>
+    <p>Phone number: <%= data[0].phone_number %></p>
+    <p>Area: <%= data[0].area %></p>
+    <p>Job type: <%= data[0].job_type %></p>
+    <% if (!data[0].rating) { %>
+    <p>Average rating: -</p>
+    <% } else { %>
+    <p>Average rating: <%= data[0].rating %> / 5</p>
+    <% } %>
+
+    <h1>Review</h1>
+    <% if (dataR.length == 0) { %>
+    <p>No review.</p>
+    <% } else { %>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Reviewer</th>
+            <th scope="col">Review</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(var i=0; i<dataR.length; i++) { %>
+        <tr>
+            <td><%= dataR[i].username %></td>
+            <td><%= dataR[i].review %></td>
+        </tr>
+        <% } %>
+        </tbody>
+    </table>
+    <% } %>
+</div>
 <footer>
     <%- include('./components/footer'); %>
 </footer>
