@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Page Title -->
+        <%- include('./components/htmlHead'); %>
+        <title>Rate & Review</title>
+    </head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    </style>
+    <style>
+      button {
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #4CAF50;
+      }
+      .checked {
+        color: orange;
+      }
+    </style>
+    <body>
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+        <h1><%= title%> : <%= ctuname%> </h1>
+            <p>Pet Name: <%= name %></p>
+            <p>Start Date: <%= data[0].start_day %>/<%= data[0].start_month %>/<%= data[0].start_year %></p>
+            <p>End Date: <%= day%>/<%= month%>/<%= year%></p>
+            <p>Daily Price: <%= data[0].daily_price %></p>
+            <p>Payment Mode: <%= data[0].payment_mode %></p>
+            <p>Transfer Method: <%= data[0].transfer_method %></p>
+    		<form method="POST" action="/po/<%= name%>/<%= day%>/<%= month%>/<%= year%>/<%= ctuname%>/review">
+            <div class="form-group">
+            <h2>Leave a Review / Rating:</h2>
+                <div>
+                    <input type="radio" id="rate5" name="rating" value="5" checked />
+                    <span> Very Good </span>
+                    <%- '<span class="fa fa-star checked"></span>'.repeat(5) %>
+                </label>
+                </div>
+                <div>
+                    <input type="radio" id="rate4" name="rating" value="4" />
+                    <span style="padding-right: 40px"> Good </span>
+                    <%- '<span class="fa fa-star checked"></span>'.repeat(4) %>
+                </label>
+                </div>
+                <div>
+                    <input type="radio" id="rate3" name="rating" value="3" />
+                    <span style="padding-right: 25px"> Average </span>
+                    <%- '<span class="fa fa-star checked"></span>'.repeat(3) %>
+                </label>
+                </div>
+                <div>
+                    <input type="radio" id="rate2" name="rating" value="2" />
+                    <span style="padding-right: 58px"> Poor </span>
+                    <%- '<span class="fa fa-star checked"></span>'.repeat(2) %>
+                </label>
+                </div>
+                <div>
+                    <input type="radio" id="rate1" name="rating" value="1" />
+                    <span style="padding-right: 30px"> Very Poor </span>
+                    <%- '<span class="fa fa-star checked"></span>'.repeat(1) %>
+                </label>
+                </div>
+            <div class="form-group">
+                <textarea class="form-control" type="text" id="review" name="review" placeholder="Write a review" rows="5"></textarea>
+            </div>
+            </div>
+    			<button type="submit" class="button">Submit</button>
+    		</form>
+      <footer>
+          <%- include('./components/footer'); %>
+      </footer>
+      </body>
+</html>

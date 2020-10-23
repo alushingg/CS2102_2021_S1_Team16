@@ -196,6 +196,18 @@ router.get('/pastorders', function(req, res, next) {
     }
 });
 
+router.get('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, next) {
+    petownerController.showOrder(req, (data, name, day, month, year, ctuname) => {
+        res.render('rate_review', {title: 'Rate and Review Care Taker', auth: req.session.authenticated, isAdmin: false, data: data, name: name, day: day, month: month, year: year, ctuname: ctuname});
+    });
+}).post('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, next) {
+    petownerController.postReview(req.body, req.params, (result) => {
+        console.log("Review and rate result: ")
+        console.log(result);
+    });
+    res.redirect('/pastorders');
+});
+
 router.get('/pet/:petname/update', function(req, res, next) {
     petController.trackPet(req, (data, petname) => {
         res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, isAdmin: false, data: data, petname: petname });

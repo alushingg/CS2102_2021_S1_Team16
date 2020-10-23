@@ -15,9 +15,23 @@
         <!-- Content here -->
         <h1><%= title %></h1>
         <style>
-            table, th, td {
+            th, td {
               border: 1px solid black;
-              border-collapse: collapse;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            .button {
+              border: none;
+              color: white;
+              padding: 10px 10px;
+              text-align: center;
+              margin: 5px;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 14px;
+              cursor: pointer;
+              background-color: #4CAF50; /* Green */
             }
         </style>
         <% if (data.length == 0) { %>
@@ -51,6 +65,11 @@
                         <td><%= data[i].transfer_method %></td>
                         <td><%= data[i].rating %></td>
                         <td><%= data[i].review %></td>
+                        <% if (data[i].is_completed && data[i].rating == null) { %>
+                            <td style="border:transparent;">
+                                <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/<%= encodeURIComponent(data[i].ctuname)%>/review'">Rate & Review</button>
+                            </td>
+                        <% } %>
                     </tr>
                     <% } %>
                 </tbody>
