@@ -3,7 +3,7 @@
     <head>
         <%- include('./components/htmlHead'); %>
         <!-- <link rel='stylesheet' href='/css/caretaker.css' /> -->
-        <script src="js/checkScript.js"></script>
+        <script src="js/findCaretakerScript.js"></script>
     </head>
 
     <style>
@@ -51,10 +51,13 @@
             <label for="end_date">End Date: </label>
           <input type="text" id="end_date" name="end_date" placeholder="YYYY-MM-DD" required>
           </div>
-          <button type="submit" class="btn btn-primary">Search</button>
+          <button type="submit">Search</button>
         </form>
 
         <script>
+           if ("<%= error%>" != "") {
+            alert('<%= error%>');
+           }
           (function() {
             window.addEventListener('load', function() {
               var forms = [document.getElementById('findCaretakerForm')];

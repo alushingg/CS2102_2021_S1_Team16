@@ -4,58 +4,63 @@
         <%- include('./components/htmlHead'); %>
     </head>
     <body>
-        
+
         <!-- <%- include('./components/backToTopBtn'); %> -->
-        
+
         <header>
             <%- include('./components/header'); %>
         </header>
 
         <!-- Content here -->
         <body>
-        <h1 style="display:inline-block;">Profile</h1>
-            <td style="border:transparent;">
-                <button class="button button1" onclick="window.location.href='/edit_profile'">Edit Profile</button>
-                <form method="POST" action="/profile" style="display:inline;">
-                    <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
-                </form>
-            </td>
-            <p>Username: <%= data[0].username %></p>
-            <p>Password: <%= data[0].password %></p>
-            <p>Name: <%= data[0].name %></p>
-            <p>Phone number: <%= data[0].phone_number %></p>
-            <p>Area: <%= data[0].area %></p>
-            <% if (!data[0].credit_card) { %>
-                <p>Credit card number: -</p>
-            <% } else { %>
-                <p>Credit card number: <%= data[0].credit_card %></p>
-            <% } %>
+        <h1 style="display:inline-block;"><%= title %></h1>
+        <td style="border:transparent;">
+            <button class="button button1" onclick="window.location.href='/edit_profile'">Edit Profile</button>
+            <form method="POST" action="/profile" style="display:inline;">
+                <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
+            </form>
+        </td>
+        <p>Username: <%= data[0].username %></p>
+        <p>Name: <%= data[0].name %></p>
+        <p>Phone number: <%= data[0].phone_number %></p>
+        <p>Area: <%= data[0].area %></p>
+        <% if (!data[0].credit_card) { %>
+            <p>Credit card number: -</p>
+        <% } else { %>
+            <p>Credit card number: <%= data[0].credit_card %></p>
+        <% } %>
 
-            <h1>Pet Information</h1>
-            <td>
-                <button class="button button1" onclick="window.location.href='/petadd'">Add pet</button>
-            </td>
-            <style>
-                th, td {
-                  border: 1px solid black;
-                }
-                table {
-                    border-collapse: collapse;
-                }
-                .button {
-                  border: none;
-                  color: white;
-                  padding: 10px 10px;
-                  text-align: center;
-                  margin: 5px;
-                  text-decoration: none;
-                  display: inline-block;
-                  font-size: 14px;
-                  cursor: pointer;
-                }
-                .button1 {background-color: #4CAF50;} /* Green */
-                .button2 {background-color: #FF0030;} /* Red */
-            </style>
+        <h1 style="display:inline-block;">Pet Information</h1>
+        <td>
+            <button class="button button1" onclick="window.location.href='/petadd'">Add pet</button>
+        </td>
+        <style>
+            th, td {
+              border: 1px solid black;
+              word-break: break-all;
+            }
+            table {
+                border-collapse: collapse;
+                table-layout: fixed;
+                width: 500px;
+            }
+            .button {
+              border: none;
+              color: white;
+              padding: 10px 10px;
+              text-align: center;
+              margin: 5px;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 14px;
+              cursor: pointer;
+            }
+            .button1 {background-color: #4CAF50;} /* Green */
+            .button2 {background-color: #FF0030;} /* Red */
+        </style>
+        <% if (dataP.length == 0) { %>
+            <p>No pets.</p>
+        <% } else { %>
             <table style="width:100%;">
                 <thead>
                     <tr>
@@ -81,13 +86,13 @@
                         <% } %>
                         <% if (pet != prev) { %>
                             <tr>
-                                <td ><%= dataP[i].name %></td>
-                                <td ><%= dataP[i].type %></td>
+                                <td><%= dataP[i].name %></td>
+                                <td><%= dataP[i].type %></td>
                                 <td><%= diet = diet == ''? diet : diet.substring(0, diet.length - 2) %></td>
                                 <td><%= walk = walk == ''? walk : walk.substring(0, walk.length - 2) %></td>
                                 <td style="border:transparent;">
-                                    <button class="button button1" onclick="window.location.href='<%= encodeURIComponent(dataP[i].name)%>/update'">Edit</button>
-                                    <form method="POST" action="/<%= encodeURIComponent(dataP[i].name)%>" style="display:inline;">
+                                    <button class="button button1" onclick="window.location.href='/pet/<%= encodeURIComponent(dataP[i].name)%>/update'">Edit</button>
+                                    <form method="POST" action="/pet/<%= encodeURIComponent(dataP[i].name)%>/delete" style="display:inline;">
                                         <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete</button>
                                     </form>
                                 </td>
@@ -97,6 +102,7 @@
                     <% } %>
                 </tbody>
             </table>
+        <% } %>
         <footer>
             <%- include('./components/footer'); %>
         </footer>

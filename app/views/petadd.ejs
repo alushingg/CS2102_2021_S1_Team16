@@ -19,13 +19,16 @@
       }
 </style>
 <body>
+<header>
+    <%- include('./components/header'); %>
+</header>
 <h1><%= title%></h1>
 <form method="POST" action="/petadd">
     <div class="form-group">
         <label for="petname">Pet name: </label>
         <input type="text" id="petname" name="petname" placeholder="Name of pet" required>
     </div>
-    <div class=form-group">
+    <div class="form-group">
         <p>Pet Type: </p>
         <p>
             <label><input type="radio" name="type" value="Cat" checked/> Cat</label><br>
@@ -45,15 +48,14 @@
     <div class="form-group">
         <p>Diet: </p>
         <p>
-            <label><input type="radio" name="diet" value="Dry" /> Dry</label><br>
-            <label><input type="radio" name="diet" value="Canned" /> Canned</label><br>
-            <label><input type="radio" name="diet" value="Semi-moist" /> Semi-moist</label><br>
-            <label><input type="radio" name="diet" value="Fresh" /> Fresh</label><br>
-            <label><input type="radio" name="diet" value="Home cooked" /> Home cooked</label><br>
-            <label><input type="radio" name="diet" value="Raw" /> Raw</label><br>
-            <label><input type="radio" name="diet" value="Milk" /> Milk</label><br>
-            <label><input type="radio" name="diet" value="Grain" /> Grain</label><br>
-            <label><input type="radio" name="diet" value="None" checked/> None</label><br>
+            <label><input type="checkbox" name="diet" value="Dry" /> Dry</label><br>
+            <label><input type="checkbox" name="diet" value="Canned" /> Canned</label><br>
+            <label><input type="checkbox" name="diet" value="Semi-moist" /> Semi-moist</label><br>
+            <label><input type="checkbox" name="diet" value="Fresh" /> Fresh</label><br>
+            <label><input type="checkbox" name="diet" value="Home cooked" /> Home cooked</label><br>
+            <label><input type="checkbox" name="diet" value="Raw" /> Raw</label><br>
+            <label><input type="checkbox" name="diet" value="Milk" /> Milk</label><br>
+            <label><input type="checkbox" name="diet" value="Grain" /> Grain</label><br>
         </p>
     </div>
     <div class="form-group">

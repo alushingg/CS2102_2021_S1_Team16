@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('./components/htmlHead'); %>
+    </head>
+
+    <body>
+        
+        <!-- <%- include('./components/backToTopBtn'); %> -->
+        
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+
+        <!-- Content here -->
+        <% var  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; %>
+        <h1><%= title %>: <%= months[month - 1] %> <%= year %></h1>
+
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+        </style>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Care Taker Username</th>
+                    <th scope="col">Job Type</th>
+                    <th scope="col">Number of Transactions</th>
+                    <th scope="col">Number of Pets</th>
+                    <th scope="col">Number of Pet Days</th>
+                    <th scope="col">Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i<dataC.length; i++) { %>
+                <tr>
+                    <td><%= dataC[i].username %></td>
+                    <td><%= dataC[i].job_type %></td>
+                    <td><%= dataC[i].transactions %></td>
+                    <td><%= dataC[i].pets %></td>
+                    <td><%= dataC[i].pet_days %></td>
+                    <td><%= dataC[i].salary %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <p>Total number of transactions: <%= data[0].total_transactions %></p>
+        <p>Total number of pets: <%= data[0].total_pets %></p>
+        <p>Total number of pet days: <%= data[0].total_pet_days %></p>
+        <p>Total salary to be paid: $<%= data[0].total_salary %></p>
+        <p>Total earnings: $<%= data[0].total_earnings %></p>
+        <% if (data[0].total_earnings - data[0].total_salary < 0) { %>
+            <p>Total profit: -$<%= Math.abs(data[0].total_earnings - data[0].total_salary) %></p>
+        <% } else { %>
+            <p>Total profit: $<%= Math.abs(data[0].total_earnings - data[0].total_salary) %></p>
+        <% } %>
+
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
+</html>

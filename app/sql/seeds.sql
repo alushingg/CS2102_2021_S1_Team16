@@ -90,11 +90,13 @@ INSERT INTO users (username, password, name, phone_number, area) VALUES ('thaack
 INSERT INTO users (username, password, name, phone_number, area) VALUES ('rskerme24', 'e2xPorKjDc', 'Rosemarie Skerme', '92398807', 'Pasir Ris');
 INSERT INTO users (username, password, name, phone_number, area) VALUES ('tdevitt25', 'EUj7fWJ4Oxy', 'Titos Devitt', '92398808', 'Pasir Ris');
 INSERT INTO users (username, password, name, phone_number, area) VALUES ('gwennam26', 'Nx7SoLLnp3yP', 'Georas Wennam', '92398809', 'Pasir Ris');
+INSERT INTO users (username, password, name, phone_number, area) VALUES ('root', 'root12345', 'root', '91234321', 'Pasir Ris');
 
 INSERT INTO pcs_admin  (username, position) VALUES ('thaacker23', 'CEO');
 INSERT INTO pcs_admin  (username, position) VALUES ('rskerme24', 'Manager');
 INSERT INTO pcs_admin  (username, position) VALUES ('tdevitt25', 'Executive');
 INSERT INTO pcs_admin  (username, position) VALUES ('gwennam26', 'Intern');
+INSERT INTO pcs_admin  (username, position) VALUES ('root', 'Root');
 
 INSERT INTO care_taker (username) VALUES ('ggyrgorcewicx0');
 INSERT INTO care_taker (username) VALUES ('kborgbartolo1');
@@ -447,11 +449,9 @@ INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, 
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('abohman1r', 'Angel', '2021-04-18', '2021-05-31', 'zbehagg8', TRUE, 75, FALSE, NULL, NULL, 'Deliver', 'Cash');
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('ntelling1s', 'Dusty', '2021-05-27', '2021-05-31', 'fscothorn6', FALSE, 42, FALSE, NULL, NULL, 'Pick up', 'Cash');
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('qmcfadin1t', 'Chloe', '2021-04-18', '2021-05-31', 'gde3', FALSE, 61, FALSE, NULL, NULL, 'Deliver', 'Cash');
-INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('qmcfadin1t', 'Chloe', '2021-04-18', '2021-05-31',  'ggyrgorcewicx0', FALSE, 60, FALSE, NULL, NULL, NULL, NULL);
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('faslen1u', 'Bug', '2021-06-15', '2021-06-17', 'zbehagg8', FALSE, 35, FALSE, NULL, NULL, 'Pick up', 'Cash');
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('cruncieman1v', 'Boo', '2020-07-23', '2020-07-23', 'hpoppy2', TRUE, 43, TRUE, 'Responsible Caretaker', 5, 'PCS', 'Cash');
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('sweepers1x', 'Honey', '2020-10-30', '2020-12-12', 'mdowthwaite5', FALSE, 15, FALSE, NULL, NULL, 'PCS', 'Cash');
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('kritchley1y', 'Babe', '2021-03-10', '2021-05-14', 'ggyrgorcewicx0', FALSE,  50, FALSE, NULL, NULL, 'Deliver', 'Cash');
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('cferrarin21', 'Baby', '2020-10-30', '2020-12-12', 'zbehagg8', TRUE, 75, FALSE, NULL, NULL,  'Pick up', 'Cash');
-INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('cferrarin21', 'Baby', '2020-10-30', '2020-12-12', 'sgemnett9', FALSE, 80, FALSE, NULL, NULL, NULL, NULL);
 INSERT INTO take_care (username, name, start_date, end_date, ctuname, has_paid, daily_price, is_completed, review, rating, transfer_method, payment_mode) VALUES ('rskaid22', 'Liz', '2021-03-10', '2021-05-14', 'fscothorn6', FALSE,  95, FALSE, NULL , NULL, 'Deliver', 'Cash');
