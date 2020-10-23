@@ -6,6 +6,7 @@ const db = require('../database/database')
 exports.queryGet = function (query, callback) {
     db.query(query, (error, result) => {
         if(error) {
+          console.log('!!'+error);
             callback({
                 status: 404,
                 err: error,
@@ -16,7 +17,7 @@ exports.queryGet = function (query, callback) {
                 body: result,
             });
         }
-    });    
+    });
 }
 
 exports.queryPost = function (query, response) {
