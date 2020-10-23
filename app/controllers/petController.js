@@ -26,9 +26,17 @@ exports.addPet = function(requestBody, callback) {
     var added = "INSERT INTO own_pet_belong VALUES ('" + user + "', '" + requestBody.petname + "', '" +
                 requestBody.type + "');";
 
-    if (requestBody.diet != "None") {
-        added = added + " INSERT INTO has VALUES ('" + user + "', '" + requestBody.petname + "', 'diet', '" +
-             requestBody.diet + "');";
+    if (requestBody.diet) {
+        if (Array.isArray(requestBody.diet)) {
+            for (var i = 0; i < requestBody.diet.length; i++) {
+                added = added + " INSERT INTO has VALUES ('" + user + "', '" + requestBody.petname + "', 'diet', '" +
+                        requestBody.diet[i] + "');";
+            }
+        } else {
+            added = added + " INSERT INTO has VALUES ('" + user + "', '" + requestBody.petname + "', 'diet', '" +
+                    requestBody.diet + "');";
+
+        }
     }
 
     if (requestBody.walk != "None") {
@@ -57,9 +65,17 @@ exports.editPet = function(requestBody, requestParam, callback) {
     console.log("Name: " + petname + " Diet: " + requestBody.diet + " Walk: " + requestBody.walk);
 
     updated = "DELETE FROM has WHERE username='" + user + "' AND name='" + petname + "';";
-    if (requestBody.diet != 'None') {
-        updated = updated + "INSERT INTO has VALUES ('" + user + "', '" + petname + "', 'diet', '"
-                    + requestBody.diet + "');"
+    if (requestBody.diet) {
+        if (Array.isArray(requestBody.diet)) {
+            for (var i = 0; i < requestBody.diet.length; i++) {
+                updated = updated + " INSERT INTO has VALUES ('" + user + "', '" + petname + "', 'diet', '" +
+                        requestBody.diet[i] + "');";
+            }
+        } else {
+            updated = updated + " INSERT INTO has VALUES ('" + user + "', '" + petname + "', 'diet', '" +
+                    requestBody.diet + "');";
+
+        }
     }
     if (requestBody.walk != 'None') {
         updated = updated + "INSERT INTO has VALUES ('" + user + "', '" + petname + "', 'walk', '"
