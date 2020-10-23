@@ -72,7 +72,6 @@ router.get('/bid/:ctuname', function(req, res, next) {
   });
 });
 
-
 router.get('/login', function(req, res, next) {
   const pageInfo = loginController.getPageInfo();
   res.render('login', pageInfo);
