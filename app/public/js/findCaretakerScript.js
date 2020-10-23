@@ -1,21 +1,9 @@
 function check(event) {
 	// Get Values
-	var sdate = document.getElementById('start_date').value;
-	var edate = document.getElementById('end_date').value;
+	var sdate = processDate(document.getElementById('start_date').value);
+    var edate = processDate(document.getElementById('end_date').value);
 
 	// Simple Check
-	if (!isValidDate(sdate)) {
-		alert("Invalid start date");
-		event.preventDefault();
-		event.stopPropagation();
-		return false;
-	}
-	if (!isValidDate(edate)) {
-		alert("Invalid end date");
-		event.preventDefault();
-		event.stopPropagation();
-		return false;
-	}
 	if (!isStartBeforeEnd(sdate, edate)) {
 		alert("End date is before start date");
 		event.preventDefault();
@@ -30,70 +18,45 @@ function check(event) {
     } 
 }
 
-function isValidDate(dateString) {
-    // First check for the pattern
-    if (!/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(dateString))
+function isStartBeforeEnd(start, end) {
+
+    if (end.year < start.year)
         return false;
 
-    // Parse the date parts to integers
-    var parts = dateString.split("-");
-    var day = parseInt(parts[2], 10);
-    var month = parseInt(parts[1], 10);
-    var year = parseInt(parts[0], 10);
-
-    // Check the ranges of month and year
-    if (year < 1000 || year > 3000 || month == 0 || month > 12)
+    if (end.year === start.year && end.month < start.month)
         return false;
 
-    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
-
-    // Adjust for leap years
-    if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
-        monthLength[1] = 29;
-
-    // Check the range of the day
-    return day > 0 && day <= monthLength[month - 1];
-};
-
-function isStartBeforeEnd(sdate, edate) {
-    var sparts = sdate.split("-");
-    var sday = parseInt(sparts[2], 10);
-    var smonth = parseInt(sparts[1], 10);
-    var syear = parseInt(sparts[0], 10);
-
-    var eparts = edate.split("-");
-    var eday = parseInt(eparts[2], 10);
-    var emonth = parseInt(eparts[1], 10);
-    var eyear = parseInt(eparts[0], 10);
-
-    if (eyear < syear)
-        return false;
-
-    if (eyear === syear && emonth < smonth)
-        return false;
-
-    if (eyear === syear && emonth === smonth && eday < sday)
+    if (end.year === start.year && end.month === start.month && end.day < start.day)
         return false;
 
     return true;
 };
 
-function hasStartDatePassed(dateString) {
-    var currdate = new Date();
-    var parts = dateString.split("-");
-    var day = parseInt(parts[2], 10);
-    var month = parseInt(parts[1], 10);
-    var year = parseInt(parts[0], 10);
-    var sdate = new Date(year, month, day);
+function hasStartDatePassed(date) {
+    var today = new Date();
+    var start = new Date(date.year, date.month, date.day);
 
-    if (sdate.getFullYear() < currdate.getFullYear())
+    if (start.getFullYear() < today.getFullYear())
         return true;
 
-    if (sdate.getFullYear() === currdate.getFullYear() && sdate.getMonth() - 1 < currdate.getMonth())
+    if (start.getFullYear() === today.getFullYear() && start.getMonth() - 1 < today.getMonth())
         return true;
 
-    if (sdate.getFullYear() === currdate.getFullYear() && sdate.getMonth() - 1 === currdate.getMonth() && sdate.getDate() < currdate.getDate())
+    if (start.getFullYear() === today.getFullYear() && start.getMonth() - 1 === today.getMonth() && start.getDate() < today.getDate())
         return true;
 
     return false;
 };
+
+function processDate(dateString) {
+    var parts = dateString.split("-");
+    var day = parseInt(parts[2], 10);
+    var month = parseInt(parts[1], 10);
+    var year = parseInt(parts[0], 10);
+
+    return {
+        'day': day,
+        'month': month,
+        'year': year,
+    }
+}

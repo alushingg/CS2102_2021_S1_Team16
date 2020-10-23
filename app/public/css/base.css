@@ -70,6 +70,13 @@ hr {
   color: #eeeeee
 }
 
+th, td {
+  border: 1px solid black;
+}
+table {
+    border-collapse: collapse;
+}
+
 ul.nav_links  {
   margin: 0px;
   padding: 0px;
@@ -121,13 +128,25 @@ p.error_message {
 }
 
 button {
-  background: none;
+
   border: none;
+  background-color: #4CAF50;
+  
+
+  padding: 10px;
+  margin: 10px 0px;
+
   color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+
+  cursor: pointer;
+  
 }
 
 button:hover {
-  color: gray;
+  color: lightgray;
 }
 
 div.section {

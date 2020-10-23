@@ -2,77 +2,58 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
+        <link rel='stylesheet' href='/css/availability.css' />
     </head>
 
-    <body>
-        
+    <body>     
         <!-- <%- include('./components/backToTopBtn'); %> -->
-        
         <header>
             <%- include('./components/header'); %>
         </header>
 
-        <!-- Content here -->
-        <h1>Availability</h1>
-        <style>
-            th, td {
-              border: 1px solid black;
-            }
-            table {
-                border-collapse: collapse;
-            }
-            button {
-                border: none;
-                color: white;
-                padding: 10px 10px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 14px;
-                cursor: pointer;
-                background-color: #4CAF50;
-          }
-        </style>
-        <% if (data.length == 0) { %>
-            <p>No caretakers available.</p>
-        <% } else { %>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Care Taker Username</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Area</th>
-                        <th scope="col">Rating</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Job Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for(var i=0; i<data.length; i++) { %>
-                    <tr>
-                        <td><%= data[i].username %></td>
-                        <td><%= data[i].name %></td>
-                        <td><%= data[i].phone_number %></td>
-                        <td><%= data[i].area %></td>
-                        <% if (!data[i].rating) { %>
-                            <td>-</td>
-                        <% } else { %>
-                            <td><%= data[i].rating %></td>
-                        <% } %>
-                        <td><%= data[i].price %></td>
-                        <td><%= data[i].job_type %></td>
-                        <% if (auth && !isAdmin) { %>
-                        <td style="border: transparent;">
-                            <button class="button" onclick="window.location.href='/bid/<%= data[i].username%>'">Bid</button>
-                        </td>
-                        <% } %>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        <% } %>
-
+        <div class="content">
+            <div class="spacing"></div>
+            <div class="card">
+                <h1>Availability</h1>
+                <% if (data.length == 0) { %>
+                    <p>No caretakers available.</p>
+                <% } else { %>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Area</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Job Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i<data.length; i++) { %>
+                            <tr>
+                                <td><%= data[i].name %></td>
+                                <td><%= data[i].phone_number %></td>
+                                <td><%= data[i].area %></td>
+                                <% if (!data[i].rating) { %>
+                                    <td>-</td>
+                                <% } else { %>
+                                    <td><%= data[i].rating %></td>
+                                <% } %>
+                                <td><%= data[i].price %></td>
+                                <td><%= data[i].job_type %></td>
+                                <% if (auth && !isAdmin) { %>
+                                <td style="border: transparent;">
+                                    <button class="button" onclick="window.location.href='/bid/<%= data[i].username%>'">Bid</button>
+                                </td>
+                                <% } %>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+        </div>
         <footer>
             <%- include('./components/footer'); %>
         </footer>
