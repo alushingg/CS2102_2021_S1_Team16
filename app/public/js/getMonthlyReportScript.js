@@ -25,12 +25,16 @@ function check(event) {
 }
 
 function isValidMonth(month) {
+    if (!/^\d{1,2}$/.test(month))
+        return false;
     if (month < 0 || month > 12)
         return false;
     return true;
 }
 
 function isValidYear(year) {
+    if (!/^\d{4}$/.test(year))
+        return false;
     if (year < 1000 || year > 3000)
         return false;
     return true;

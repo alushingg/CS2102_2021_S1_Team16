@@ -15,6 +15,17 @@ select {
     padding: 10px;
 }
 
+th, td {
+    border: 1px solid black;
+    word-break: break-all;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
 div.content {
     display: block;
 }
