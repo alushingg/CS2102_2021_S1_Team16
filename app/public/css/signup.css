@@ -12,6 +12,10 @@ input {
     width:80%;
 }
 
+button {
+    width: 80%;
+}
+
 div.aligner {
     display:block;
     text-align: center;
