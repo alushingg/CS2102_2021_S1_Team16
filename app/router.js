@@ -100,14 +100,14 @@ router.get('/login', function(req, res, next) {
     } else {
       const pageInfo = loginController.getErrorPageInfo();
       res.render('login', pageInfo);
-    }    
+    }
   });
 });
 
 router.get('/signup', function(req, res, next) {
   const pageInfo = signupController.getPageInfo();
   res.render('signup', pageInfo);
-}).post('/signup', function(req, res, next) {  
+}).post('/signup', function(req, res, next) {
   res.redirect('/signup');
 });
 
@@ -140,7 +140,7 @@ router.get('/profile', function(req, res, next) {
       caretakerController.showPricing(user, (dataP) => {
         caretakerController.showAvailability(user, (dataA) => {
           caretakerController.showReview(user, (dataR) => {
-            res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false, 
+            res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false,
               data: data, dataP: dataP, dataA: dataA, dataR: dataR });
           })
         })
@@ -168,6 +168,11 @@ router.get('/edit_profile', function(req, res, next) {
       res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, isAdmin: false, data: data, usertype: usertype });
     })
   }
+ else if (isCaretaker) {
+  editProfileController.showCurrentCaretakerProfile(([data, usertype]) => {
+    res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, isAdmin: false, data: data, usertype: usertype });
+  })
+}
 }).post('/edit_profile', function(req, res, next) {
   const isOwner = userController.getUser().isOwner();
   const isCaretaker = userController.getUser().isCaretaker();
@@ -183,7 +188,12 @@ router.get('/edit_profile', function(req, res, next) {
       console.log(result);
     });
   }
-
+   else if (isCaretaker) {
+    editProfileController.editCaretakerProfile(req.body, (result) => {
+      console.log("Edit profile Result: ")
+      console.log(result);
+    });
+  }
   res.redirect('profile');
 });
 
@@ -268,7 +278,7 @@ router.get('/monthlyreport', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
     adminController.getMonthlyCtReport(req.session.month, req.session.year, (dataC) => {
       adminController.getMonthlyReport(req.session.month, req.session.year, (data) => {
-        res.render('monthlyreport', { title: 'Monthly Report', auth: req.session.authenticated, isAdmin: true, 
+        res.render('monthlyreport', { title: 'Monthly Report', auth: req.session.authenticated, isAdmin: true,
           month: req.session.month, year: req.session.year, dataC: dataC, data: data });
       })
     })
@@ -279,7 +289,7 @@ router.get('/summary', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
     adminController.getMthSummary((data) => {
       adminController.getSummary((dataT, dataP, dataPd, dataS, dataE, dataPf) => {
-        res.render('summary', { title: 'Summary', auth: req.session.authenticated, isAdmin: true, data: data, 
+        res.render('summary', { title: 'Summary', auth: req.session.authenticated, isAdmin: true, data: data,
           dataT: dataT, dataP: dataP, dataPd: dataPd, dataS: dataS, dataE: dataE, dataPf, dataPf });
       })
     })

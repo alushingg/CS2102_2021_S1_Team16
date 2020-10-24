@@ -5,22 +5,21 @@
     </head>
 
     <body>
-        
+
         <!-- <%- include('./components/backToTopBtn'); %> -->
-        
+
         <header>
             <%- include('./components/header'); %>
         </header>
 
-        <!-- Content here -->
-        <style>
-            table, th, td {
-              border: 1px solid black;
-              border-collapse: collapse;
-            }
-        </style>
-
-        <h1><%= title %></h1>
+        <body>
+        <h1 style="display:inline-block;"><%= title %></h1>
+        <td style="border:transparent;">
+            <button class="button button1" onclick="window.location.href='/edit_profile'">Edit Profile</button>
+            <form method="POST" action="/profile" style="display:inline;">
+              <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
+            </form>
+        </td>
         <p>Username: <%= data[0].username %></p>
         <p>Name: <%= data[0].name %></p>
         <p>Phone number: <%= data[0].phone_number %></p>
@@ -31,6 +30,29 @@
         <% } else { %>
             <p>Average rating: <%= data[0].rating %> / 5</p>
         <% } %>
+
+        <style>
+                th, td {
+                  border: 1px solid black;
+                }
+                table {
+                    border-collapse: collapse;
+                }
+                .button {
+                  border: none;
+                  color: white;
+                  padding: 10px 10px;
+                  text-align: center;
+                  margin: 5px;
+                  text-decoration: none;
+                  display: inline-block;
+                  font-size: 14px;
+                  cursor: pointer;
+                }
+                .button1 {background-color: #4CAF50;} /* Green */
+                .button2 {background-color: #FF0030;} /* Red */
+            </style>
+
 
         <h1>Pricing</h1>
         <% if (dataP.length == 0) { %>
