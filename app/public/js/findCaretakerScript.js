@@ -4,6 +4,18 @@ function check(event) {
     var edate = processDate(document.getElementById('end_date').value);
 
 	// Simple Check
+    if (!isValidDate(sdate)) {
+        alert("Invalid start date");
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
+    if (!isValidDate(edate)) {
+        alert("Invalid end date");
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
 	if (!isStartBeforeEnd(sdate, edate)) {
 		alert("End date is before start date");
 		event.preventDefault();
@@ -17,6 +29,33 @@ function check(event) {
         return false;
     } 
 }
+
+function isValidDate(dateString) {
+    // First check for the pattern
+    if (!/^\d{4}$/.test(dateString.year))
+        return false;
+    if (!/^\d{1,2}$/.test(dateString.month))
+        return false;
+    if (!/^\d{1,2}$/.test(dateString.day))
+        return false;
+    
+    var day = dateString.day;
+    var month = dateString.month;
+    var year = dateString.year;
+
+    // Check the ranges of month and year
+    if (year < 1000 || year > 3000 || month == 0 || month > 12)
+        return false;
+
+    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+    // Adjust for leap years
+    if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+        monthLength[1] = 29;
+
+    // Check the range of the day
+    return day > 0 && day <= monthLength[month - 1];
+};
 
 function isStartBeforeEnd(start, end) {
 
