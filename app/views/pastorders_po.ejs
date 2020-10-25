@@ -5,9 +5,9 @@
     </head>
 
     <body>
-        
+
         <!-- <%- include('./components/backToTopBtn'); %> -->
-        
+
         <header>
             <%- include('./components/header'); %>
         </header>
@@ -69,7 +69,7 @@
                         <td><%= data[i].review %></td>
                         <% if (data[i].is_completed && data[i].rating == null) { %>
                             <td style="border:transparent;">
-                                <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/<%= encodeURIComponent(data[i].ctuname)%>/review'">Rate & Review</button>
+                                <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/<%= encodeURIComponent(data[i].ctuname)%>/review'">Rate & Review</button>
                             </td>
                         <% } %>
                     </tr>
