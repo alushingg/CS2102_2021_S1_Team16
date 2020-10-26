@@ -39,6 +39,36 @@ CREATE TRIGGER add_user
 BEFORE INSERT ON users
 FOR EACH ROW EXECUTE PROCEDURE check_user();
 
+CREATE OR REPLACE FUNCTION check_leave()
+    RETURNS TRIGGER AS
+    $$ DECLARE ctx_a INTEGER;
+    DECLARE ctx_c INTEGER;
+    BEGIN
+        SELECT COUNT(*) INTO ctx_a
+        FROM apply_leave a
+        WHERE NEW.username = a.username;
+
+        SELECT COUNT(*) INTO ctx_c
+        FROM part_time p
+        WHERE NEW.username = p.username;
+
+        IF ctx_a > 65 THEN
+            RAISE EXCEPTION 'Cannot Apply for more leave';
+        ELSE
+            IF ctx_c > 0 THEN
+                RAISE EXCEPTION 'Only full timer need to apply for leave';
+            ELSE
+                RETURN NEW;
+            END IF;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS applyleave ON apply_leave;
+CREATE TRIGGER applyleave
+BEFORE INSERT ON apply_leave
+FOR EACH ROW EXECUTE PROCEDURE check_leave();
+
 CREATE OR REPLACE FUNCTION check_caretaker()
     RETURNS TRIGGER AS
     $$ DECLARE ctx_a INTEGER;

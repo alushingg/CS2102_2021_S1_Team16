@@ -2,7 +2,7 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
-        <script src="js/addAvailabilityScript.js"></script>
+        <script src="js/applyleaveScript.js"></script>
     </head>
 
     <style>
@@ -29,7 +29,7 @@
 
         <!-- Content here -->
         <h1><%= title %></h1>
-        <form id="addAvailabilityForm" method="POST" action="/addAvailability">
+        <form id="applyleaveForm" method="POST" action="/applyleave">
           <div class="form-group">
             <label for="day">Day: </label>
             <input type="text" id="day" name="day" placeholder="DD" required>
@@ -48,15 +48,15 @@
         <script>
           (function() {
             window.addEventListener('load', function() {
-              var forms = [document.getElementById('addAvailabilityForm')];
+              var forms = [document.getElementById('applyleaveForm')];
               var validation = Array.prototype.filter.call(forms, function(form) {
                 form.addEventListener('submit', check, false);
               });
             }, false);
           })();
-          if ("<%= msg%>" != "") {
-              alert('<%= msg%>');
-          }
+          if ("<%= msg;%>" != "") {
+               alert('<%= msg%>')
+             }
         </script>
 
         <footer>

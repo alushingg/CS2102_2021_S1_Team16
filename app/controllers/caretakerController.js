@@ -38,10 +38,11 @@ exports.showPricing = function(user, callback) {
 
 exports.addAvailability = function(requestBody, callback) {
    const user = userController.getUser().getUsername();
-    const query1 = `SELECT 1 FROM part_time p WHERE p.username = '${user}';`;
-    console.log(query1 == 1);
-    if(query1){
-      const query = `INSERT INTO specify_availability VALUES ('${user}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}')); `;
+    var query1 = `SELECT p.username FROM part_time p WHERE p.username = '${user}';`;
+    dbController.queryGet(query1, (result) => {
+  //  console.log(query1);
+    if(result.body.rows.length != 0){ // is part timer
+      const query = `INSERT INTO specify_availability VALUES ('${user}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}'));`;
       console.log("Query: " + query);
       dbController.queryGet(query, (result) => {
           if(result.status == 200) {
@@ -54,9 +55,36 @@ exports.addAvailability = function(requestBody, callback) {
         });
     }
     else {
-      callback("User does not work part time");
-    }
+        callback("This user does not work part time");
+      }
+  });
 }
+
+exports.applyleave = function(requestBody, callback) {
+  const user = userController.getUser().getUsername();
+   var query1 = `SELECT f.username FROM full_time f WHERE f.username = '${user}';`;
+   dbController.queryGet(query1, (result) => {
+  //  console.log(query1);
+   if(result.body.rows.length != 0){ // is full timer
+     const query = `INSERT INTO apply_leave VALUES ('${user}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}'));`;
+     console.log("Query: " + query);
+     dbController.queryGet(query, (result) => {
+         if(result.status == 200) {
+             callback("Success!");
+         } else {
+             console.log("Failed.");
+             console.log("Status code: " + result.status);
+             callback([], result.err.message);
+           }
+       });
+   }
+   else {
+       callback("This user does not work full time");
+     }
+  });
+  }
+
+
 
 exports.showAvailability = function(user, callback) {
   	const query = "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year "
