@@ -214,10 +214,10 @@ router.get('/pastorders', function(req, res, next) {
     } else if (isCaretaker) {
       caretakerController.showPastOrders((data) => {
         caretakerController.showPetdays((dataPd) =>{
-
           res.render('pastorders_ct', {
               title: 'Past Orders',
               auth: req.session.authenticated,
+
               isAdmin: false,
               data: data,
               dataPd: dataPd
@@ -227,8 +227,6 @@ router.get('/pastorders', function(req, res, next) {
         })
     }
 });
-
-
 
 router.get('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, next) {
     petownerController.showOrder(req, (data, name, day, month, year, ctuname) => {
@@ -332,8 +330,6 @@ router.get('/addcaretaker', function(req, res, next) {
      res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, isAdmin: true, msg: msg });
   });
 });
-
-
 
 
 router.route('/db')

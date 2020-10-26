@@ -73,7 +73,7 @@ exports.showReview = function(user, callback) {
 
 exports.showPastOrders = function(callback) {
 	const user = userController.getUser().getUsername();
-	const query = "SELECT c.username AS ctuname, t.name AS name, EXTRACT(day FROM start_date) as start_day, EXTRACT(month FROM start_date) as start_month, EXTRACT(year FROM start_date) as start_year,"
+	const query = "SELECT t.username AS username, t.name AS name, EXTRACT(day FROM start_date) as start_day, EXTRACT(month FROM start_date) as start_month, EXTRACT(year FROM start_date) as start_year,"
       + "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, t.review AS review, t.rating AS rating  "
 				+ "FROM take_care t JOIN care_taker c ON t.ctuname = c.username "
         +"WHERE c.username = '" + user + "' ;";
@@ -90,8 +90,8 @@ exports.showPastOrders = function(callback) {
 
 exports.showPetdays = function(callback) {
 	const user = userController.getUser().getUsername();
-	const query = "SELECT SUM(x.petdays) as totalpetdays, x.ctuname as ctuname FROM"
-             + "(SELECT c.username AS ctuname, t.start_date AS start, t.end_date AS end, t.end_date - t.start_date + 1  AS petdays "
+	const query = "SELECT SUM(x.petdays) as totalpetdays "
+             + "FROM (SELECT c.username AS ctuname, t.start_date AS start, t.end_date AS end, t.end_date - t.start_date + 1  AS petdays "
                +"FROM take_care t JOIN care_taker c ON t.ctuname = c.username WHERE EXTRACT(month FROM(now())) = EXTRACT(month FROM (start_date)) AND EXTRACT(month FROM(now())) = EXTRACT(month FROM(end_date))) AS x "
              +"WHERE x.ctuname = '"+ user +"'  GROUP BY x.ctuname;  ";
   	dbController.queryGet(query, (result) => {

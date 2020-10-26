@@ -44,9 +44,9 @@
                 <thead>
                     <tr>
                         <th scope="col">Pet Name</th>
+                        <th scope="col">PetOwner Name</th>
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
-                        <th scope="col">Care Taker</th>
                         <th scope="col">Rating</th>
                         <th scope="col">Review</th>
                     </tr>
@@ -55,14 +55,14 @@
                     <% for(var i=0; i<data.length; i++) { %>
                     <tr>
                         <td><%= data[i].name %></td>
+                        <td><%= data[i].username %></td>
                         <td><%= data[i].start_day %>/<%= data[i].start_month %>/<%= data[i].start_year %></td>
                         <td><%= data[i].end_day %>/<%= data[i].end_month %>/<%= data[i].end_year %></td>
-                        <td><%= data[i].ctuname %></td>
                         <td><%= data[i].rating %></td>
                         <td><%= data[i].review %></td>
                         <% if (data[i].is_completed && data[i].rating == null) { %>
                             <td style="border:transparent;">
-                                <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/<%= encodeURIComponent(data[i].ctuname)%>/review'">Rate & Review</button>
+                                <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].username)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/<%= encodeURIComponent(data[i].ctuname)%>/review'">Rate & Review</button>
                             </td>
                         <% } %>
                     </tr>
@@ -73,9 +73,11 @@
 
 
       <h2>Pet days</h2>
+      <% if(dataPd.length != 0) { %>
     <p>Total Petdays this month: <%= dataPd[0].totalpetdays %> </p>
-
-
+    <% } else { %>
+    <p>Total Petdays this month: 0 </p>
+    <% } %>
         <footer>
             <%- include('./components/footer'); %>
         </footer>
