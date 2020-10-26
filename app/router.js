@@ -130,7 +130,39 @@ router.get('/signup', function(req, res, next) {
       res.render('signup', pageInfo);
     }
   });
-  
+});
+
+router.get('/ct_signup', function(req, res, next) {
+  const pageInfo = signupController.getPageInfo();
+  res.render('ct_signup', pageInfo);
+}).post('/ct_signup', function(req, res, next) { 
+  console.log(req.body);
+  loginController.getCredentials(req.body, (result) => {
+    console.log(result);
+    if (loginController.checkCredentials(result)) {
+      loginController.getUserType(result[0].username, (isOwner, isCaretaker, isAdmin) => {
+        console.log(result[0]);
+        // Authenticate the user
+        if(isCaretaker) {
+          signupController.registerOwner(req.body, (code) => {
+            if(code == 201) {
+                loginController.authUser(result[0], true, isCaretaker, isAdmin, req.session);
+                res.redirect('/');
+            } else {
+              const pageInfo = signupController.getErrorPageInfo('exists');
+              res.render('ct_signup', pageInfo);
+            }
+          });
+        } else {
+          const pageInfo = signupController.getErrorPageInfo('not_found');
+          res.render('ct_signup', pageInfo);
+        }
+      })
+    } else {
+      const pageInfo = signupController.getErrorPageInfo('not_found');
+      res.render('ct_signup', pageInfo);
+    }    
+  });
 });
 
 router.get('/logout', function(req, res, next) {
@@ -330,11 +362,5 @@ router.get('/addcaretaker', function(req, res, next) {
      res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, isAdmin: true, msg: msg });
   });
 });
-
-router.route('/db')
-  .get(dbController.queryGet)
-  .post(dbController.queryPost)
-  .put(dbController.queryPut)
-  .delete(dbController.queryDelete);
 
 module.exports = router;
