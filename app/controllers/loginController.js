@@ -17,7 +17,7 @@ exports.getErrorPageInfo = function() {
     return {
         'title': title,
         'error': true,
-//         add more data if required
+        // add more data if required
     }
 }
 

@@ -10,6 +10,7 @@ const editProfileController = require("./controllers/editProfileController");
 const petController = require('./controllers/petController');
 const availabilityController = require('./controllers/availabilityController');
 const bidController = require('./controllers/bidController');
+const e = require('express');
 const router = express.Router();
 
 /* GET home page. */
@@ -107,8 +108,29 @@ router.get('/login', function(req, res, next) {
 router.get('/signup', function(req, res, next) {
   const pageInfo = signupController.getPageInfo();
   res.render('signup', pageInfo);
-}).post('/signup', function(req, res, next) {  
-  res.redirect('/signup');
+}).post('/signup', function(req, res, next) { 
+  signupController.registerUser(req.body, (result) => {
+    if (result == 201 || result == 404) {
+      // If successfully added to user table or user already exists
+      signupController.registerOwner(req.body, (result) => {
+        if(result == 201) {
+          loginController.getUserType(req.body.username, (isOwner, isCaretaker, isAdmin) => {
+            // Authenticate the user
+            loginController.authUser(req.body, isOwner, isCaretaker, isAdmin, req.session);
+            res.redirect('/');
+          })
+        } else {
+          console.log("Result otherwise");
+          const pageInfo = signupController.getErrorPageInfo('exists');
+          res.render('signup', pageInfo);
+        }
+      });
+    } else {
+      const pageInfo = signupController.getErrorPageInfo('unknown');
+      res.render('signup', pageInfo);
+    }
+  });
+  
 });
 
 router.get('/logout', function(req, res, next) {
