@@ -74,7 +74,7 @@ exports.showReview = function(user, callback) {
 exports.showPastOrders = function(callback) {
 	const user = userController.getUser().getUsername();
 	const query = "SELECT t.username AS username, t.name AS name, EXTRACT(day FROM start_date) as start_day, EXTRACT(month FROM start_date) as start_month, EXTRACT(year FROM start_date) as start_year,"
-      + "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, t.review AS review, t.rating AS rating  "
+      + "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, t.has_paid, t.is_completed, t.review AS review, t.rating AS rating  "
 				+ "FROM take_care t JOIN care_taker c ON t.ctuname = c.username "
         +"WHERE c.username = '" + user + "' ;";
   	dbController.queryGet(query, (result) => {
@@ -104,3 +104,37 @@ exports.showPetdays = function(callback) {
         }
     });
 };
+
+exports.updatePaid = function(req, callback) {
+    //'/ct/:name/:pouname/:day/:month/:year/paid
+    const {name, pouname, day, month, year} = req.params;
+    const user = userController.getUser().getUsername();
+    query = "UPDATE take_care SET has_paid = TRUE WHERE username = '" + pouname + "' AND name = '" + name + "' AND end_date = date '"
+        + year + "-" + month + "-" + day + "' AND ctuname = '" + user + "';";
+    dbController.queryGet(query, (result) => {
+            if(result.status == 200) {
+                callback(result.body.rows);
+            } else {
+                console.log("Failed.!");
+                console.log("Status code: " + result.status);
+                callback([]);
+            }
+        });
+}
+
+exports.updateCompleted = function(req, callback) {
+    //'/ct/:name/:pouname/:day/:month/:year/paid
+    const {name, pouname, day, month, year} = req.params;
+    const user = userController.getUser().getUsername();
+    query = "UPDATE take_care SET is_completed = TRUE WHERE username = '" + pouname + "' AND name = '" + name + "' AND end_date = date '"
+        + year + "-" + month + "-" + day + "' AND ctuname = '" + user + "';";
+    dbController.queryGet(query, (result) => {
+         if(result.status == 200) {
+             callback(result.body.rows);
+         } else {
+             console.log("Failed.!");
+             console.log("Status code: " + result.status);
+             callback([]);
+         }
+     });
+}

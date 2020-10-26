@@ -60,9 +60,17 @@
                         <td><%= data[i].end_day %>/<%= data[i].end_month %>/<%= data[i].end_year %></td>
                         <td><%= data[i].rating %></td>
                         <td><%= data[i].review %></td>
-                        <% if (data[i].is_completed && data[i].rating == null) { %>
+                        <% if (!data[i].has_paid) { %>
                             <td style="border:transparent;">
-                                <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].username)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/<%= encodeURIComponent(data[i].ctuname)%>/review'">Rate & Review</button>
+                                <form method="POST" action="/ct/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].username)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/paid" style="display:inline;">
+                                    <button type="submit" class="button button2" onclick="return confirm('Are you sure the pet owner has paid?');" >Paid</button>
+                                </form>
+                            </td>
+                        <% } else if (!data[i].is_completed) {%>
+                            <td style="border:transparent;">
+                                <form method="POST" action="/ct/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].username)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/completed" style="display:inline;">
+                                    <button type="submit" class="button button2" onclick="return confirm('Are you sure the order is completed?');" >Completed</button>
+                                </form>
                             </td>
                         <% } %>
                     </tr>
@@ -72,11 +80,11 @@
         <% } %>
 
 
-      <h2>Pet days</h2>
+      <h2>Pet Days</h2>
       <% if(dataPd.length != 0) { %>
-    <p>Total Petdays this month: <%= dataPd[0].totalpetdays %> </p>
+    <p>Total pet days this month: <%= dataPd[0].totalpetdays %> </p>
     <% } else { %>
-    <p>Total Petdays this month: 0 </p>
+    <p>Total pet days this month: 0 </p>
     <% } %>
         <footer>
             <%- include('./components/footer'); %>

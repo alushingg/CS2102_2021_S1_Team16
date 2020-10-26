@@ -228,6 +228,21 @@ router.get('/pastorders', function(req, res, next) {
     }
 });
 
+router.post('/ct/:name/:pouname/:day/:month/:year/paid', function(req, res, next) {
+    caretakerController.updatePaid(req, (result) => {
+            console.log("Update paid Result: ")
+            console.log(result);
+        });
+        res.redirect("/pastorders")
+})
+
+router.post('/ct/:name/:pouname/:day/:month/:year/completed', function(req, res, next) {
+    caretakerController.updateCompleted(req, (result) => {
+            console.log("Update completed Result: ")
+            console.log(result);
+        });
+        res.redirect("/pastorders")
+})
 router.get('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, next) {
     petownerController.showOrder(req, (data, name, day, month, year, ctuname) => {
         res.render('rate_review', {title: 'Rate and Review Care Taker', auth: req.session.authenticated, isAdmin: false, data: data, name: name, day: day, month: month, year: year, ctuname: ctuname});
