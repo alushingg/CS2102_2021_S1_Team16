@@ -217,7 +217,6 @@ router.get('/pastorders', function(req, res, next) {
           res.render('pastorders_ct', {
               title: 'Past Orders',
               auth: req.session.authenticated,
-
               isAdmin: false,
               data: data,
               dataPd: dataPd
@@ -311,6 +310,22 @@ router.get('/monthlyreport', function(req, res, next) {
     })
   }
 });
+
+router.get('/addAvailability', function(req, res, next) {
+ if (userController.getUser() && userController.getUser().isCaretaker()) {
+      res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, isAdmin: false});
+  }
+}).post('/addAvailability', function(req, res, next) {
+  caretakerController.addAvailability(req.body, (result, msg) => {
+     console.log("Add Availability Result: ")
+     console.log(result);
+     console.log(msg);
+     res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, isAdmin: false, msg: msg });
+  });
+  });
+
+
+
 
 router.get('/summary', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {

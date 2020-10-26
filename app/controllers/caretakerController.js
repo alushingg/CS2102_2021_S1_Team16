@@ -36,6 +36,28 @@ exports.showPricing = function(user, callback) {
     });
 };
 
+exports.addAvailability = function(requestBody, callback) {
+   const user = userController.getUser().getUsername();
+    const query1 = `SELECT 1 FROM part_time p WHERE p.username = '${user}';`;
+    console.log(query1 == 1);
+    if(query1){
+      const query = `INSERT INTO specify_availability VALUES ('${user}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}')); `;
+      console.log("Query: " + query);
+      dbController.queryGet(query, (result) => {
+          if(result.status == 200) {
+              callback("Success!");
+          } else {
+              console.log("Failed.");
+              console.log("Status code: " + result.status);
+              callback([], result.err.message);
+            }
+        });
+    }
+    else {
+      callback("User does not work part time");
+    }
+}
+
 exports.showAvailability = function(user, callback) {
   	const query = "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year "
   				+ "FROM apply_leave WHERE username = '" + user + "' "
@@ -54,6 +76,8 @@ exports.showAvailability = function(user, callback) {
         }
     });
 };
+
+
 
 exports.showReview = function(user, callback) {
   	const query = "SELECT t.username, t.review "
