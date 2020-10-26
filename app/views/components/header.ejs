@@ -3,23 +3,13 @@
         <li><a href="/">Home</a></li>
         <li><a href="/pricing">Pricing</a></li>
         <li><a href="/caretaker">Find a caretaker</a></li>
-        <%if (auth === true) { %>
-            <li><a href="/profile">Profile</a></li>
-            <%if (isAdmin) { %>
-                <li><a href="/getmonthlyreport">Monthly Report</a></li>
-                <li><a href="/summary">Summary</a></li>
-                <li><a href="/addadmin">Add Admin</a></li>
-                <li><a href="/addcaretaker">Add Care Taker</a></li>
-            <% } else { %>
-                <li><a href="/pastorders">Past Orders</a></li>
-            <% } %>
-        <% } %>
     </ul>
 </nav>
 <%if (auth === true) { %>
-    <%- include('./userTab'); %>
+    <%- include('./userMenu'); %>
 <% } else { %>
-    <%- include('./loginTab'); %>
+    <a class="nav_links nav_right" href="/login">Login</a>
 <% } %>
+
 
 
