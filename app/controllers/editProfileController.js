@@ -279,7 +279,7 @@ exports.setPrice = function(requestBody, type, callback) {
     console.log("Query: " + query)
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
-            if (result.body.rows[0].base_price > requestBody.price) {
+            if (parseInt(result.body.rows[0].base_price) > parseInt(requestBody.price)) {
                 callback([], "Price should be higher than base price!");
             } else {
                 const query1 = `UPDATE can_care SET price = ${requestBody.price} WHERE username = '${user}' AND type = '${type}';`;
@@ -293,7 +293,6 @@ exports.setPrice = function(requestBody, type, callback) {
                     }
                 });
             }
-            callback(result.body.rows, "");
         } else {
             console.log("Failed.");
             console.log("Status code: " + result.status);
