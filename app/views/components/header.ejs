@@ -1,15 +1,15 @@
 <nav>
     <ul class="nav_links">
         <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
         <li><a href="/pricing">Pricing</a></li>
         <li><a href="/caretaker">Find a caretaker</a></li>
     </ul>
 </nav>
 <%if (auth === true) { %>
-    <%- include('./userTab'); %>
+    <%- include('./userMenu'); %>
 <% } else { %>
-    <%- include('./loginTab'); %>
+    <a class="nav_links nav_right" href="/login">Login</a>
 <% } %>
+
 
 

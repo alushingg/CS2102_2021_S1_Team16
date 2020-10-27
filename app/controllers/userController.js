@@ -23,3 +23,11 @@ exports.logout = function() {
 exports.getUser = function() {
     return this.user;
 };
+
+exports.getUsername = function() {
+    if(this.user === undefined) {
+        return null;
+    } else {
+        return this.user.username;
+    }
+};

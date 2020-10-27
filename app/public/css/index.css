@@ -1,0 +1,21 @@
+#carousel-holder {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.carousel-inner, .carousel-item, .carousel-item, .active {
+
+    width: 600px;
+    height: 400px;
+}
+
+.content .card .review {
+    padding: 0px 20px;
+}
+
+.content .card .review p {
+    color: olive;
+    font-style: italic;
+    font-size: x-large;
+}
