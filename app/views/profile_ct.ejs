@@ -78,25 +78,50 @@
 
         <% if (data[0].job_type == 'Full Time') { %>
             <h1>Leave</h1>
-        <% } else { %>
-            <h1>Availability</h1>
-        <% } %>
-        <% if (dataA.length == 0) { %>
-            <% if (data[0].job_type == 'Full Time') { %>
+            <% if (dataA.length == 0) { %>
                 <p>No leave.</p>
             <% } else { %>
-                <p>No availability.</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i<dataA.length; i++) { %>
+                        <tr>
+                            <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
+                            <% if (!dataA[i].reason) { %>
+                                <td>-</td>
+                            <% } else { %>
+                                <td><%= dataA[i].reason %></td>
+                            <% } %>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
             <% } %>
         <% } else { %>
-            <table class="table">
-                <tbody>
-                    <% for(var i=0; i<dataA.length; i++) { %>
-                    <tr>
-                        <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>
+            <h1>Availability</h1>
+            <% if (dataA.length == 0) { %>
+                <p>No availability.</p>
+            <% } else { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i<dataA.length; i++) { %>
+                        <tr>
+                            <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
         <% } %>
 
         <h1>Review</h1>

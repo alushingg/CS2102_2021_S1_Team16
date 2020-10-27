@@ -124,7 +124,6 @@ CREATE OR REPLACE FUNCTION check_bid()
     RETURNS TRIGGER AS
     $$ DECLARE ctx INTEGER;
     DECLARE cat INTEGER;
-    DECLARE ft INTEGER;
     DECLARE ok INTEGER;
     DECLARE rating INTEGER;
     BEGIN
@@ -149,16 +148,15 @@ CREATE OR REPLACE FUNCTION check_bid()
             IF cat = 0 THEN
                 RAISE EXCEPTION 'Sorry... Care taker cannot care for pet type. Please choose another caretaker.';
             ELSE
-                SELECT COUNT(*) INTO ft
-                FROM full_time
-                WHERE username = NEW.ctuname;
-
                 SELECT COUNT(*) INTO ok
                 FROM take_care t
                 WHERE t.ctuname = NEW.ctuname
                     AND ((t.start_date >= NEW.start_date AND t.start_date <= NEW.end_date)
                         OR (t.end_date >= NEW.start_date AND t.end_date <= NEW.end_date));
-                IF ft > 0 THEN
+                IF (NEW.ctuname IN (SELECT * FROM full_time)) THEN
+                    IF 1 = (SELECT 1 FROM apply_leave a WHERE a.username = NEW.ctuname AND (a.date >= NEW.start_date AND a.date <= NEW.end_date)) THEN
+                        RAISE EXCEPTION 'Caretaker is on leave.';
+                    END IF;
                     IF ok < 5 THEN
                         RETURN NEW;
                     ELSE

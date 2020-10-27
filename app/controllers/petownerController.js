@@ -76,12 +76,37 @@ exports.postReview = function(requestBody, requestParam, callback) {
     const user = userController.getUser().getUsername();
     const { name, day, month, year, ctuname} = requestParam;
     console.log("Name: " + name + " end date: " + year + "-" + month + "-" + day + " ctuname: " + ctuname + " rating:" + requestBody.rating + "review: " + requestBody.review);
-    query = "UPDATE take_care SET (review, rating) =" + "('" + requestBody.review + "', " + requestBody.rating
+    const query = "UPDATE take_care SET (review, rating) =" + "('" + requestBody.review + "', " + requestBody.rating
         + ") WHERE username = '" + user + "' AND name = '" + name + "' AND end_date = date '"
         + year + "-" + month + "-" + day + "' AND ctuname = '" + ctuname + "';";
     console.log("Query: " + query);
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
+            const query1 = "SELECT AVG(rating) FROM take_care t WHERE t.ctuname = '" + ctuname + "';";
+            dbController.queryGet(query1, (result) => {
+                if(result.status == 200) {
+                    console.log(query1);
+                    const rating = result.body.rows[0].avg;
+                    if (rating < 4) {
+                        const query2 = "UPDATE can_care SET price = NULL WHERE username = '" + ctuname + "';";
+                        dbController.queryGet(query2, (result) => {
+                            if (result.status == 200) {
+                                console.log(query2);
+                                callback(result.body.rows);
+                            } else {
+                                console.log("Failed.");
+                                console.log("Status code: " + result.status);
+                                callback([]);
+                            }
+                        });
+                    }
+                    callback(result.body.rows);
+                } else {
+                    console.log("Failed.");
+                    console.log("Status code: " + result.status);
+                    callback([]);
+                }
+            });
             callback(result.body.rows);
         } else {
             console.log("Failed.");

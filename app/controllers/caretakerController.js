@@ -87,11 +87,11 @@ exports.applyleave = function(requestBody, callback) {
 
 
 exports.showAvailability = function(user, callback) {
-  	const query = "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year "
+  	const query = "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, reason "
   				+ "FROM apply_leave WHERE username = '" + user + "' "
 				+ "ORDER BY date) "
 				+ "UNION "
-				+ "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year "
+				+ "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, NULL "
 				+ "FROM specify_availability WHERE username = '" + user + "' "
 				+ "ORDER BY date);";
   	dbController.queryGet(query, (result) => {
@@ -109,7 +109,7 @@ exports.showAvailability = function(user, callback) {
 
 exports.showReview = function(user, callback) {
   	const query = "SELECT t.username, t.review "
-				+ "FROM take_care t"
+				+ "FROM take_care t "
 				+ "WHERE t.ctuname = '" + user + "' AND t.review IS NOT NULL;";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
@@ -158,7 +158,6 @@ exports.showPetdays = function(callback) {
 };
 
 exports.updatePaid = function(req, callback) {
-    //'/ct/:name/:pouname/:day/:month/:year/paid
     const {name, pouname, day, month, year} = req.params;
     const user = userController.getUser().getUsername();
     query = "UPDATE take_care SET has_paid = TRUE WHERE username = '" + pouname + "' AND name = '" + name + "' AND end_date = date '"
@@ -175,7 +174,6 @@ exports.updatePaid = function(req, callback) {
 }
 
 exports.updateCompleted = function(req, callback) {
-    //'/ct/:name/:pouname/:day/:month/:year/paid
     const {name, pouname, day, month, year} = req.params;
     const user = userController.getUser().getUsername();
     query = "UPDATE take_care SET is_completed = TRUE WHERE username = '" + pouname + "' AND name = '" + name + "' AND end_date = date '"
