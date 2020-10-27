@@ -54,7 +54,11 @@
             </style>
 
 
-        <h1>Pricing</h1>
+        <h1 style="display:inline-block;">Pricing</h1>
+        <% if (data[0].rating >= 4) { %>
+            <button class="button button1" onclick="window.location.href='/addtype'">Add Pet Type</button>
+        <% } %>
+
         <% if (dataP.length == 0) { %>
             <p>No pricing.</p>
         <% } else { %>

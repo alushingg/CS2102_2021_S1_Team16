@@ -257,3 +257,19 @@ exports.deleteProfile = function(callback) {
         }
     });
 };
+
+exports.addType = function(requestBody, callback) {
+    const user = userController.getUser().getUsername();
+    const query = "INSERT INTO can_care VALUES ('" + user + "', '" + requestBody.type + "', NULL);";
+    console.log("Query: " + query)
+    dbController.queryGet(query, (result) => {
+        if(result.status == 200) {
+            callback(result.body.rows, "");
+        } else {
+            console.log("Failed.");
+            console.log("Status code: " + result.status);
+            callback([], result.err.message);
+        }
+    });
+};
+

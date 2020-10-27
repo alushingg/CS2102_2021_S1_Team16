@@ -183,3 +183,24 @@ DROP TRIGGER IF EXISTS add_bid ON take_care;
 CREATE TRIGGER add_bid
 BEFORE INSERT ON take_care
 FOR EACH ROW EXECUTE PROCEDURE check_bid();
+
+CREATE OR REPLACE FUNCTION check_type()
+    RETURNS TRIGGER AS
+    $$ DECLARE ctx INTEGER;
+    BEGIN
+        SELECT COUNT(*) INTO ctx
+        FROM can_care c
+        WHERE NEW.username = c.username
+            AND NEW.type = c.type;
+        IF ctx > 0 THEN
+            RAISE EXCEPTION 'You can already care for this type!';
+        ELSE
+            RETURN NEW;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS add_type ON can_care;
+CREATE TRIGGER add_type
+BEFORE INSERT ON can_care
+FOR EACH ROW EXECUTE PROCEDURE check_type();

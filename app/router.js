@@ -197,6 +197,27 @@ router.get('/edit_profile', function(req, res, next) {
   res.redirect('profile');
 });
 
+router.get('/addtype', function(req, res, next) {
+  const user = userController.getUser().getUsername();
+  const isCaretaker = userController.getUser().isCaretaker();
+  if (isCaretaker) {
+    res.render('addtype', {title: 'Add Pet Type', auth: req.session.authenticated, isAdmin: false, error: "" });
+  }
+}).post('/addtype', function(req, res, next) {
+     editProfileController.addType(req.body, (result, err) => {
+       console.log(result);
+       if (err != "") {
+            console.log(err);
+            res.render('addtype', { title: 'Add Pet Type', auth: req.session.authenticated, isAdmin: false, error: err });
+       } else {
+             res.redirect('/profile');
+       }
+     });
+});
+
+
+
+
 router.get('/pastorders', function(req, res, next) {
     const isOwner = userController.getUser().isOwner();
     const isCaretaker = userController.getUser().isCaretaker();
