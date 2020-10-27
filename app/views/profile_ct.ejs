@@ -55,9 +55,7 @@
 
 
         <h1 style="display:inline-block;">Pricing</h1>
-        <% if (data[0].rating >= 4) { %>
-            <button class="button button1" onclick="window.location.href='/addtype'">Add Pet Type</button>
-        <% } %>
+        <button class="button button1" onclick="window.location.href='/addtype'">Add Pet Type</button>
 
         <% if (dataP.length == 0) { %>
             <p>No pricing.</p>
@@ -74,6 +72,11 @@
                     <tr>
                         <td><%= dataP[i].type %></td>
                         <td><%= dataP[i].price %></td>
+                        <% if (data[0].rating >= 4) { %>
+                            <td style="border:transparent;">
+                                <button class="button" onclick="window.location.href='/ct/<%= encodeURIComponent(dataP[i].type)%>/set'">Set Price</button>
+                            </td>
+                        <% } %>
                     </tr>
                     <% } %>
                 </tbody>

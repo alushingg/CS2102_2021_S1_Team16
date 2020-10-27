@@ -215,8 +215,25 @@ router.get('/addtype', function(req, res, next) {
      });
 });
 
-
-
+router.get('/ct/:type/set', function(req, res, next) {
+  const user = userController.getUser().getUsername();
+  const isCaretaker = userController.getUser().isCaretaker();
+  if (isCaretaker) {
+    const { type } = req.params;
+    res.render('setprice', {title: 'Set Price', auth: req.session.authenticated, isAdmin: false, type: type, error: "" });
+  }
+}).post('/ct/:type/set', function(req, res, next) {
+  const { type } = req.params;
+  editProfileController.setPrice(req.body, type, (result, err) => {
+   console.log(result);
+   if (err != "") {
+      console.log(err);
+      res.render('setprice', { title: 'Set Price', auth: req.session.authenticated, isAdmin: false, type: type, error: err });
+   } else {
+      res.redirect('/profile');
+   }
+  });
+});
 
 router.get('/pastorders', function(req, res, next) {
     const isOwner = userController.getUser().isOwner();

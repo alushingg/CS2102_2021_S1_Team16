@@ -273,3 +273,32 @@ exports.addType = function(requestBody, callback) {
     });
 };
 
+exports.setPrice = function(requestBody, type, callback) {
+    const user = userController.getUser().getUsername();
+    const query = `SELECT base_price FROM category WHERE type = '${type}';`;
+    console.log("Query: " + query)
+    dbController.queryGet(query, (result) => {
+        if(result.status == 200) {
+            if (result.body.rows[0].base_price > requestBody.price) {
+                callback([], "Price should be higher than base price!");
+            } else {
+                const query1 = `UPDATE can_care SET price = ${requestBody.price} WHERE username = '${user}' AND type = '${type}';`;
+                dbController.queryGet(query1, (result) => {
+                    if(result.status == 200) {
+                        callback(result.body.rows, "");
+                    } else {
+                        console.log("Failed.");
+                        console.log("Status code: " + result.status);
+                        callback([], result.err.message);
+                    }
+                });
+            }
+            callback(result.body.rows, "");
+        } else {
+            console.log("Failed.");
+            console.log("Status code: " + result.status);
+            callback([], result.err.message);
+        }
+    });
+};
+
