@@ -41,3 +41,16 @@ exports.findCaretaker = function(type, sdate, edate, callback) {
         }
     });
 };
+
+exports.getBasePrice = function(callback) {
+    const query = "SELECT * FROM category;";
+    dbController.queryGet(query, (result) => {
+        if(result.status == 200) {
+            callback(result.body.rows);
+        } else {
+            console.log("Failed.");
+            console.log("Status code: " + result.status);
+            callback([]);
+        }
+    });
+};

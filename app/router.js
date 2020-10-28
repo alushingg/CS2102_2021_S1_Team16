@@ -28,7 +28,9 @@ router.get('/', function(req, res, next) {
 router.get('/pricing', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
   var isPOCT = userController.getUser() && userController.getUser().isPOCT();
-  res.render('pricing', { title: 'PCS Team 16', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, isPOCT: isPOCT });
+  availabilityController.getBasePrice((data) => {
+    res.render('pricing', { title: 'Pricing', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, isPOCT: isPOCT, data: data });
+  })
 });
 
 router.get('/caretaker', function(req, res, next) {
