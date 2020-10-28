@@ -48,15 +48,16 @@ CREATE OR REPLACE FUNCTION check_leave()
         FROM apply_leave a
         WHERE NEW.username = a.username;
 
-        SELECT COUNT(*) INTO ctx_c
-        FROM part_time p
-        WHERE NEW.username = p.username;
+        SELECT COUNT(*) INTO ctx_p
+        FROM  take_care c
+        WHERE NEW.username = c.ctuname AND
+              (julianday(c.end_date) - julianday(NEW.date)  >= 0 ) ;
 
         IF ctx_a > 65 THEN
             RAISE EXCEPTION 'Cannot Apply for more leave';
         ELSE
-            IF ctx_c > 0 THEN
-                RAISE EXCEPTION 'Only full timer need to apply for leave';
+          IF ctx_p > 0 THEN
+              RAISE EXCEPTION 'Unable to take leave as there is pet under user care';
             ELSE
                 RETURN NEW;
             END IF;

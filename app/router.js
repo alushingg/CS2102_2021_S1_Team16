@@ -354,9 +354,9 @@ router.get('/addAvailability', function(req, res, next) {
       res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, isAdmin: false, msg: ""});
   }
 }).post('/addAvailability', function(req, res, next) {
-  caretakerController.addAvailability(req.body, (result, msg) => {
+  caretakerController.addAvailability(req.body, (msg) => {
      console.log("Add Availability Result: ")
-     console.log(result);
+     // console.log(result);
     // console.log(msg);
      res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, isAdmin: false, msg: msg });
   });
@@ -367,10 +367,10 @@ router.get('/addAvailability', function(req, res, next) {
         res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, isAdmin: false,msg: ""});
     }
   }).post('/applyleave', function(req, res, next) {
-    caretakerController.applyleave(req.body, (result, msg) => {
+    caretakerController.applyleave(req.body, (msg) => {
        console.log("Apply Leave Result: ")
-       console.log(result);
-       //console.log(msg);
+       //console.log(result);
+      // console.log(msg);
        res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, isAdmin: false, msg: msg });
     });
   });

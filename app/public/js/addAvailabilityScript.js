@@ -23,7 +23,7 @@ function check(event) {
         event.stopPropagation();
         return false;
     }
-    if (!dateHasPassed(day, month, year)) {
+    if (dateHasPassed(day, month, year)) {
         alert("Date has passed");
         event.preventDefault();
         event.stopPropagation();
@@ -59,9 +59,9 @@ function dateHasPassed(day, month, year) {
     var currdate = new Date();
     if (year < currdate.getFullYear())
         return false;
-    if (year = currdate.getFullYear() && month <= currdate.getMonth() + 1)
+    if (year = currdate.getFullYear() && month < currdate.getMonth() + 1)
         return false;
-		if (year = currdate.getFullYear() && month <= currdate.getMonth() + 1 && day <= currdate.getDay())
+		if (year = currdate.getFullYear() && month = currdate.getMonth() + 1 && day <= currdate.getDay())
 				return false;
     return true;
 }
