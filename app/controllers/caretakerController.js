@@ -86,7 +86,7 @@ exports.applyleave = function(requestBody, callback) {
 
 exports.showAvailability = function(user, callback) {
   	const query = "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, reason "
-  				+ "FROM apply_leave WHERE username = '" + user + "' "
+  			+ "FROM apply_leave WHERE username = '" + user + "' "
 				+ "ORDER BY date) "
 				+ "UNION "
 				+ "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, NULL "

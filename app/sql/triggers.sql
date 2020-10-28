@@ -39,37 +39,6 @@ CREATE TRIGGER add_user
 BEFORE INSERT ON users
 FOR EACH ROW EXECUTE PROCEDURE check_user();
 
-CREATE OR REPLACE FUNCTION check_leave()
-    RETURNS TRIGGER AS
-    $$ DECLARE ctx_a INTEGER;
-    DECLARE ctx_c INTEGER;
-    BEGIN
-        SELECT COUNT(*) INTO ctx_a
-        FROM apply_leave a
-        WHERE NEW.username = a.username;
-
-        SELECT COUNT(*) INTO ctx_p
-        FROM  take_care c
-        WHERE NEW.username = c.ctuname AND
-              (julianday(c.end_date) - julianday(NEW.date)  >= 0 ) ;
-
-        IF ctx_a > 65 THEN
-            RAISE EXCEPTION 'Cannot Apply for more leave';
-        ELSE
-          IF ctx_p > 0 THEN
-              RAISE EXCEPTION 'Unable to take leave as there is pet under user care';
-            ELSE
-                RETURN NEW;
-            END IF;
-        END IF;
-    END;
-    $$ LANGUAGE plpgsql;
-
-DROP TRIGGER IF EXISTS applyleave ON apply_leave;
-CREATE TRIGGER applyleave
-BEFORE INSERT ON apply_leave
-FOR EACH ROW EXECUTE PROCEDURE check_leave();
-
 CREATE OR REPLACE FUNCTION check_caretaker()
     RETURNS TRIGGER AS
     $$ DECLARE ctx_a INTEGER;
@@ -99,6 +68,117 @@ DROP TRIGGER IF EXISTS add_caretaker ON care_taker;
 CREATE TRIGGER add_caretaker
 BEFORE INSERT ON care_taker
 FOR EACH ROW EXECUTE PROCEDURE check_caretaker();
+
+CREATE OR REPLACE FUNCTION check_leave()
+    RETURNS TRIGGER AS
+    $$ DECLARE yr INTEGER;
+    DECLARE ctx_a1 INTEGER;
+    DECLARE ctx_a2 INTEGER;
+    DECLARE prev DATE;
+    DECLARE i INTEGER;
+    DECLARE d DATE;
+    DECLARE ctx INTEGER := 0;
+    
+    BEGIN
+        IF NEW.username IN (SELECT * FROM part_time) THEN
+            RAISE EXCEPTION 'Only full timer need to apply for leave!';
+        ELSIF NEW.date IN (SELECT date FROM apply_leave a WHERE a.username = NEW.username) THEN
+            RAISE EXCEPTION 'Leave already applied on this date!';
+        ELSIF 1 = (SELECT 1 FROM take_care t WHERE NEW.username = t.ctuname AND (NEW.date >= t.start_date AND NEW.date <= t.end_date)) THEN
+            RAISE EXCEPTION 'There is a job on this date!';
+        ELSE
+            yr := EXTRACT(year FROM NEW.date);
+        
+            /* find number of leave before NEW.date */
+            SELECT COUNT(*) INTO ctx_a1
+            FROM apply_leave a
+            WHERE NEW.username = a.username
+                AND EXTRACT(year FROM a.date) = yr
+                AND NEW.date - a.date > 0;
+
+            /* find number of leave after NEW.date */
+            SELECT COUNT(*) INTO ctx_a2
+            FROM apply_leave a
+            WHERE NEW.username = a.username
+                AND EXTRACT(year FROM a.date) = yr
+                AND NEW.date - a.date < 0;
+
+            prev := DATE(yr::TEXT || '-01-01');
+            i := 0;
+            LOOP
+                EXIT WHEN i = ctx_a1;
+                d := (SELECT a.date FROM apply_leave a WHERE NEW.username = a.username AND EXTRACT(year FROM a.date) = yr AND NEW.date - a.date > 0 ORDER BY a.date ASC LIMIT 1 OFFSET i);
+                IF (d - prev - 1) >= 300 THEN
+                    ctx := ctx + 2;
+                ELSIF (d - prev - 1) >= 150 THEN
+                    ctx := ctx + 1;
+                END IF;
+                prev := d;
+                i := i + 1;
+            END LOOP;
+            IF (NEW.date - prev - 1) >= 300 THEN
+                ctx := ctx + 2;
+            ELSIF (NEW.date - prev - 1) >= 150 THEN
+                ctx := ctx + 1;
+            END IF;
+
+            prev := NEW.date;
+            i := 0;
+            LOOP
+                EXIT WHEN i = ctx_a2;
+                d := (SELECT a.date FROM apply_leave a WHERE NEW.username = a.username AND EXTRACT(year FROM a.date) = yr AND NEW.date - a.date < 0 ORDER BY a.date ASC LIMIT 1 OFFSET i);
+                IF (d - prev - 1) >= 300 THEN
+                    ctx := ctx + 2;
+                ELSIF (d - prev - 1) >= 150 THEN
+                    ctx := ctx + 1;
+                END IF;
+                prev := d;
+                i := i + 1;
+            END LOOP;
+            IF (DATE(yr::TEXT || '-12-31') - prev - 1) >= 300 THEN
+                ctx := ctx + 2;
+            ELSIF (DATE(yr::TEXT || '-12-31') - prev - 1) >= 150 THEN
+                ctx := ctx + 1;
+            END IF;
+
+            IF ctx < 2 THEN
+                RAISE EXCEPTION 'Cannot Apply for leave! 2 * 150 consecutive working days in a year not met!';
+            ELSE
+                RETURN NEW;
+            END IF;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS add_leave ON apply_leave;
+CREATE TRIGGER add_leave
+BEFORE INSERT ON apply_leave
+FOR EACH ROW EXECUTE PROCEDURE check_leave();
+
+CREATE OR REPLACE FUNCTION check_availability()
+    RETURNS TRIGGER AS
+    $$ DECLARE ctx INTEGER;
+    BEGIN
+        IF NEW.username IN (SELECT * FROM full_time) THEN
+            RAISE EXCEPTION 'Only part timer need to specify availability!';
+        ELSE
+            SELECT COUNT(*) INTO ctx
+            FROM specify_availability sa
+            WHERE NEW.username = sa.username
+                AND NEW.date = sa.date;
+            IF ctx > 0 THEN
+                RAISE EXCEPTION 'Availability already specified on this date!';
+            ELSE
+              RETURN NEW;
+            END IF;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS add_availability ON specify_availability;
+CREATE TRIGGER add_availability
+BEFORE INSERT ON specify_availability
+FOR EACH ROW EXECUTE PROCEDURE check_availability();
 
 CREATE OR REPLACE FUNCTION check_period()
     RETURNS TRIGGER AS
