@@ -8,27 +8,14 @@
     <div class="content">
       <div class="spacing"></div>
       <div id="signupForm">
-        <form method="POST" action="/signup">
-          <h3 id="title">Sign Up</h3>
-          
-          <div class="aligner">
-              <input type="text" id="name" name="name" placeholder="Name" required>
-          </div>
-          <div class="aligner" id="phone_area">
-              <div id="phoneDiv">
-                  <input type="text" id="phone_number" name="phone_number" placeholder="Phone number" required>
-              </div>
-              <div id="areaDiv">
-                  <input type="text" id="area" name="area" placeholder="Residential District" required>
-              </div>
-          </div>
-          
-          <hr>
-          
+        <form method="POST" action="/ct_signup">
+          <h3 id="title">Caretaker Sign Up</h3>     
           <div class="aligner">
             <%if (error === true) { %>
-              <%if (error_reason === 'exists') { %>
-                <p class="error_message">Username has been used.</p>
+              <%if (error_reason === 'not_found') { %>
+                <p class="error_message">You are not a caretaker.</p>
+              <% } else if (error_reason === 'exists') { %>
+                <p class="error_message">You already have an owner account.</p>
               <% } else { %>
                 <p class="error_message">Something went wrong.</p>
               <% } %>

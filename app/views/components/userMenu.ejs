@@ -1,0 +1,40 @@
+<div id="menuContainer" class="nav_links nav_right">
+    <div id="userTab">
+        Hi <%= user %>! ▽
+    </div>
+    <div id="menuItemGroup">
+        <a href="/profile">
+            <div class="menuItems">Profile</div>
+        </a>
+        <%if (isAdmin) { %>
+            <a href="/summary">
+                <div class="menuItems">Summary</div>
+            </a>
+            <a href="/getmonthlyreport">
+                <div class="menuItems">Monthly Report</div>
+            </a>
+            <a href="/addadmin">
+                <div class="menuItems">Add Admin</div>
+            </a>
+            <a href="/addcaretaker">
+                <div class="menuItems">Add Care Taker</div>
+            </a>
+        <% } else { %>
+            <a href="/pastorders">
+                <div class="menuItems">Past Order</div>
+            </a>
+            <a href="/applyleave">
+                <div class="menuItems">Apply Leave</div>
+            </a>
+            <a href="/addAvailability">
+                <div class="menuItems">Add Availability</div>
+            </a>
+        <% } %>
+        <a href="/logout">
+            <div class="menuItems">Log out</div>
+        </a>
+        
+    </div>
+</div>
+
+<script src="/js/userDropMenu.js"></script>

@@ -6,7 +6,7 @@ const db = require('../database/database')
 exports.queryGet = function (query, callback) {
     db.query(query, (error, result) => {
         if(error) {
-          console.log('!!'+error);
+          console.log('!!' + error);
             callback({
                 status: 404,
                 err: error,
@@ -20,9 +20,20 @@ exports.queryGet = function (query, callback) {
     });
 }
 
-exports.queryPost = function (query, response) {
-    response.status(201).json({
-        'Status':'201 Created',
+exports.queryPost = function (query, callback) {
+    db.query(query, (error, result) => {
+        if(error) {
+          console.log('!!' + error);
+            callback({
+                status: 404,
+                err: error,
+            });
+        } else {
+            callback({
+                status: 201,
+                body: result,
+            });
+        }
     });
 }
 
