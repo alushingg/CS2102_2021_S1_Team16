@@ -2,7 +2,7 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
-        <script src="js/applyleaveScript.js"></script>
+        <script src="js/leaveAvailabilityScript.js"></script>
     </head>
 
     <style>
@@ -50,13 +50,13 @@
             window.addEventListener('load', function() {
               var forms = [document.getElementById('applyleaveForm')];
               var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', checkAdd, false);
+                form.addEventListener('submit', check, false);
               });
             }, false);
           })();
           if ("<%= msg;%>" != "") {
-               alert('<%= msg%>')
-             }
+            alert('<%= msg%>')
+          }
         </script>
 
         <footer>
