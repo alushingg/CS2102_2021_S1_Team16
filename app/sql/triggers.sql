@@ -315,3 +315,33 @@ DROP TRIGGER IF EXISTS add_petowner ON pet_owner;
 CREATE TRIGGER add_petowner
 BEFORE INSERT ON pet_owner
 FOR EACH ROW EXECUTE PROCEDURE check_petowner();
+
+CREATE OR REPLACE FUNCTION check_price()
+    RETURNS TRIGGER AS
+    $$ DECLARE baseprice INTEGER;
+    DECLARE rating INTEGER;
+    BEGIN
+        SELECT AVG(t.rating) INTO rating
+        FROM take_care t
+        WHERE t.ctuname = NEW.username;
+        
+        SELECT c.base_price INTO baseprice
+        FROM category c
+        WHERE c.type = NEW.type;
+        
+        IF rating >= 4 AND NEW.price >= baseprice THEN
+            RETURN NEW;
+        ELSIF (rating < 4 OR rating IS NULL) AND NEW.price IS NULL THEN
+            RETURN NEW;
+        ELSIF (rating < 4 OR rating IS NULL) THEN
+            RAISE EXCEPTION 'Your rating is too low!';
+        ELSE
+            RAISE EXCEPTION 'Price should be higher than %!', baseprice;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS add_price on can_care; 
+CREATE TRIGGER add_price
+BEFORE INSERT OR UPDATE ON can_care
+FOR EACH ROW EXECUTE PROCEDURE check_price();
