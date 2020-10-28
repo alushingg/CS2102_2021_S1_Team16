@@ -50,7 +50,7 @@ exports.addAvailability = function(requestBody, callback) {
           } else {
               console.log("Failed.");
               console.log("Status code: " + result.status);
-              callback([], result.err.message);
+              callback(result.err.message);
             }
         });
     }
@@ -74,7 +74,7 @@ exports.applyleave = function(requestBody, callback) {
          } else {
              console.log("Failed.");
              console.log("Status code: " + result.status);
-             callback([], result.err.message);
+             callback(result.err.message);
            }
        });
    }
