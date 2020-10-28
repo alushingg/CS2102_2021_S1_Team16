@@ -103,7 +103,7 @@ router.get('/signup', function(req, res, next) {
   res.render('signup', pageInfo);
 }).post('/signup', function(req, res, next) { 
   signupController.registerUser(req.body, (result) => {
-    if (result == 201 || result == 404) {
+    if (result == 201) {
       // If successfully added to user table or user already exists
       signupController.registerOwner(req.body, (result) => {
         if(result == 201) {
@@ -119,7 +119,7 @@ router.get('/signup', function(req, res, next) {
         }
       });
     } else {
-      const pageInfo = signupController.getErrorPageInfo('unknown');
+      const pageInfo = signupController.getErrorPageInfo('exists');
       res.render('signup', pageInfo);
     }
   });

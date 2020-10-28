@@ -285,3 +285,33 @@ DROP TRIGGER IF EXISTS add_type ON can_care;
 CREATE TRIGGER add_type
 BEFORE INSERT ON can_care
 FOR EACH ROW EXECUTE PROCEDURE check_type();
+
+CREATE OR REPLACE FUNCTION check_petowner()
+    RETURNS TRIGGER AS
+    $$ DECLARE ctx_a INTEGER;
+    DECLARE ctx_p INTEGER;
+    BEGIN
+        SELECT COUNT(*) INTO ctx_a
+        FROM pcs_admin a
+        WHERE NEW.username = a.username;
+
+        SELECT COUNT(*) INTO ctx_p
+        FROM pet_owner p
+        WHERE NEW.username = p.username;
+
+        IF ctx_a > 0 THEN
+            RAISE EXCEPTION 'Admin cannot be a pet owner!';
+        ELSE
+            IF ctx_p > 0 THEN
+                RAISE EXCEPTION 'This pet owner already exists!';
+            ELSE
+                RETURN NEW;
+            END IF;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS add_petowner ON pet_owner;
+CREATE TRIGGER add_petowner
+BEFORE INSERT ON pet_owner
+FOR EACH ROW EXECUTE PROCEDURE check_petowner();
