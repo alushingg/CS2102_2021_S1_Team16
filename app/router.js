@@ -355,19 +355,27 @@ router.get('/addAvailability', function(req, res, next) {
   }
 }).post('/addAvailability', function(req, res, next) {
   caretakerController.addAvailability(req.body, (msg) => {
-     res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, isAdmin: false, msg: msg });
+    if (msg != "Success!") {
+      res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, isAdmin: false, msg: msg });
+    } else {
+      res.redirect('/profile');
+    }
   });
 });
 
-  router.get('/applyleave', function(req, res, next) {
-   if (userController.getUser() && userController.getUser().isCaretaker()) {
-        res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, isAdmin: false,msg: ""});
+router.get('/applyleave', function(req, res, next) {
+ if (userController.getUser() && userController.getUser().isCaretaker()) {
+      res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, isAdmin: false, msg: ""});
+  }
+}).post('/applyleave', function(req, res, next) {
+  caretakerController.applyleave(req.body, (msg) => {
+    if (msg != "Success!") {
+      res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, isAdmin: false, msg: msg });
+    } else {
+      res.redirect('/profile');
     }
-  }).post('/applyleave', function(req, res, next) {
-    caretakerController.applyleave(req.body, (msg) => {
-       res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, isAdmin: false, msg: msg });
-    });
   });
+});
 
 router.get('/summary', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
@@ -402,7 +410,6 @@ router.get('/addcaretaker', function(req, res, next) {
      res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, isAdmin: true, msg: msg });
   });
 });
-
 
 router.route('/db')
   .get(dbController.queryGet)

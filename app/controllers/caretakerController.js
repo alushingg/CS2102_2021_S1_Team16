@@ -66,7 +66,7 @@ exports.applyleave = function(requestBody, callback) {
    dbController.queryGet(query1, (result) => {
   //  console.log(query1);
    if(result.body.rows.length != 0){ // is full timer
-     const query = `INSERT INTO apply_leave VALUES ('${user}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}'));`;
+     const query = `INSERT INTO apply_leave VALUES ('${user}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}'), '${requestBody.reason}');`;
      console.log("Query: " + query);
      dbController.queryGet(query, (result) => {
          if(result.status == 200) {
@@ -82,9 +82,7 @@ exports.applyleave = function(requestBody, callback) {
        callback("This user does not work full time");
      }
   });
-  }
-
-
+}
 
 exports.showAvailability = function(user, callback) {
   	const query = "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, reason "
@@ -105,8 +103,6 @@ exports.showAvailability = function(user, callback) {
     });
 };
 
-
-
 exports.showReview = function(user, callback) {
   	const query = "SELECT t.username, t.review "
 				+ "FROM take_care t "
@@ -121,7 +117,6 @@ exports.showReview = function(user, callback) {
         }
     });
 };
-
 
 exports.showPastOrders = function(callback) {
 	const user = userController.getUser().getUsername();
