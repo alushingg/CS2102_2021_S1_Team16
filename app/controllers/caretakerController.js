@@ -22,7 +22,7 @@ exports.showProfile = function(user, callback) {
 };
 
 exports.showPricing = function(user, callback) {
-  	const query = "SELECT type, COALESCE(price, base_price) as price "
+  	const query = "SELECT type, CAST(COALESCE(price, base_price) AS DECIMAL(100,2)) as price "
 				+ " FROM can_care NATURAL JOIN category "
 				+ " WHERE username = '" + user + "';";
   	dbController.queryGet(query, (result) => {
