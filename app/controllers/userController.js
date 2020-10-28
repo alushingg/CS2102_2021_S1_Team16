@@ -2,7 +2,7 @@ const User = require('../model/user');
 const { use } = require('../router');
 var user = undefined;
 
-exports.trackUser = function(userData, isOwner, isCaretaker, isAdmin) {
+exports.trackUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT) {
     user = new User({
         'username': userData.username,
         'name': userData.name,
@@ -10,7 +10,8 @@ exports.trackUser = function(userData, isOwner, isCaretaker, isAdmin) {
         'area': userData.area,
         'isOwner': isOwner,
         'isCaretaker': isCaretaker,
-        'isAdmin': isAdmin
+        'isAdmin': isAdmin,
+        'isPOCT' : isPOCT
     });
     this.user = user;
     console.log(user);

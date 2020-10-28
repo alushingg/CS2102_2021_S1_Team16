@@ -14,10 +14,11 @@ const router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if (req.session.authenticated) {
+    var isPOCT = userController.getUser().isPOCT();
     if (userController.getUser().isAdmin()) {
-      res.render('index', { title: 'PCS Team 16', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true });
+      res.render('index', { title: 'PCS Team 16', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: isPOCT });
     } else {
-      res.render('index', { title: 'PCS Team 16', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false });
+      res.render('index', { title: 'PCS Team 16', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT });
     }
   } else {
     res.render('index', { title: 'PCS Team 16', auth: req.session.authenticated, user: userController.getUsername() });
@@ -26,12 +27,14 @@ router.get('/', function(req, res, next) {
 
 router.get('/pricing', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
-  res.render('pricing', { title: 'PCS Team 16', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin });
+  var isPOCT = userController.getUser() && userController.getUser().isPOCT();
+  res.render('pricing', { title: 'PCS Team 16', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, isPOCT: isPOCT });
 });
 
 router.get('/caretaker', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
-  res.render('caretaker', { title: 'Find Care Taker', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, error: "" });
+  var isPOCT = userController.getUser() && userController.getUser().isPOCT();
+  res.render('caretaker', { title: 'Find Care Taker', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, isPOCT: isPOCT, error: "" });
 }).post('/caretaker', function(req, res, next) {
   req.session.ptype = req.body.type;
   req.session.sdate = req.body.start_date;
@@ -41,13 +44,15 @@ router.get('/caretaker', function(req, res, next) {
 
 router.get('/availability', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
+  var isPOCT = userController.getUser() && userController.getUser().isPOCT();
   availabilityController.findCaretaker(req.session.ptype, req.session.sdate, req.session.edate, (result) => {
-    res.render('availability', { title: 'Availability', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, data: result });
+    res.render('availability', { title: 'Availability', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, isPOCT: isPOCT, data: result });
   })
 });
 
 router.get('/bid/:ctuname', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
+  var isPOCT = userController.getUser() && userController.getUser().isPOCT();
   bidController.getPets(req, req.session.ptype, req.session.sdate, req.session.edate, (pet, price) => {
     const { ctuname } = req.params;
 //    res.render('bid', { title: 'Bid', auth: req.session.authenticated, isAdmin: isAdmin, pet: pet, price: price,
@@ -56,8 +61,8 @@ router.get('/bid/:ctuname', function(req, res, next) {
             caretakerController.showReview(ctuname, (dataR) => {
 //              res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, isAdmin: false,
 //                data: data, dataP: dataP, dataA: dataA, dataR: dataR });
-                res.render('bid', { title: 'Bid', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, pet: pet, price: price,
-                            start: req.session.sdate, end: req.session.edate, type: req.session.ptype, ctuname: ctuname,
+                res.render('bid', { title: 'Bid', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, isPOCT: isPOCT,
+                            pet: pet, price: price, start: req.session.sdate, end: req.session.edate, type: req.session.ptype, ctuname: ctuname,
                             data: data, dataR: dataR});
             })
 
@@ -66,11 +71,12 @@ router.get('/bid/:ctuname', function(req, res, next) {
 
 }).post('/bid/:ctuname', function(req, res, next) {
   var isAdmin = userController.getUser() && userController.getUser().isAdmin();
+  var isPOCT = userController.getUser() && userController.getUser().isPOCT();
   bidController.addBid(req, req.session.ptype, req.session.sdate, req.session.edate, (result) => {
           console.log("Add bid Result: ")
           console.log(result);
           if (result != "") {
-            res.render('caretaker', { title: 'Find Care Taker', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, error: result });
+            res.render('caretaker', { title: 'Find Care Taker', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: isAdmin, isPOCT: isPOCT, error: result });
           } else {
             res.redirect('/pastorders');
           }
@@ -86,9 +92,9 @@ router.get('/login', function(req, res, next) {
     console.log("Result:");
     console.log(result);
     if (loginController.checkCredentials(result)) {
-      loginController.getUserType(result[0].username, (isOwner, isCaretaker, isAdmin) => {
+      loginController.getUserType(result[0].username, (isOwner, isCaretaker, isAdmin, isPOCT) => {
         // Authenticate the user
-        loginController.authUser(result[0], isOwner, isCaretaker, isAdmin, req.session);
+        loginController.authUser(result[0], isOwner, isCaretaker, isAdmin, isPOCT, req.session);
         res.redirect('/');
       })
     } else {
@@ -107,9 +113,9 @@ router.get('/signup', function(req, res, next) {
       // If successfully added to user table or user already exists
       signupController.registerOwner(req.body, (result) => {
         if(result == 201) {
-          loginController.getUserType(req.body.username, (isOwner, isCaretaker, isAdmin) => {
+          loginController.getUserType(req.body.username, (isOwner, isCaretaker, isAdmin, isPOCT) => {
             // Authenticate the user
-            loginController.authUser(req.body, isOwner, isCaretaker, isAdmin, req.session);
+            loginController.authUser(req.body, isOwner, isCaretaker, isAdmin, isPOCT, req.session);
             res.redirect('/');
           })
         } else {
@@ -133,13 +139,13 @@ router.get('/ct_signup', function(req, res, next) {
   loginController.getCredentials(req.body, (result) => {
     console.log(result);
     if (loginController.checkCredentials(result)) {
-      loginController.getUserType(result[0].username, (isOwner, isCaretaker, isAdmin) => {
+      loginController.getUserType(result[0].username, (isOwner, isCaretaker, isAdmin, isPOCT) => {
         console.log(result[0]);
         // Authenticate the user
         if(isCaretaker) {
           signupController.registerOwner(req.body, (code) => {
             if(code == 201) {
-                loginController.authUser(result[0], true, isCaretaker, isAdmin, req.session);
+                loginController.authUser(result[0], true, false, isAdmin, 1, req.session);
                 res.redirect('/');
             } else {
               const pageInfo = signupController.getErrorPageInfo('exists');
@@ -168,27 +174,27 @@ router.get('/profile', function(req, res, next) {
   const isOwner = userController.getUser().isOwner();
   const isCaretaker = userController.getUser().isCaretaker();
   const isAdmin = userController.getUser().isAdmin();
+  const isPOCT = userController.getUser() && userController.getUser().isPOCT();
 
   if (isAdmin) {
     adminController.showProfile((data) => {
-      res.render('profile_a', { title: 'Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, data: data });
+      res.render('profile_a', { title: 'Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: isPOCT, data: data });
     })
-  } else if (isOwner && isCaretaker) {
-    res.render('profile_poct', { title: 'Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false });
   } else if (isOwner) {
     petownerController.showProfile((data) => {
       petownerController.showPet((dataP) => {
-        res.render('profile_po', { title: 'Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, data: data, dataP: dataP });
+        res.render('profile_po', { title: 'Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, data: data, dataP: dataP });
       })
     })
   } else if (isCaretaker) {
     const user = userController.getUser().getUsername();
+    const isPOCT = userController.getUser() && userController.getUser().isPOCT();
     caretakerController.showProfile(user, (data) => {
       caretakerController.showPricing(user, (dataP) => {
         caretakerController.showAvailability(user, (dataA) => {
           caretakerController.showReview(user, (dataR) => {
             res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false,
-              data: data, dataP: dataP, dataA: dataA, dataR: dataR });
+              isPOCT: isPOCT, data: data, dataP: dataP, dataA: dataA, dataR: dataR });
           })
         })
       })
@@ -206,18 +212,19 @@ router.get('/edit_profile', function(req, res, next) {
   const isOwner = userController.getUser().isOwner();
   const isCaretaker = userController.getUser().isCaretaker();
   const isAdmin = userController.getUser().isAdmin();
+  const isPOCT = userController.getUser() && userController.getUser().isPOCT();
   if (isAdmin) {
     editProfileController.showCurrentAdminProfile(([data, usertype]) => {
-      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, data: data, usertype: usertype });
+      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: isPOCT, data: data, usertype: usertype });
     })
   } else if (isOwner) {
     editProfileController.showCurrentPOProfile(([data, usertype]) => {
-      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, data: data, usertype: usertype });
+      res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, data: data, usertype: usertype });
     })
   }
  else if (isCaretaker) {
   editProfileController.showCurrentCaretakerProfile(([data, usertype]) => {
-    res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, data: data, usertype: usertype });
+    res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, data: data, usertype: usertype });
   })
 }
 }).post('/edit_profile', function(req, res, next) {
@@ -247,15 +254,17 @@ router.get('/edit_profile', function(req, res, next) {
 router.get('/addtype', function(req, res, next) {
   const user = userController.getUser().getUsername();
   const isCaretaker = userController.getUser().isCaretaker();
+  const isPOCT = userController.getUser() && userController.getUser().isPOCT();
   if (isCaretaker) {
-    res.render('addtype', {title: 'Add Pet Type', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, error: "" });
+    res.render('addtype', {title: 'Add Pet Type', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, error: "" });
   }
 }).post('/addtype', function(req, res, next) {
+    const isPOCT = userController.getUser() && userController.getUser().isPOCT();
      editProfileController.addType(req.body, (result, err) => {
        console.log(result);
        if (err != "") {
             console.log(err);
-            res.render('addtype', { title: 'Add Pet Type', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, error: err });
+            res.render('addtype', { title: 'Add Pet Type', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, error: err });
        } else {
              res.redirect('/profile');
        }
@@ -265,17 +274,19 @@ router.get('/addtype', function(req, res, next) {
 router.get('/ct/:type/set', function(req, res, next) {
   const user = userController.getUser().getUsername();
   const isCaretaker = userController.getUser().isCaretaker();
+  const isPOCT = userController.getUser() && userController.getUser().isPOCT();
   if (isCaretaker) {
     const { type } = req.params;
-    res.render('setprice', {title: 'Set Price', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, type: type, error: "" });
+    res.render('setprice', {title: 'Set Price', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, type: type, error: "" });
   }
 }).post('/ct/:type/set', function(req, res, next) {
+  const isPOCT = userController.getUser() && userController.getUser().isPOCT();
   const { type } = req.params;
   editProfileController.setPrice(req.body, type, (result, err) => {
    console.log(result);
    if (err != "") {
       console.log(err);
-      res.render('setprice', { title: 'Set Price', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, type: type, error: err });
+      res.render('setprice', { title: 'Set Price', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, type: type, error: err });
    } else {
       res.redirect('/profile');
    }
@@ -285,15 +296,15 @@ router.get('/ct/:type/set', function(req, res, next) {
 router.get('/pastorders', function(req, res, next) {
     const isOwner = userController.getUser().isOwner();
     const isCaretaker = userController.getUser().isCaretaker();
-    if (isOwner && isCaretaker) {
-        res.render('pastorders_poct', {title: 'Past Orders', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false });
-    } else if (isOwner) {
+    const isPOCT = userController.getUser() && userController.getUser().isPOCT();
+    if (isOwner) {
         petownerController.showPastOrders((data) => {
             res.render('pastorders_po', {
                 title: 'Past Orders',
                 auth: req.session.authenticated,
                 user: userController.getUsername(),
                 isAdmin: false,
+                isPOCT: isPOCT,
                 data: data
             });
         })
@@ -305,6 +316,7 @@ router.get('/pastorders', function(req, res, next) {
               auth: req.session.authenticated,
               user: userController.getUsername(),
               isAdmin: false,
+              isPOCT: isPOCT,
               data: data,
               dataPd: dataPd
 
@@ -330,9 +342,10 @@ router.post('/ct/:name/:pouname/:day/:month/:year/completed', function(req, res,
         res.redirect("/pastorders")
 })
 router.get('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, next) {
-    petownerController.showOrder(req, (data, name, day, month, year, ctuname) => {
+  const isPOCT = userController.getUser() && userController.getUser().isPOCT();
+  petownerController.showOrder(req, (data, name, day, month, year, ctuname) => {
         res.render('rate_review', {title: 'Rate and Review Care Taker', auth: req.session.authenticated, user: userController.getUsername(),
-                                     isAdmin: false, data: data, name: name, day: day, month: month, year: year, ctuname: ctuname});
+                                     isAdmin: false, isPOCT: isPOCT, data: data, name: name, day: day, month: month, year: year, ctuname: ctuname});
     });
 }).post('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, next) {
     petownerController.postReview(req.body, req.params, (result) => {
@@ -343,9 +356,10 @@ router.get('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, nex
 });
 
 router.get('/pet/:petname/update', function(req, res, next) {
+    const isPOCT = userController.getUser() && userController.getUser().isPOCT();
     petController.trackPet(req, (data, petname) => {
         res.render('petupdate', { title: 'Pet Update', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, 
-                                    data: data, petname: petname });
+                                    isPOCT: isPOCT, data: data, petname: petname });
     });
 }).post('/pet/:petname/update', function(req, res, next) {
      petController.editPet(req.body, req.params, (result) => {
@@ -356,15 +370,17 @@ router.get('/pet/:petname/update', function(req, res, next) {
 });
 
 router.get('/petadd', function(req, res, next) {
-     res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, error: "" });
+    const isPOCT = userController.getUser() && userController.getUser().isPOCT();
+    res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, error: "" });
 }).post('/petadd', function(req, res, next) {
+     const isPOCT = userController.getUser() && userController.getUser().isPOCT();
      petController.addPet(req.body, (result, err) => {
        console.log("Add Pet Result: ")
        console.log(result);
        //if pet exists already, trigger will return error
        if (err != "") {
             console.log(err);
-            res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, error: err });
+            res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, error: err });
        } else {
              res.redirect('/profile');
        }
@@ -381,7 +397,7 @@ router.post('/pet/:petname/delete', function(req, res, next) {
 
 router.get('/getmonthlyreport', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
-    res.render('getmonthlyreport', { title: 'Get Monthly Report', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true });
+    res.render('getmonthlyreport', { title: 'Get Monthly Report', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: 0 });
   }
 }).post('/getmonthlyreport', function(req, res, next) {
   req.session.month = req.body.month;
@@ -393,7 +409,7 @@ router.get('/monthlyreport', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
     adminController.getMonthlyCtReport(req.session.month, req.session.year, (dataC) => {
       adminController.getMonthlyReport(req.session.month, req.session.year, (data) => {
-        res.render('monthlyreport', { title: 'Monthly Report', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true,
+        res.render('monthlyreport', { title: 'Monthly Report', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: 0,
           month: req.session.month, year: req.session.year, dataC: dataC, data: data });
       })
     })
@@ -401,13 +417,15 @@ router.get('/monthlyreport', function(req, res, next) {
 });
 
 router.get('/addAvailability', function(req, res, next) {
+ const isPOCT = userController.getUser() && userController.getUser().isPOCT();
  if (userController.getUser() && userController.getUser().isCaretaker()) {
-      res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, msg: ""});
+      res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, msg: ""});
   }
 }).post('/addAvailability', function(req, res, next) {
+  const isPOCT = userController.getUser() && userController.getUser().isPOCT();
   caretakerController.addAvailability(req.body, (msg) => {
     if (msg != "Success!") {
-      res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, msg: msg });
+      res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, msg: msg });
     } else {
       res.redirect('/profile');
     }
@@ -415,13 +433,15 @@ router.get('/addAvailability', function(req, res, next) {
 });
 
 router.get('/applyleave', function(req, res, next) {
+ const isPOCT = userController.getUser() && userController.getUser().isPOCT();
  if (userController.getUser() && userController.getUser().isCaretaker()) {
-      res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, msg: ""});
+      res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, msg: ""});
   }
 }).post('/applyleave', function(req, res, next) {
+  const isPOCT = userController.getUser() && userController.getUser().isPOCT();
   caretakerController.applyleave(req.body, (msg) => {
     if (msg != "Success!") {
-      res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, msg: msg });
+      res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: false, isPOCT: isPOCT, msg: msg });
     } else {
       res.redirect('/profile');
     }
@@ -432,7 +452,7 @@ router.get('/summary', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
     adminController.getMthSummary((data) => {
       adminController.getSummary((dataT, dataP, dataPd, dataS, dataE, dataPf) => {
-        res.render('summary', { title: 'Summary', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, data: data,
+        res.render('summary', { title: 'Summary', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: 0, data: data,
           dataT: dataT, dataP: dataP, dataPd: dataPd, dataS: dataS, dataE: dataE, dataPf, dataPf });
       })
     })
@@ -441,25 +461,38 @@ router.get('/summary', function(req, res, next) {
 
 router.get('/addadmin', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
-     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true , msg: "" });
+     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: 0, msg: "" });
   }
 }).post('/addadmin', function(req, res, next) {
   adminController.addAdmin(req.body, (result, msg) => {
      console.log("Add admin Result: ")
      console.log(result);
      console.log(msg);
-     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, msg: msg });
+     res.render('add_admin', { title: 'Add New Admin', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: 0, msg: msg });
   });
 });
 
 router.get('/addcaretaker', function(req, res, next) {
   if (userController.getUser() && userController.getUser().isAdmin()) {
-     res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true , msg: "" });
+     res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true , isPOCT: 0, msg: "" });
   }
 }).post('/addcaretaker', function(req, res, next) {
   adminController.addCaretaker(req.body, (msg) => {
-     res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, msg: msg });
+     res.render('add_caretaker', { title: 'Add New Care Taker', auth: req.session.authenticated, user: userController.getUsername(), isAdmin: true, isPOCT: 0, msg: msg });
   });
+});
+
+router.get('/switch', function(req, res, next) {
+    const isPOCT = userController.getUser() && userController.getUser().isPOCT();
+    console.log(userController.getUser().isCaretaker());
+    console.log(userController.getUser().isOwner());
+    if (isPOCT) {
+        userController.getUser().changeUser();
+        console.log(userController.getUser().isCaretaker());
+        console.log(userController.getUser().isOwner());
+        console.log(userController.getUser().isPOCT());
+        res.redirect('/');
+    }
 });
 
 module.exports = router;
