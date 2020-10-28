@@ -45,6 +45,7 @@ exports.getUserType = function(username, callback) {
     var isOwner = false;
     var isCaretaker = false;
     var isAdmin = false;
+    var isPOCT = 0;
     dbController.queryGet(po_query, (result) => {
         if(result.body.rows.length === 1) {
             isOwner = true;
@@ -57,14 +58,18 @@ exports.getUserType = function(username, callback) {
                 if(result.body.rows.length === 1) {
                     isAdmin = true;
                 }
-                callback(isOwner, isCaretaker, isAdmin);
+                if (isCaretaker && isOwner) {
+                    isPOCT = 1;
+                    isCaretaker = false;
+                }
+                callback(isOwner, isCaretaker, isAdmin, isPOCT);
             });
         });
     });
 }
 
-exports.authUser = function(userData, isOwner, isCaretaker, isAdmin, session) {
-    userController.trackUser(userData, isOwner, isCaretaker, isAdmin);
+exports.authUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT, session) {
+    userController.trackUser(userData, isOwner, isCaretaker, isAdmin, isPOCT);
     session.authenticated = true;
 }
 

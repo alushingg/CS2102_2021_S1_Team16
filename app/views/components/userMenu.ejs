@@ -23,13 +23,23 @@
             <a href="/pastorders">
                 <div class="menuItems">Past Order</div>
             </a>
-            <a href="/applyleave">
-                <div class="menuItems">Apply Leave</div>
+<!--            <a href="/applyleave">-->
+<!--                <div class="menuItems">Apply Leave</div>-->
+<!--            </a>-->
+<!--            <a href="/addAvailability">-->
+<!--                <div class="menuItems">Add Availability</div>-->
+<!--            </a>-->
+        <% } %>
+        <%if (isPOCT == 1) {%>
+            <a href="/switch">
+                <div class="menuItems">Switch to Care Taker</div>
             </a>
-            <a href="/addAvailability">
-                <div class="menuItems">Add Availability</div>
+        <% } else if (isPOCT == 2) {%>
+            <a href="/switch">
+                <div class="menuItems">Switch to Pet Owner</div>
             </a>
         <% } %>
+
         <a href="/logout">
             <div class="menuItems">Log out</div>
         </a>

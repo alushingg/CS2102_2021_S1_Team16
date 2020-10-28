@@ -85,13 +85,12 @@ exports.applyleave = function(requestBody, callback) {
 }
 
 exports.showAvailability = function(user, callback) {
-  	const query = "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, reason "
+  	const query = "SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, reason "
   			+ "FROM apply_leave WHERE username = '" + user + "' "
-				+ "ORDER BY date) "
 				+ "UNION "
-				+ "(SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, NULL "
+				+ "SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, NULL "
 				+ "FROM specify_availability WHERE username = '" + user + "' "
-				+ "ORDER BY date);";
+				+ "ORDER BY year DESC, month DESC, day DESC;";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);

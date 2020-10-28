@@ -84,7 +84,10 @@
         <% } %>
 
         <% if (data[0].job_type == 'Full Time') { %>
-            <h1>Leave</h1>
+            <h1 style="display:inline-block;">Leave</h1>
+            <td style="border:transparent;">
+                <button class="button" onclick="window.location.href='/applyleave'">Add</button>
+            </td>
             <% if (dataA.length == 0) { %>
                 <p>No leave.</p>
             <% } else { %>
@@ -110,7 +113,10 @@
                 </table>
             <% } %>
         <% } else { %>
-            <h1>Availability</h1>
+            <h1 style="display:inline-block;">Availability</h1>
+            <td style="border:transparent;">
+                <button class="button" onclick="window.location.href='/addAvailability'">Add</button>
+            </td>
             <% if (dataA.length == 0) { %>
                 <p>No availability.</p>
             <% } else { %>
