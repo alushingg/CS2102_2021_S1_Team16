@@ -14,6 +14,19 @@
         </header>
 
         <!-- Content here -->
+        <h1>Summary for Current Month</h1>
+        <% if (dataS.length != 0) { %>
+            <p>Total transactions: <%= dataS[0].transactions %></p>
+            <p>Total pets: <%= dataS[0].pets %></p>
+            <p>Total pet days: <%= dataS[0].pet_days %></p>
+            <p>Total salary: $<%= dataS[0].salary %></p>
+        <% } else { %>
+            <p>Total transactions: 0</p>
+            <p>Total pets: 0</p>
+            <p>Total pet days: 0</p>
+            <p>Total salary: $0</p>
+        <% } %>
+
         <h1> Past Jobs </h1>
         <style>
             th, td {
@@ -79,13 +92,6 @@
             </table>
         <% } %>
 
-
-      <h2>Pet Days</h2>
-      <% if(dataPd.length != 0) { %>
-    <p>Total pet days this month: <%= dataPd[0].totalpetdays %> </p>
-    <% } else { %>
-    <p>Total pet days this month: 0 </p>
-    <% } %>
         <footer>
             <%- include('./components/footer'); %>
         </footer>

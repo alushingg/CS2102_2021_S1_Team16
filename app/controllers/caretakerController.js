@@ -135,13 +135,48 @@ exports.showPastOrders = function(callback) {
     });
 };
 
-exports.showPetdays = function(callback) {
-	const user = userController.getUser().getUsername();
-	const query = "SELECT SUM(x.petdays) as totalpetdays "
-             + "FROM (SELECT c.username AS ctuname, t.start_date AS start, t.end_date AS end, t.end_date - t.start_date + 1  AS petdays "
-               +"FROM take_care t JOIN care_taker c ON t.ctuname = c.username WHERE EXTRACT(month FROM(now())) = EXTRACT(month FROM (start_date)) AND EXTRACT(month FROM(now())) = EXTRACT(month FROM(end_date))) AS x "
-             +"WHERE x.ctuname = '"+ user +"'  GROUP BY x.ctuname;  ";
-  	dbController.queryGet(query, (result) => {
+exports.showSummary = function(callback) {
+  const user = userController.getUser().getUsername();
+  const query = "SELECT COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
+                    + "SUM(t.end_date - t.start_date + 1) AS pet_days, 3000.00 AS salary "
+                + "FROM full_time f INNER JOIN "
+                    + "(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t "
+                    + "ON f.username = t.ctuname "
+                + "WHERE t.ctuname = '" + user + "' "
+                    + "AND t.emonth = EXTRACT(month FROM NOW()) AND t.eyear = EXTRACT(year FROM NOW()) "
+                + "GROUP BY (f.username, t.emonth, t.eyear) "
+                + "HAVING COUNT(*) <= 60 "
+                + "UNION "
+                + "SELECT COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
+                    + "SUM(t.end_date - t.start_date + 1) AS pet_days, "
+                    + "CAST((3000 + (SELECT SUM(0.8 * daily_price * (end_date - start_date + 1)) FROM take_care t1 "
+                                + "WHERE t1.ctuname = f.username "
+                                    + "AND EXTRACT(month FROM t1.end_date) = t.emonth "
+                                    + "AND EXTRACT(year FROM t1.end_date) = t.eyear "
+                                + "GROUP BY (t1.start_date, t1.end_date) "
+                                + "ORDER BY t1.end_date ASC, t1.start_date ASC "
+                                + "OFFSET 60)) AS DECIMAL(100,2)) AS salary "
+                + "FROM full_time f INNER JOIN "
+                    + "(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t "
+                    + "ON f.username = t.ctuname "
+                + "WHERE t.ctuname = '" + user + "' "
+                    + "AND t.emonth = EXTRACT(month FROM NOW()) AND t.eyear = EXTRACT(year FROM NOW()) "
+                + "GROUP BY (f.username, t.emonth, t.eyear) "
+                + "HAVING COUNT(*) > 60 "
+                + "UNION "
+                + "SELECT COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
+                    + "SUM(t.end_date - t.start_date + 1) AS pet_days, "
+                    + "CAST((SELECT SUM(0.75 * daily_price * (end_date - start_date + 1)) FROM take_care t1 "
+                        + "WHERE t1.ctuname = p.username "
+                            + "AND EXTRACT(month FROM t1.end_date) = t.emonth "
+                            + "AND EXTRACT(year FROM t1.end_date) = t.eyear) AS DECIMAL(100,2)) AS salary "
+                + "FROM part_time p INNER JOIN "
+                    + "(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t "
+                    + "ON p.username = t.ctuname "
+                + "WHERE t.ctuname = '" + user + "' "
+                    + "AND t.emonth = EXTRACT(month FROM NOW()) AND t.eyear = EXTRACT(year FROM NOW()) "
+                + "GROUP BY (p.username, t.emonth, t.eyear);";
+    dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
         } else {

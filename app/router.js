@@ -299,15 +299,15 @@ router.get('/pastorders', function(req, res, next) {
         })
     } else if (isCaretaker) {
       caretakerController.showPastOrders((data) => {
-        caretakerController.showPetdays((dataPd) =>{
+        caretakerController.showSummary((dataS) =>{
+          console.log(dataS);
           res.render('pastorders_ct', {
               title: 'Past Orders',
               auth: req.session.authenticated,
               user: userController.getUsername(),
               isAdmin: false,
               data: data,
-              dataPd: dataPd
-
+              dataS: dataS
             });
           })
         })
