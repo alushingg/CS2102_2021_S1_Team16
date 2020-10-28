@@ -25,7 +25,7 @@ exports.getErrorPageInfo = function(error) {
 
 exports.registerUser = function(requestBody, callback) {
     const query = "INSERT INTO users VALUES ('" + requestBody.username + "', '" + requestBody.password + "', '" 
-                        + requestBody.name + "', '" + requestBody.phone_number + "', '" + requestBody.area + "');";
+                        + requestBody.name + "', " + requestBody.phone + ", '" + requestBody.area + "');";
     dbController.queryPost(query, (result) => {
         if(result.status == 201) {
             console.log("Register User OK");
