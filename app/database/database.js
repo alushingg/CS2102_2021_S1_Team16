@@ -9,8 +9,8 @@ require('dotenv').config();
     port:process.env.PG_PORT,
 });*/
 
-const db = new Poll({
+const db = new postgre.Pool({
     connectionString: process.env.DATABASE_URL,
-})
+});
 
 module.exports = db;
