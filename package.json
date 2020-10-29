@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "app/node_modules/.bin/nodemon ./bin/www"
+    "start": "node ./bin/www",
+    "start-dev": "app/node_modules/.bin/nodemon ./bin/www"
   },
   "dependencies": {
     "accordion-js": "^2.8.0",
