@@ -1,7 +1,7 @@
 const dbController = require('./dbController');
 
 exports.findCaretaker = function(type, sdate, edate, callback) {
-  	const query = "SELECT u.username, u.name, u.phone_number, u.area, ROUND(ratings.rating, 2) as rating, COALESCE(c.price,cat.base_price) as price, 'Full Time' as job_type " 
+  	const query = "SELECT u.username, u.name, u.phone_number, u.area, ROUND(ratings.rating, 2) as rating, CAST(COALESCE(c.price,cat.base_price) AS DECIMAL(100,2)) as price, 'Full Time' as job_type "
 				+ "FROM full_time f NATURAL JOIN users u NATURAL JOIN can_care c NATURAL JOIN category cat " 
 				+ "LEFT JOIN (SELECT t.ctuname AS username, AVG(t.rating) AS rating FROM take_care t GROUP BY t.ctuname) AS ratings ON f.username = ratings.username "
 				+ "WHERE c.type = '" + type + "' "
@@ -13,7 +13,7 @@ exports.findCaretaker = function(type, sdate, edate, callback) {
         				+ "AND ((t1.start_date >= DATE('" + sdate + "') AND t1.start_date <= DATE('" + edate + "')) "
          					+ "OR (t1.end_date >= DATE('" + sdate + "') AND t1.end_date <= DATE('" + edate + "')))) < 5 "
 				+ "UNION "
-				+ "SELECT u.username, u.name, u.phone_number, u.area, ROUND(ratings.rating, 2) as rating, COALESCE(c.price, cat.base_price) as price, 'Part Time' as job_type "
+				+ "SELECT u.username, u.name, u.phone_number, u.area, ROUND(ratings.rating, 2) as rating, CAST(COALESCE(c.price,cat.base_price) AS DECIMAL(100,2)) as price, 'Part Time' as job_type "
 				+ "FROM part_time p NATURAL JOIN users u NATURAL JOIN can_care c NATURAL JOIN category cat "
 				+ "LEFT JOIN (SELECT t.ctuname AS username, AVG(t.rating) AS rating FROM take_care t GROUP BY t.ctuname) AS ratings ON p.username = ratings.username "
 				+ "WHERE c.type = '" + type + "' "
