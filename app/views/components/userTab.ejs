@@ -1,0 +1,16 @@
+<nav>
+    <ul class="nav_links">
+        <li><a href="/profile">Profile</a></li>
+        <%if (isAdmin) { %>
+        	<li><a href="/getmonthlyreport">Monthly Report</a></li>
+        	<li><a href="/summary">Summary</a></li>
+            <li><a href="/addadmin">Add Admin</a></li>
+            <li><a href="/addcaretaker">Add Care Taker</a></li>
+      <% } else { %>
+    <li><a href="/pastorders">Past Orders</a></li>
+    <li><a href="/applyleave">Apply Leave</a></li>
+    <li><a href="/addAvailability">Add Availability</a></li>
+        <% } %>
+    </ul>
+</nav>
+<a class="nav_links nav_right" href="/logout">Logout</a>

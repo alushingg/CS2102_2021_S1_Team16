@@ -53,10 +53,10 @@
         <p>Total number of pet days: <%= data[0].total_pet_days %></p>
         <p>Total salary to be paid: $<%= data[0].total_salary %></p>
         <p>Total earnings: $<%= data[0].total_earnings %></p>
-        <% if (data[0].total_earnings - data[0].total_salary < 0) { %>
-            <p>Total profit: -$<%= Math.abs(data[0].total_earnings - data[0].total_salary) %></p>
+        <% if (data[0].total_profit < 0) { %>
+            <p>Total profit: -$<%= Math.abs(data[0].total_profit).toFixed(2) %></p>
         <% } else { %>
-            <p>Total profit: $<%= Math.abs(data[0].total_earnings - data[0].total_salary) %></p>
+            <p>Total profit: $<%= Math.abs(data[0].total_profit).toFixed(2) %></p>
         <% } %>
 
         <footer>

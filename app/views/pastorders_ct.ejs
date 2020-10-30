@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,15 +6,91 @@
     </head>
 
     <body>
-        
+
         <!-- <%- include('./components/backToTopBtn'); %> -->
-        
+
         <header>
             <%- include('./components/header'); %>
         </header>
 
         <!-- Content here -->
-        
+        <h1>Summary for Current Month</h1>
+        <% if (dataS.length != 0) { %>
+            <p>Total transactions: <%= dataS[0].transactions %></p>
+            <p>Total pets: <%= dataS[0].pets %></p>
+            <p>Total pet days: <%= dataS[0].pet_days %></p>
+            <p>Total salary: $<%= dataS[0].salary %></p>
+        <% } else { %>
+            <p>Total transactions: 0</p>
+            <p>Total pets: 0</p>
+            <p>Total pet days: 0</p>
+            <p>Total salary: $0</p>
+        <% } %>
+
+        <h1> Past Jobs </h1>
+        <style>
+            th, td {
+                border: 1px solid black;
+            }
+            table {
+                border-collapse: collapse;
+                table-layout: auto;
+                width: 99%;
+            }
+            .button {
+              border: none;
+              color: white;
+              padding: 10px 10px;
+              text-align: center;
+              margin: 5px;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 14px;
+              cursor: pointer;
+              background-color: #4CAF50; /* Green */
+            }
+        </style>
+        <% if (data.length == 0) { %>
+            <p>No past orders.</p>
+        <% } else { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Pet Name</th>
+                        <th scope="col">Pet Owner</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Review</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<data.length; i++) { %>
+                    <tr>
+                        <td><%= data[i].name %></td>
+                        <td><%= data[i].username %></td>
+                        <td><%= data[i].start_day %>/<%= data[i].start_month %>/<%= data[i].start_year %></td>
+                        <td><%= data[i].end_day %>/<%= data[i].end_month %>/<%= data[i].end_year %></td>
+                        <td><%= data[i].rating %></td>
+                        <td><%= data[i].review %></td>
+                        <% if (!data[i].has_paid) { %>
+                            <td style="border:transparent;">
+                                <form method="POST" action="/ct/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].username)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/paid" style="display:inline;">
+                                    <button type="submit" class="button button2" onclick="return confirm('Are you sure the pet owner has paid?');" >Paid</button>
+                                </form>
+                            </td>
+                        <% } else if (!data[i].is_completed) {%>
+                            <td style="border:transparent;">
+                                <form method="POST" action="/ct/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].username)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/completed" style="display:inline;">
+                                    <button type="submit" class="button button2" onclick="return confirm('Are you sure the order is completed?');" >Completed</button>
+                                </form>
+                            </td>
+                        <% } %>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
 
         <footer>
             <%- include('./components/footer'); %>

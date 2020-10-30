@@ -121,6 +121,10 @@ div.content .card {
   width: 100%;
 }
 
+body {
+    padding-bottom: 70px;
+}
+
 p {
   word-wrap: break-word;
   margin: 10px 0px;

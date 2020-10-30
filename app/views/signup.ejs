@@ -3,12 +3,13 @@
   <head>
     <%- include('./components/htmlHead'); %>
     <link rel='stylesheet' href='/css/signup.css' />
+    <script src="js/editProfileScript.js"></script>
   </head>
   <body>
     <div class="content">
       <div class="spacing"></div>
       <div id="signupForm">
-        <form method="POST" action="/signup">
+        <form id="signupForm" method="POST" action="/signup">
           <h3 id="title">Sign Up</h3>
           
           <div class="aligner">
@@ -16,10 +17,10 @@
           </div>
           <div class="aligner" id="phone_area">
               <div id="phoneDiv">
-                  <input type="text" id="phone_number" name="phone_number" placeholder="Phone number" required>
+                  <input type="text" id="phone" name="phone" placeholder="Phone number" required>
               </div>
               <div id="areaDiv">
-                  <input type="text" id="area" name="area" placeholder="Residential District" required>
+                  <input type="text" id="area" name="area" placeholder="Area" required>
               </div>
           </div>
           
@@ -42,4 +43,14 @@
       </div>
     </div>
   </body>
+  <script>
+      (function() {
+          window.addEventListener('load', function() {
+              var forms = [document.getElementById('signupForm')];
+              var validation = Array.prototype.filter.call(forms, function(form) {
+                  form.addEventListener('submit', checkAdd, false);
+              });
+          }, false);
+      })();
+  </script>
 </html>

@@ -2,7 +2,7 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
-        <script src="js/getMonthlyReportScript.js"></script>
+        <script src="js/leaveAvailabilityScript.js"></script>
     </head>
 
     <style>
@@ -29,7 +29,11 @@
 
         <!-- Content here -->
         <h1><%= title %></h1>
-        <form id="getMonthlyReportForm" method="POST" action="/getmonthlyreport">
+        <form id="addAvailabilityForm" method="POST" action="/addAvailability">
+          <div class="form-group">
+            <label for="day">Day: </label>
+            <input type="text" id="day" name="day" placeholder="DD" required>
+          </div>
           <div class="form-group">
             <label for="month">Month: </label>
             <input type="text" id="month" name="month" placeholder="MM" required>
@@ -44,12 +48,15 @@
         <script>
           (function() {
             window.addEventListener('load', function() {
-              var forms = [document.getElementById('getMonthlyReportForm')];
+              var forms = [document.getElementById('addAvailabilityForm')];
               var validation = Array.prototype.filter.call(forms, function(form) {
                 form.addEventListener('submit', check, false);
               });
             }, false);
           })();
+          if ("<%= msg%>" != "") {
+              alert('<%= msg%>');
+          }
         </script>
 
         <footer>

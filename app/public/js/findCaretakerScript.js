@@ -27,7 +27,7 @@ function check(event) {
         event.preventDefault();
         event.stopPropagation();
         return false;
-    } 
+    }
 }
 
 function isValidDate(dateString) {
@@ -38,7 +38,7 @@ function isValidDate(dateString) {
         return false;
     if (!/^\d{1,2}$/.test(dateString.day))
         return false;
-    
+
     var day = dateString.day;
     var month = dateString.month;
     var year = dateString.year;

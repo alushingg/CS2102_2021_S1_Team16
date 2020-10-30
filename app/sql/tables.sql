@@ -21,7 +21,7 @@ CREATE TABLE category (
 );
 
 CREATE TABLE users (
-	username VARCHAR 
+	username VARCHAR
 		PRIMARY KEY,
 	password VARCHAR NOT NULL,
 	name VARCHAR NOT NULL,
@@ -77,7 +77,8 @@ CREATE TABLE specify_availability (
 
 CREATE TABLE can_care (
 	username VARCHAR
-		REFERENCES care_taker(username),
+		REFERENCES care_taker(username)
+		ON DELETE cascade,
 	type VARCHAR
 		REFERENCES category(type),
 	price NUMERIC,
@@ -130,7 +131,8 @@ CREATE TABLE take_care (
 	name VARCHAR,
 	start_date DATE,
 	end_date DATE,
-	ctuname VARCHAR REFERENCES care_taker(username),
+	ctuname VARCHAR REFERENCES care_taker(username)
+	ON DELETE CASCADE,
 	has_paid BOOLEAN,
 	daily_price NUMERIC,
 	is_completed BOOLEAN NOT NULL DEFAULT FALSE,
@@ -146,47 +148,47 @@ CREATE TABLE take_care (
 -- DROP VIEW IF EXISTS ct_report;
 
 -- CREATE VIEW ct_report AS
---     SELECT f.username, 'Full Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, 
---         SUM(t.end_date - t.start_date + 1) AS pet_days, 3000 AS salary, 
---         SUM(t.daily_price * (t.end_date - t.start_date + 1)) AS earnings, 
---         t.emonth AS month, t.eyear AS year 
---     FROM full_time f INNER JOIN 
---     	(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t 
---     	ON f.username = t.ctuname 
---     WHERE has_paid 
+--     SELECT f.username, 'Full Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets,
+--         SUM(t.end_date - t.start_date + 1) AS pet_days, 3000 AS salary,
+--         SUM(t.daily_price * (t.end_date - t.start_date + 1)) AS earnings,
+--         t.emonth AS month, t.eyear AS year
+--     FROM full_time f INNER JOIN
+--     	(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t
+--     	ON f.username = t.ctuname
+--     WHERE has_paid
 --     GROUP BY (f.username, t.emonth, t.eyear)
---     HAVING COUNT(*) <= 60 
---     UNION 
---     SELECT f.username, 'Full Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, 
---         SUM(t.end_date - t.start_date + 1) AS pet_days, 
---         (3000 + (SELECT SUM(0.8 * daily_price * (end_date - start_date + 1)) FROM take_care t1 
---                     WHERE t1.ctuname = f.username 
---                         AND has_paid 
+--     HAVING COUNT(*) <= 60
+--     UNION
+--     SELECT f.username, 'Full Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets,
+--         SUM(t.end_date - t.start_date + 1) AS pet_days,
+--         (3000 + (SELECT SUM(0.8 * daily_price * (end_date - start_date + 1)) FROM take_care t1
+--                     WHERE t1.ctuname = f.username
+--                         AND has_paid
 --                         AND EXTRACT(month FROM t1.end_date) = t.emonth
 --                         AND EXTRACT(year FROM t1.end_date) = t.eyear
---                     GROUP BY (t1.start_date, t1.end_date) 
---                     ORDER BY t1.end_date ASC, t1.start_date ASC 
---                     OFFSET 60)) AS salary, 
---         SUM(t.daily_price * (t.end_date - t.start_date + 1)) AS earnings, 
---         t.emonth AS month, t.eyear AS year 
---     FROM full_time f INNER JOIN 
+--                     GROUP BY (t1.start_date, t1.end_date)
+--                     ORDER BY t1.end_date ASC, t1.start_date ASC
+--                     OFFSET 60)) AS salary,
+--         SUM(t.daily_price * (t.end_date - t.start_date + 1)) AS earnings,
+--         t.emonth AS month, t.eyear AS year
+--     FROM full_time f INNER JOIN
 --     	(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t
---     	ON f.username = t.ctuname 
---     WHERE has_paid 
+--     	ON f.username = t.ctuname
+--     WHERE has_paid
 --     GROUP BY (f.username, t.emonth, t.eyear)
---     HAVING COUNT(*) > 60 
---     UNION 
---     SELECT p.username, 'Part Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, 
---         SUM(t.end_date - t.start_date + 1) AS pet_days, 
---         (SELECT SUM(0.75 * daily_price * (end_date - start_date + 1)) FROM take_care t1 
---             WHERE t1.ctuname = p.username 
---                 AND has_paid 
+--     HAVING COUNT(*) > 60
+--     UNION
+--     SELECT p.username, 'Part Time' AS job_type, COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets,
+--         SUM(t.end_date - t.start_date + 1) AS pet_days,
+--         (SELECT SUM(0.75 * daily_price * (end_date - start_date + 1)) FROM take_care t1
+--             WHERE t1.ctuname = p.username
+--                 AND has_paid
 --                 AND EXTRACT(month FROM t1.end_date) = t.emonth
---                 AND EXTRACT(year FROM t1.end_date) = t.eyear) AS salary, 
---         SUM(t.daily_price * (t.end_date - t.start_date + 1)) AS earnings, 
---         t.emonth AS month, t.eyear AS year 
---     FROM part_time p INNER JOIN 
---     	(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t 
---     	ON p.username = t.ctuname 
---     WHERE has_paid 
+--                 AND EXTRACT(year FROM t1.end_date) = t.eyear) AS salary,
+--         SUM(t.daily_price * (t.end_date - t.start_date + 1)) AS earnings,
+--         t.emonth AS month, t.eyear AS year
+--     FROM part_time p INNER JOIN
+--     	(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t
+--     	ON p.username = t.ctuname
+--     WHERE has_paid
 --     GROUP BY (p.username, t.emonth, t.eyear);

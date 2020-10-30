@@ -31,6 +31,9 @@
                         </thead>
                         <tbody>
                             <% for(var i=0; i<data.length; i++) { %>
+                                <% if (data[i].username == user) { %>
+                                    <% continue; %>
+                                <% } %>
                             <tr>
                                 <td><%= data[i].name %></td>
                                 <td><%= data[i].phone_number %></td>

@@ -8,6 +8,7 @@ class User {
         this.is_owner = userData.isOwner;
         this.is_caretaker = userData.isCaretaker;
         this.is_admin = userData.isAdmin;
+        this.is_poct = userData.isPOCT;
     }
 
     getUsername() {
@@ -28,6 +29,22 @@ class User {
 
     isAdmin() {
         return this.is_admin;
+    }
+
+    isPOCT() {
+        return this.is_poct; //0 = not POCT, 1 = currently PO, 2 = currently CT
+    }
+
+    changeUser() {
+        if (this.is_poct == 2) {
+            this.is_caretaker = false;
+            this.is_owner = true;
+            this.is_poct = 1;
+        } else if (this.is_poct == 1) {
+            this.is_caretaker = true;
+            this.is_owner = false;
+            this.is_poct = 2;
+        }
     }
 }
 

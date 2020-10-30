@@ -5,22 +5,21 @@
     </head>
 
     <body>
-        
+
         <!-- <%- include('./components/backToTopBtn'); %> -->
-        
+
         <header>
             <%- include('./components/header'); %>
         </header>
 
-        <!-- Content here -->
-        <style>
-            table, th, td {
-              border: 1px solid black;
-              border-collapse: collapse;
-            }
-        </style>
-
-        <h1><%= title %></h1>
+        <body>
+        <h1 style="display:inline-block;"><%= title %></h1>
+        <td style="border:transparent;">
+            <button class="button button1" onclick="window.location.href='/edit_profile'">Edit Profile</button>
+            <form method="POST" action="/profile" style="display:inline;">
+              <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
+            </form>
+        </td>
         <p>Username: <%= data[0].username %></p>
         <p>Name: <%= data[0].name %></p>
         <p>Phone number: <%= data[0].phone_number %></p>
@@ -32,7 +31,32 @@
             <p>Average rating: <%= data[0].rating %> / 5</p>
         <% } %>
 
-        <h1>Pricing</h1>
+        <style>
+                th, td {
+                  border: 1px solid black;
+                }
+                table {
+                    border-collapse: collapse;
+                }
+                .button {
+                  border: none;
+                  color: white;
+                  padding: 10px 10px;
+                  text-align: center;
+                  margin: 5px;
+                  text-decoration: none;
+                  display: inline-block;
+                  font-size: 14px;
+                  cursor: pointer;
+                }
+                .button1 {background-color: #4CAF50;} /* Green */
+                .button2 {background-color: #FF0030;} /* Red */
+            </style>
+
+
+        <h1 style="display:inline-block;">Pricing</h1>
+        <button class="button button1" onclick="window.location.href='/addtype'">Add Pet Type</button>
+
         <% if (dataP.length == 0) { %>
             <p>No pricing.</p>
         <% } else { %>
@@ -48,6 +72,11 @@
                     <tr>
                         <td><%= dataP[i].type %></td>
                         <td><%= dataP[i].price %></td>
+                        <% if (data[0].rating >= 4) { %>
+                            <td style="border:transparent;">
+                                <button class="button" onclick="window.location.href='/ct/<%= encodeURIComponent(dataP[i].type)%>/set'">Set Price</button>
+                            </td>
+                        <% } %>
                     </tr>
                     <% } %>
                 </tbody>
@@ -55,26 +84,57 @@
         <% } %>
 
         <% if (data[0].job_type == 'Full Time') { %>
-            <h1>Leave</h1>
-        <% } else { %>
-            <h1>Availability</h1>
-        <% } %>
-        <% if (dataA.length == 0) { %>
-            <% if (data[0].job_type == 'Full Time') { %>
+            <h1 style="display:inline-block;">Leave</h1>
+            <td style="border:transparent;">
+                <button class="button" onclick="window.location.href='/applyleave'">Add</button>
+            </td>
+            <% if (dataA.length == 0) { %>
                 <p>No leave.</p>
             <% } else { %>
-                <p>No availability.</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i<dataA.length; i++) { %>
+                        <tr>
+                            <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
+                            <% if (!dataA[i].reason) { %>
+                                <td>-</td>
+                            <% } else { %>
+                                <td><%= dataA[i].reason %></td>
+                            <% } %>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
             <% } %>
         <% } else { %>
-            <table class="table">
-                <tbody>
-                    <% for(var i=0; i<dataA.length; i++) { %>
-                    <tr>
-                        <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>
+            <h1 style="display:inline-block;">Availability</h1>
+            <td style="border:transparent;">
+                <button class="button" onclick="window.location.href='/addAvailability'">Add</button>
+            </td>
+            <% if (dataA.length == 0) { %>
+                <p>No availability.</p>
+            <% } else { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i<dataA.length; i++) { %>
+                        <tr>
+                            <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
         <% } %>
 
         <h1>Review</h1>
