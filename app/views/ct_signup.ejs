@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./components/htmlHead'); %>
+    <link rel='stylesheet' href='/css/signup.css' />
+  </head>
+  <body>
+    <div class="content">
+      <div class="spacing"></div>
+      <div id="signupForm">
+        <form method="POST" action="/ct_signup">
+          <h3 id="title">Caretaker Sign Up</h3>     
+          <div class="aligner">
+            <%if (error === true) { %>
+              <%if (error_reason === 'not_found') { %>
+                <p class="error_message">You are not a caretaker.</p>
+              <% } else if (error_reason === 'exists') { %>
+                <p class="error_message">You already have an owner account.</p>
+              <% } else { %>
+                <p class="error_message">Something went wrong.</p>
+              <% } %>
+            <% } %>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="submit">Sign up</button>
+            <p>Already have an account? <a href="/login">Login</a> now!</p>
+          </div>
+      </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('./components/htmlHead'); %>
+    </head>
+
+    <body>
+        
+        <!-- <%- include('./components/backToTopBtn'); %> -->
+        
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+
+        <!-- Content here -->
+        <h1><%= title %> For <%= type %></h1>
+        <form id="setpriceForm" method="POST" action="/ct/<%= type %>/set">
+          <div class="form-group">
+            <label for="price">Price: </label>
+            <input type="text" id="price" name="price" required>
+          </div>
+          <button type="submit" class="button">Submit</button>
+        </form>
+
+        <script>
+            function checkInt() {
+                var price = document.getElementById('price').value;
+                if (!/^\d+\.?\d{0,2}$/.test(price)) {
+                    alert('Please input valid amount!');
+                    event.preventDefault();
+		            event.stopPropagation();
+		        }
+            }
+            (function() {
+                window.addEventListener('load', function() {
+                    var forms = [document.getElementById('setpriceForm')];
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                        form.addEventListener('submit', checkInt, false);
+                    });
+                }, false);
+            })();
+            if ("<%= error%>" != "") {
+                alert('<%= error%>');
+            }
+        </script>
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
+</html>

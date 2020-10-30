@@ -1,0 +1,59 @@
+button {
+    width: 100%;
+}
+
+form {
+    width: 100%;
+}
+
+hr {
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+}
+
+th, td {
+    border: 1px solid black;
+    word-break: break-all;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+div.content {
+    display: block;
+}
+
+div#left-panel {
+    float: left;
+    margin: 5%;
+    padding: 40px;
+    width: 50%;
+    border-radius: 20px;
+}
+
+div#right-panel {
+    float: right;
+    margin: 5%;
+    padding: 40px;
+    width: 25%;
+    border-radius: 20px;
+}
+
+div#date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+div#date p {
+    margin: 0px;
+}

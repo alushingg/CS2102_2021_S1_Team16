@@ -2,21 +2,39 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
-        <link rel='stylesheet' href='/css/pricing.css' />
+        <link rel='stylesheet' href='/css/availability.css' />
     </head>
 
-    <body>        
-      <header>
-          <%- include('./components/header'); %>
-      </header>
+    <body>     
+        <!-- <%- include('./components/backToTopBtn'); %> -->
+        <header>
+            <%- include('./components/header'); %>
+        </header>
 
-      <div class="spacing"></div>
-      
-      <div class="content">
-      </div>
-
-      <footer>
-          <%- include('./components/footer'); %>
-      </footer>
+        <div class="content">
+            <div class="spacing"></div>
+            <div class="card">
+                <h1>Pricing</h1>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Pet Type</th>
+                                <th scope="col">Base Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i<data.length; i++) { %>
+                            <tr>
+                                <td><%= data[i].type %></td>
+                                <td><%= data[i].base_price %></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
     </body>
 </html>

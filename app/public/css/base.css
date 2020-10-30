@@ -1,5 +1,5 @@
 a:link {
-  color: black;
+  color: #4CAF50;
   text-decoration: none;
 }
 
@@ -36,6 +36,7 @@ header {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
 
   font-size: 16px;
 }
@@ -70,6 +71,13 @@ hr {
   color: #eeeeee
 }
 
+th, td {
+  border: 1px solid black;
+}
+table {
+    border-collapse: collapse;
+}
+
 ul.nav_links  {
   margin: 0px;
   padding: 0px;
@@ -85,6 +93,8 @@ ul.nav_links  {
     align-items: center;
     margin-left: auto;
     margin-right: 10px;
+
+    font-weight: bolder;
 }
 
 div.content {
@@ -103,11 +113,16 @@ div.content .card {
   width: auto;
   padding: 40px;
   background-color: rgba(255, 255, 255, 0.6);
+  border: 0px;
 }
 
 .spacing {
   height: 70px;
   width: 100%;
+}
+
+body {
+    padding-bottom: 70px;
 }
 
 p {
@@ -121,13 +136,25 @@ p.error_message {
 }
 
 button {
-  background: none;
+
   border: none;
+  background-color: #4CAF50;
+  
+
+  padding: 10px;
+  margin: 10px 0px;
+
   color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+
+  cursor: pointer;
+  
 }
 
 button:hover {
-  color: gray;
+  color: lightgray;
 }
 
 div.section {
@@ -151,3 +178,36 @@ div.section {
 #bttButton:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+#menuContainer {
+  display: flex;
+  flex-direction: column;
+
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+#userTab {
+  cursor: pointer;
+  transition: 0.4s;
+  height: 60px;
+  padding: 20px; 
+}
+
+#menuItemGroup {
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#menuItemGroup a div.menuItems {
+  display: block;
+  padding: 20px;
+
+  background-color: white;
+  color: green;
+  font-weight: bold;
+}
+

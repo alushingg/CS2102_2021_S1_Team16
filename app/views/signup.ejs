@@ -3,13 +3,15 @@
   <head>
     <%- include('./components/htmlHead'); %>
     <link rel='stylesheet' href='/css/signup.css' />
+    <script src="js/editProfileScript.js"></script>
   </head>
   <body>
     <div class="content">
       <div class="spacing"></div>
       <div id="signupForm">
-        <form method="POST" action="/signup">
+        <form id="signupForm" method="POST" action="/signup">
           <h3 id="title">Sign Up</h3>
+          
           <div class="aligner">
               <input type="text" id="name" name="name" placeholder="Name" required>
           </div>
@@ -18,20 +20,37 @@
                   <input type="text" id="phone" name="phone" placeholder="Phone number" required>
               </div>
               <div id="areaDiv">
-                  <input type="text" id="area" name="area" placeholder="Residential District" required>
+                  <input type="text" id="area" name="area" placeholder="Area" required>
               </div>
           </div>
           
           <hr>
           
           <div class="aligner">
-              <input type="text" id="username" name="username" placeholder="Username" required>
-              <input type="password" id="password" name="password" placeholder="Password" required>
-              <input type="submit" value="Sign up">
-              <p>Already have an account? <a href="/login">Login</a> now!</p>
+            <%if (error === true) { %>
+              <%if (error_reason === 'exists') { %>
+                <p class="error_message">Username has been used.</p>
+              <% } else { %>
+                <p class="error_message">Something went wrong.</p>
+              <% } %>
+            <% } %>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="submit">Sign up</button>
+            <p>Already have an account? <a href="/login">Login</a> now!</p>
           </div>
       </form>
       </div>
     </div>
   </body>
+  <script>
+      (function() {
+          window.addEventListener('load', function() {
+              var forms = [document.getElementById('signupForm')];
+              var validation = Array.prototype.filter.call(forms, function(form) {
+                  form.addEventListener('submit', checkAdd, false);
+              });
+          }, false);
+      })();
+  </script>
 </html>

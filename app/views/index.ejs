@@ -2,7 +2,7 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
-        <link rel='stylesheet' href='/css/home.css' />
+        <link rel='stylesheet' href='/css/index.css' />
     </head>
 
     <body>        
@@ -14,15 +14,80 @@
       
       <div class="content">
         <div class="card">
-            <h1>Hello there!</h1>
+            <h1>Welcome to PCS Pet Service</h1>
+            <form action="/caretaker">
+                <button type="submit">Find a caretaker now!</button>
+            </form>
+        </div>
+
+        <div class="spacing"></div>
+
+        <div class="card">
+            <h1>About PCS Pet Service</h1>
             <p>
-                This is the landing page...
+                We are Singapore's leading pet care service with over 20 loving caretakers ready to serve you. 
+                At PCS Pet Service, we pledge to give our best to every pet that you place with us.
             </p>
-          </div>
+            <div id="carousel-holder">
+                <div id="pet-slides" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="img" src="https://i.guim.co.uk/img/media/7a633730f5f90db3c12f6efc954a2d5b475c3d4a/0_138_5544_3327/master/5544.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=6d246ca192c6f0c8cf3bdc40f8a43b63" alt="cat" width="600px" height="400px">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img class="img" src="https://www.iams.com/breedselector/images/7d55becfb7932bdd2761a97222e55974.jpg" alt="shiba inu" width="800px" height="400px">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img class="img" src="https://www.thesprucepets.com/thmb/0qd1paED5hvhJRzNoa1sZc6KTTM=/2848x2848/smart/filters:no_upscale()/you-have-called-me-dwarf-hamster-6-weeks-old-184337772-5848b1065f9b58dccc9fc10c.jpg" alt="hamster" width="400px" height="400px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>
+                With over 21 years of experience in this business, our staff are well trained and equipped
+                to deal with numerous difficult situation.
+                
+            </p>
+        </div>
+
+        <div class="spacing"></div>
+
+        <div class="card">
+            <h1>Our services</h1>
+            <p>
+                We provide the following services:
+            </p>
+            <ul>
+                <li>Daycare</li>
+                <li>Veterinary</li>
+                <li>Walking</li>
+                <li>Teach new tricks</li>
+            </ul>
+        </div>
+
+        <div class="spacing"></div>
+
+        <div class="card">
+            <h1>Here's what our clients have to say</h1>
+            <div class="review">
+                <p>"PCS caretakers are very professional in their job. I have a dog with multiple allergies and the caretaker took extra care in preparing
+                    the pet food. She also gave me advice on how to better take care of my dog. Totally recommend PCS!"
+                </p>
+                <p>~Jaina Chan</p>
+            </div>
+        </div>
       </div>
 
+      <div class="spacing"></div>
       <footer>
           <%- include('./components/footer'); %>
       </footer>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+        </script>
     </body>
 </html>

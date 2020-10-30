@@ -5,9 +5,10 @@ class User {
         this.name = userData.name;
         this.phone_no = userData.phone,
         this.area = userData.area,
-        this.isOwner = userData.isOwner;
-        this.isCaretaker = userData.isCaretaker;
-        this.isAdmin = userData.isAdmin;
+        this.is_owner = userData.isOwner;
+        this.is_caretaker = userData.isCaretaker;
+        this.is_admin = userData.isAdmin;
+        this.is_poct = userData.isPOCT;
     }
 
     getUsername() {
@@ -19,15 +20,31 @@ class User {
     }
 
     isOwner() {
-        return this.isOwner;
+        return this.is_owner;
     }
 
     isCaretaker() {
-        return this.isCaretaker;
+        return this.is_caretaker;
     }
 
     isAdmin() {
-        return this.isAdmin;
+        return this.is_admin;
+    }
+
+    isPOCT() {
+        return this.is_poct; //0 = not POCT, 1 = currently PO, 2 = currently CT
+    }
+
+    changeUser() {
+        if (this.is_poct == 2) {
+            this.is_caretaker = false;
+            this.is_owner = true;
+            this.is_poct = 1;
+        } else if (this.is_poct == 1) {
+            this.is_caretaker = true;
+            this.is_owner = false;
+            this.is_poct = 2;
+        }
     }
 }
 

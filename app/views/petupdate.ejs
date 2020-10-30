@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Page Title -->
+        <%- include('./components/htmlHead'); %>
+        <title>Update Pet Information</title>
+    </head>
+    <style>
+      button {
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #4CAF50;
+      }
+    </style>
+    <body>
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+        <h1><%= title%> : <%= petname%> </h1>
+    		<form method="POST" action="/pet/<%= petname%>/update">
+    			<div class="form-group">
+                    <p>Diet: </p>
+                                  <p>
+                                      <label><input type="checkbox" id="Dry" name="diet" value="Dry" /> Dry</label><br>
+                                      <label><input type="checkbox" id="Canned" name="diet" value="Canned" /> Canned</label><br>
+                                      <label><input type="checkbox" id="Semi-moist" name="diet" value="Semi-moist" /> Semi-moist</label><br>
+                                      <label><input type="checkbox" id="Fresh" name="diet" value="Fresh" /> Fresh</label><br>
+                                      <label><input type="checkbox" id="Home cooked" name="diet" value="Home cooked" /> Home cooked</label><br>
+                                      <label><input type="checkbox" id="Raw" name="diet" value="Raw" /> Raw</label><br>
+                                      <label><input type="checkbox" id="Milk" name="diet" value="Milk" /> Milk</label><br>
+                                      <label><input type="checkbox" id="Grain" name="diet" value="Grain" /> Grain</label><br>
+                                      <% for (var i = 0; i < data.length; i++) { %>
+                                      <%     if (data[i].rtype == "diet") { %>
+                                      <script>
+                                                document.getElementById("<%= data[i].requirement%>").checked = true;
+                                      </script>
+                                      <%      } %>
+                                      <%  } %>
+                                  </p>
+    			</div>
+                <div class="form-group">
+                    <p>Walk: </p>
+                                  <p>
+                                   <% var walking = ["Daily", "Twice a day", "Thrice a day", "Weekly", "Twice a week", "Thrice a week", "None"]; %>
+                                    <% var done = false; %>
+                                    <% for (var i = 0; i < data.length; i++) { %>
+                                    <%    if (data[i].rtype == "walk") {%>
+                                    <%        for (var j = 0; j < 7; j++) { %>
+                                    <%            if (data[i].requirement == walking[j]) { %>
+                                    <%                  console.log(data[i].requirement);%>
+                                                      <label><input type="radio" name="walk" value="<%= walking[j]%>" checked/> <%= walking[j]%></label><br>
+                                    <%            } else { %>
+                                                      <label><input type="radio" name="walk" value="<%= walking[j]%>" /> <%= walking[j]%></label><br>
+                                    <%           } %>
+                                    <%        } %>
+                                    <%        done = true; %>
+                                    <%        break; //assuming only one walk per pet %>
+                                    <%    } %>
+                                    <%} %>
+                                    <% if (!done) {%>
+                                      <label><input type="radio" name="walk" value="Daily" /> Daily</label><br>
+                                      <label><input type="radio" name="walk" value="Twice a day" /> Twice a day</label><br>
+                                      <label><input type="radio" name="walk" value="Thrice a day" /> Thrice a day</label><br>
+                                      <label><input type="radio" name="walk" value="Weekly" /> Weekly</label><br>
+                                      <label><input type="radio" name="walk" value="Twice a week" /> Twice a week</label><br>
+                                      <label><input type="radio" name="walk" value="Thrice a week" /> Thrice a week</label><br>
+                                      <label><input type="radio" name="walk" value="None" checked/> None</label><br>
+                                    <% } %>
+                                  </p>
+                </div>
+    			<button type="submit" class="button">Submit</button>
+    		</form>
+      <footer>
+          <%- include('./components/footer'); %>
+      </footer>
+      </body>
+</html>
