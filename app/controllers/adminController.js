@@ -607,7 +607,26 @@ exports.addCaretaker = function(requestBody, callback) {
                 dbController.queryGet(query2, (result2) => {
                     console.log("Query2: " + query2);
                     if(result2.status == 200) {
-                        callback("Success!");
+                        var query4 = ''
+                        if (Array.isArray(requestBody.ptype)) {
+                            for (var i = 0; i < requestBody.ptype.length; i++) {
+                                query4 += `INSERT INTO can_care VALUES('${requestBody.username}', '${requestBody.ptype[i]}', NULL);`
+                            }
+                        } else {
+                            query4 = `INSERT INTO can_care VALUES('${requestBody.username}', '${requestBody.ptype}', NULL);`
+                        }
+                        console.log("Query4: " + query4);
+
+                        dbController.queryGet(query4, (result3) => {
+                            console.log("Query4: " + query4);
+                            if(result3.status == 200) {
+                                callback("Success!");
+                            } else {
+                                console.log("Failed.");
+                                console.log("Status code: " + result3.status);
+                                callback(result3.err.message);
+                            }
+                        });
                     } else {
                         console.log("Failed.");
                         console.log("Status code: " + result2.status);
@@ -635,7 +654,26 @@ exports.addCaretaker = function(requestBody, callback) {
                     console.log("Query: " + query);
                     console.log("Query2: " + query2);
                     if(result2.status == 200) {
-                        callback("Success!");
+                        var query4 = ''
+                        if (Array.isArray(requestBody.ptype)) {
+                            for (var i = 0; i < requestBody.ptype.length; i++) {
+                                query4 += `INSERT INTO can_care VALUES('${requestBody.username}', '${requestBody.ptype[i]}', NULL);`
+                            }
+                        } else {
+                            query4 = `INSERT INTO can_care VALUES('${requestBody.username}', '${requestBody.ptype}', NULL);`
+                        }
+
+                        dbController.queryGet(query4, (result3) => {
+                            console.log("Query: " + query);
+                            console.log("Query4: " + query4);
+                            if(result3.status == 200) {
+                                callback("Success!");
+                            } else {
+                                console.log("Failed.");
+                                console.log("Status code: " + result3.status);
+                                callback(result3.err.message);
+                            }
+                        });
                     } else {
                         console.log("Failed.");
                         console.log("Status code: " + result2.status);

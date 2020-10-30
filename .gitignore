@@ -1,1 +1,4 @@
 .idea
+app/.env
+node_modules
+.env

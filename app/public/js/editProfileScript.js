@@ -42,3 +42,27 @@ function isValidCreditCard(creditcard) {
         return false;
     return true;
 };
+
+function checkType(event) {
+// Get Values
+	var phone = document.getElementById('phone').value;
+
+	// Simple Check
+	if (phone && !isValidPhone(phone)) {
+		alert("Invalid phone number. Phone number should be between 7 and 15 digits.");
+		event.preventDefault();
+		event.stopPropagation();
+		return false;
+	}
+    var type = document.getElementsByName('ptype');
+    var gtcheck = false;
+    for (var i = 0; i < type.length; i++) {
+        gtcheck = gtcheck | type[i].checked
+    }
+    if (!gtcheck) {
+        alert("Need to check at least one pet.");
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
+}

@@ -89,6 +89,25 @@
                     <input type="text" id="area" name="area" placeholder="Area">
                 </div>
             </div>
+            <div>
+                <div class="form-group">
+                    <p>Pet Type: </p>
+                    <p>
+                        <label><input type="checkbox" name="ptype" value="Cat" /> Cat</label><br>
+                        <label><input type="checkbox" name="ptype" value="Dog" /> Dog</label><br>
+                        <label><input type="checkbox" name="ptype" value="Rabbit" /> Rabbit</label><br>
+                        <label><input type="checkbox" name="ptype" value="Hamster" /> Hamster</label><br>
+                        <label><input type="checkbox" name="ptype" value="Fish" /> Fish</label><br>
+                        <label><input type="checkbox" name="ptype" value="Tortoise" /> Tortoise</label><br>
+                        <label><input type="checkbox" name="ptype" value="Frog" /> Frog</label><br>
+                        <label><input type="checkbox" name="ptype" value="Terappin" /> Terrapin</label><br>
+                        <label><input type="checkbox" name="ptype" value="Bird" /> Bird</label><br>
+                        <label><input type="checkbox" name="ptype" value="Insect" /> Insect</label><br>
+                        <label><input type="checkbox" name="ptype" value="Guinea Pig" /> Guinea Pig</label><br>
+                        <label><input type="checkbox" name="ptype" value="Reptile" /> Reptile</label><br>
+                    </p>
+                </div>
+            </div>
             <div class="aligner">
                 <p></p>
                 <input type="submit" value="Submit">
@@ -102,7 +121,7 @@
         window.addEventListener('load', function() {
             var forms = [document.getElementById('addCaretakerForm')];
             var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', checkAdd, false);
+                form.addEventListener('submit', checkType, false);
             });
         }, false);
     })();
