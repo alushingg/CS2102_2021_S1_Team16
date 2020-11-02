@@ -10,154 +10,159 @@
 
         <header>
             <%- include('./components/header'); %>
+            <link rel='stylesheet' href='/css/profile.css' />
         </header>
 
-        <body>
-        <h1 style="display:inline-block;"><%= title %></h1>
-        <td style="border:transparent;">
-            <button class="button button1" onclick="window.location.href='/edit_profile'">Edit Profile</button>
-            <form method="POST" action="/profile" style="display:inline;">
-              <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
-            </form>
-        </td>
-        <p>Username: <%= data[0].username %></p>
-        <p>Name: <%= data[0].name %></p>
-        <p>Phone number: <%= data[0].phone_number %></p>
-        <p>Area: <%= data[0].area %></p>
-        <p>Job type: <%= data[0].job_type %></p>
-        <% if (!data[0].rating) { %>
-            <p>Average rating: -</p>
-        <% } else { %>
-            <p>Average rating: <%= data[0].rating %> / 5</p>
-        <% } %>
-
-        <style>
-                th, td {
-                  border: 1px solid black;
-                }
-                table {
-                    border-collapse: collapse;
-                }
-                .button {
-                  border: none;
-                  color: white;
-                  padding: 10px 10px;
-                  text-align: center;
-                  margin: 5px;
-                  text-decoration: none;
-                  display: inline-block;
-                  font-size: 14px;
-                  cursor: pointer;
-                }
-                .button1 {background-color: #4CAF50;} /* Green */
-                .button2 {background-color: #FF0030;} /* Red */
-            </style>
-
-
-        <h1 style="display:inline-block;">Pricing</h1>
-        <button class="button button1" onclick="window.location.href='/addtype'">Add Pet Type</button>
-
-        <% if (dataP.length == 0) { %>
-            <p>No pricing.</p>
-        <% } else { %>
-            <table class="table">
-                <thead>
+        <div class="spacing"></div>
+        
+        <div class="content">
+            <div class="card box">
+                <div id="section-head">
+                    <h1><%= title %></h1>
+                    <div class="button-group">
+                        <button onclick="window.location.href='/edit_profile'">Edit Profile</button>
+                        <form method="POST" action="/profile" style="display:inline;">
+                            <button type="submit" class="red" onclick="return confirm('Are you sure to delete?');">Delete Profile</button>
+                        </form>
+                    </div>
+                </div>
+                <p>Username: <%= data[0].username %></p>
+                <hr>
+                <table>
                     <tr>
-                        <th scope="col">Pet type</th>
-                        <th scope="col">Price</th>
+                        <td>Name: </td>
+                        <td><%= data[0].name %> (<%= data[0].job_type %>)</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <% for(var i=0; i<dataP.length; i++) { %>
                     <tr>
-                        <td><%= dataP[i].type %></td>
-                        <td><%= dataP[i].price %></td>
-                        <% if (data[0].rating >= 4) { %>
-                            <td style="border:transparent;">
-                                <button class="button" onclick="window.location.href='/ct/<%= encodeURIComponent(dataP[i].type)%>/set'">Set Price</button>
-                            </td>
+                        <td>Contact number:</td>
+                        <td><%= data[0].phone_number %></td>
+                    </tr>
+                    <tr>
+                        <td>Area:</td>
+                        <td><%= data[0].area %></td>
+                    </tr>
+                    <tr>
+                        <td>Average rating:</td>
+                        <% if (!data[0].rating) { %>
+                            <td>-</td>
+                        <% } else { %>
+                            <td><%= data[0].rating %> / 5.00</td>
                         <% } %>
                     </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        <% } %>
+                </table>
+            </div>
 
-        <% if (data[0].job_type == 'Full Time') { %>
-            <h1 style="display:inline-block;">Leave</h1>
-            <td style="border:transparent;">
-                <button class="button" onclick="window.location.href='/applyleave'">Add</button>
-            </td>
-            <% if (dataA.length == 0) { %>
-                <p>No leave.</p>
-            <% } else { %>
-                <table class="table">
-                    <thead>
+            <div class="spacing"></div>
+
+            <div class="card box">
+                <div id="section-head">
+                    <h1>Pricing</h1>
+                    <button class="button button1" onclick="window.location.href='/addtype'">Add Pet Type</button>
+                </div>
+                <hr>
+                <% if (dataP.length == 0) { %>
+                    <p>No pricing.</p>
+                <% } else { %>
+                    <table>
                         <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Reason</th>
+                            <th scope="col">Pet type</td>
+                            <th scope="col">Price</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% for(var i=0; i<dataA.length; i++) { %>
-                        <tr>
-                            <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
-                            <% if (!dataA[i].reason) { %>
-                                <td>-</td>
-                            <% } else { %>
-                                <td><%= dataA[i].reason %></td>
+                        <% for(var i=0; i<dataP.length; i++) { %>
+                            <tr>
+                                <td><%= dataP[i].type %></td>
+                                <td><%= dataP[i].price %></td>
+                                <% if (data[0].rating >= 4) { %>
+                                    <td style="border:transparent;">
+                                        <button onclick="window.location.href='/ct/<%= encodeURIComponent(dataP[i].type)%>/set'">Set Price</button>
+                                    </td>
+                                <% } %>
+                            </tr>
+                        <% } %>
+                    </table>
+                <% } %>
+            </div>
+
+            <div class="spacing"></div>
+
+            <div class="card box">
+                <div id="section-head">
+                    <% if (data[0].job_type == 'Full Time') { %>
+                        <h1>Leave</h1>
+                        <button onclick="window.location.href='/applyleave'">Add</button>
+                    <% } else { %>
+                        <h1>Availability</h1>
+                        <button class="button" onclick="window.location.href='/addAvailability'">Add</button>
+                    <% } %>
+                </div>
+                <hr>
+
+                <% if (dataA.length == 0) { %>
+                    <% if (data[0].job_type == 'Full Time') { %>
+                        <p>No leave</p>
+                    <% } else { %>
+                        <p>Not availabile</p>
+                    <% } %>
+                <% } else { %>
+                    <% if (data[0].job_type == 'Full Time') { %>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                                <th>Reason</th>
+                            </tr>
+                            <% for(var i = dataA.length - 1; i >= 0; i--) { %>
+                                <tr>
+                                    <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
+                                    <% if (!dataA[i].reason) { %>
+                                        <td>-</td>
+                                    <% } else { %>
+                                        <td><%= dataA[i].reason %></td>
+                                    <% } %>
+                                </tr>
                             <% } %>
-                        </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            <% } %>
-        <% } else { %>
-            <h1 style="display:inline-block;">Availability</h1>
-            <td style="border:transparent;">
-                <button class="button" onclick="window.location.href='/addAvailability'">Add</button>
-            </td>
-            <% if (dataA.length == 0) { %>
-                <p>No availability.</p>
-            <% } else { %>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(var i=0; i<dataA.length; i++) { %>
-                        <tr>
-                            <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
-                        </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            <% } %>
-        <% } %>
-
-        <h1>Review</h1>
-        <% if (dataR.length == 0) { %>
-            <p>No review.</p>
-        <% } else { %>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Reviewer</th>
-                        <th scope="col">Review</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for(var i=0; i<dataR.length; i++) { %>
-                    <tr>
-                        <td><%= dataR[i].username %></td>
-                        <td><%= dataR[i].review %></td>
-                    </tr>
+                        </table>
+                    <% } else { %>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                            </tr>
+                            <% for(var i = dataA.length - 1; i >= 0; i--) { %>
+                                <tr>
+                                    <td><%= dataA[i].day %>/<%= dataA[i].month %>/<%= dataA[i].year %></td>
+                                </tr>
+                            <% } %>
+                        </table>
                     <% } %>
-                </tbody>
-            </table>
-        <% } %>
+                <% } %>
+        </div>
+
+        <div class="spacing"></div>
+
+        <div class="card box">
+            <div id="section-head">
+                <h1>Review</h1>
+            </div>
+            <hr>
+
+            <% if (dataR.length == 0) { %>
+                <p>No review.</p>
+            <% } else { %>
+                <table>
+                    <tr>
+                        <th>Reviewer</th>
+                        <th>Review</th>
+                    </tr>
+                    <% for(var i=0; i<dataR.length; i++) { %>
+                        <tr>
+                            <td><%= dataR[i].username %></td>
+                            <td><%= dataR[i].review %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            <% } %>
+        </div>
+
+        <div class="spacing"></div>
 
         <footer>
             <%- include('./components/footer'); %>
