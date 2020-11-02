@@ -5,7 +5,7 @@ exports.getPets = function(req, type, sdate, edate, callback) {
     const user = userController.getUser().getUsername();
     const { ctuname } = req.params;
     const query = "SELECT name FROM own_pet_belong WHERE username = '" + user + "' AND type = '" + type + "'; "
-                + "SELECT COALESCE(price, base_price) AS price, (DATE('" + edate + "') - DATE('" + sdate + "') + 1) * COALESCE(price, base_price) AS total_price "
+                + "SELECT CAST(COALESCE(price, base_price) AS DECIMAL(100,2)) AS price, CAST((DATE('" + edate + "') - DATE('" + sdate + "') + 1) * COALESCE(price, base_price) AS DECIMAL(100,2)) AS total_price "
                 + "FROM can_care cc NATURAL JOIN category c "
                 + "WHERE username='" + ctuname + "' AND cc.type='" + type + "';";
   	dbController.queryGet(query, (result) => {
