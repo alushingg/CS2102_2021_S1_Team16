@@ -1,84 +1,101 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <!-- Page Title -->
-    <%- include('./components/htmlHead'); %>
-    <title>Add New Pet</title>
-</head>
-<style>
-      button {
-        border: none;
-        color: white;
-        padding: 10px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 14px;
-        cursor: pointer;
-        background-color: #4CAF50;
-      }
-</style>
-<body>
-<header>
-    <%- include('./components/header'); %>
-</header>
-<h1><%= title%></h1>
-<form method="POST" action="/petadd">
-    <div class="form-group">
-        <label for="petname">Pet name: </label>
-        <input type="text" id="petname" name="petname" placeholder="Name of pet" required>
-    </div>
-    <div class="form-group">
-        <p>Pet Type: </p>
-        <p>
-            <label><input type="radio" name="type" value="Cat" checked/> Cat</label><br>
-            <label><input type="radio" name="type" value="Dog" /> Dog</label><br>
-            <label><input type="radio" name="type" value="Rabbit" /> Rabbit</label><br>
-            <label><input type="radio" name="type" value="Hamster" /> Hamster</label><br>
-            <label><input type="radio" name="type" value="Fish" /> Fish</label><br>
-            <label><input type="radio" name="type" value="Tortoise" /> Tortoise</label><br>
-            <label><input type="radio" name="type" value="Frog" /> Frog</label><br>
-            <label><input type="radio" name="type" value="Terappin" /> Terrapin</label><br>
-            <label><input type="radio" name="type" value="Bird" /> Bird</label><br>
-            <label><input type="radio" name="type" value="Insect" /> Insect</label><br>
-            <label><input type="radio" name="type" value="Guinea Pig" /> Guinea Pig</label><br>
-            <label><input type="radio" name="type" value="Reptile" /> Reptile</label><br>
-        </p>
-    </div>
-    <div class="form-group">
-        <p>Diet: </p>
-        <p>
-            <label><input type="checkbox" name="diet" value="Dry" /> Dry</label><br>
-            <label><input type="checkbox" name="diet" value="Canned" /> Canned</label><br>
-            <label><input type="checkbox" name="diet" value="Semi-moist" /> Semi-moist</label><br>
-            <label><input type="checkbox" name="diet" value="Fresh" /> Fresh</label><br>
-            <label><input type="checkbox" name="diet" value="Home cooked" /> Home cooked</label><br>
-            <label><input type="checkbox" name="diet" value="Raw" /> Raw</label><br>
-            <label><input type="checkbox" name="diet" value="Milk" /> Milk</label><br>
-            <label><input type="checkbox" name="diet" value="Grain" /> Grain</label><br>
-        </p>
-    </div>
-    <div class="form-group">
-        <p>Walk: </p>
-        <p>
-            <label><input type="radio" name="walk" value="Daily" /> Daily</label><br>
-            <label><input type="radio" name="walk" value="Twice a day" /> Twice a day</label><br>
-            <label><input type="radio" name="walk" value="Thrice a day" /> Thrice a day</label><br>
-            <label><input type="radio" name="walk" value="Weekly" /> Weekly</label><br>
-            <label><input type="radio" name="walk" value="Twice a week" /> Twice a week</label><br>
-            <label><input type="radio" name="walk" value="Thrice a week" /> Thrice a week</label><br>
-            <label><input type="radio" name="walk" value="None" checked/> None</label><br>
-        </p>
-    </div>
-    <button type="submit" class="button">Submit</button>
-</form>
-<script>
-   if ("<%= error%>" != "") {
-        alert('<%= error%>');
-    }
-</script>
-<footer>
-    <%- include('./components/footer'); %>
-</footer>
-</body>
+    <head>
+        <%- include('./components/htmlHead'); %>
+        <link rel='stylesheet' href='/css/add-pet.css' />
+    </head>
+
+    <body>
+        <header>
+            <%- include('./components/header'); %>
+        </header>
+
+        <div class="content">
+            <div class="spacing"></div>
+            <form id="addPetForm" method="POST" action="/petadd">
+                <h3 id="title">Add Pet</h3>
+                
+                <label for="petname">Pet name: </label>
+                <input type="text" id="petname" name="petname" placeholder="Name of pet" required>
+                
+                <label for="type">Pet Type: </label>
+                <select name="type" id="type">
+                    <option value="Cat">Cat</option>
+                    <option value="Dog">Dog</option>
+                    <option value="Rabbit">Rabbit</option>
+                    <option value="Hamster">Hamster</option>
+                    <option value="Fish">Fish</option>
+                    <option value="Tortoise">Tortoise</option>
+                    <option value="Frog">Frog</option>
+                    <option value="Terrapin">Terrapin</option>
+                    <option value="Bird">Bird</option>
+                    <option value="Insect">Insect</option>
+                    <option value="Guinea Pig">Guinea Pig</option>
+                    <option value="Reptile">Reptile</option>
+                </select>
+                <hr>
+                <label>Diet: </label>
+                <table>
+                    <tr>
+                        <td>
+                            <input class="checkbox" type="checkbox" name="diet" value="Dry" />
+                            <label>Dry </label>
+                        </td>
+                        <td>
+                            <input class="checkbox" type="checkbox" name="diet" value="Canned" /> 
+                            <label>Canned </label>
+                        </td>
+                        <td>
+                            <input class="checkbox" type="checkbox" name="diet" value="Semi-moist" />
+                            <label>Semi-moist </label>
+                        </td>
+                        <td>
+                            <input class="checkbox" type="checkbox" name="diet" value="Fresh" />
+                            <label>Fresh </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="checkbox" type="checkbox" name="diet" value="Home cooked" />
+                            <label>Home cooked </label>
+                        </td>
+                        <td>
+                            <input class="checkbox" type="checkbox" name="diet" value="Raw" />
+                            <label>Raw </label>
+                        </td>
+                        <td>
+                            <input class="checkbox" type="checkbox" name="diet" value="Milk" />
+                            <label>Milk </label>
+                        </td>
+                        <td>
+                            <input class="checkbox" type="checkbox" name="diet" value="Grain" />
+                            <label>Grain </label>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <label for="walk">Walk: </label>
+                <select name="walk" id="type">
+                    <option value="None">None</option>
+                    <option value="Daily">Daily</option>
+                    <option value="Twice a day">Twice a day</option>
+                    <option value="Thrice a day">Thrice a day</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Twice a week">Twice a week</option>
+                    <option value="Thrice a week">Thrice a week</option>
+                </select>
+                
+                <button type="submit" class="button">Submit</button>
+            </form>
+        </div>
+        
+        <script>
+            if ("<%= error%>" != "") {
+                alert('<%= error%>');
+            }
+        </script>
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
 </html>

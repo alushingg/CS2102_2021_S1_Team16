@@ -2,53 +2,57 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
+        <link rel='stylesheet' href='/css/profile.css' />
     </head>
 
     <body>
-        
-        <!-- <%- include('./components/backToTopBtn'); %> -->
-        
         <header>
             <%- include('./components/header'); %>
         </header>
 
-        <!-- Content here -->
-        <h1 style="display:inline-block;"><%= title %></h1>
-                    <td style="border:transparent;">
-                        <button class="button button1" onclick="window.location.href='/edit_profile'">Edit Profile</button>
+        <div class="spacing"></div>
+        <div class="content">
+            <div class="card box">
+                <div id="section-head">
+                    <h1>Profile</h1>
+                    <div class="button-group">
+                        <button onclick="window.location.href='/edit_profile'">Edit Profile</button>
                         <% if (data[0].username != 'root') { %>
-                        <form method="POST" action="/profile" style="display:inline;">
-                            <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
+                        <form method="POST" action="/profile">
+                            <button type="submit" class="red" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
                         </form>
                         <% } %>
-                    </td>
-            <p>Username: <%= data[0].username %></p>
-            <p>Name: <%= data[0].name %></p>
-            <p>Phone number: <%= data[0].phone_number %></p>
-            <p>Area: <%= data[0].area %></p>
-            <p>Position: <%= data[0].position %></p>
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <td>Username: </td>
+                        <td><%= data[0].username %></td>
+                    </tr>    
+                </table>
+                <hr>
+                <table>
+                    <tr>
+                        <td>Name: </td>
+                        <td><%= data[0].name %></td>
+                    </tr>
+                    <tr>
+                        <td>Contact number:</td>
+                        <td><%= data[0].phone_number %></td>
+                    </tr>
+                    <tr>
+                        <td>Area:</td>
+                        <td><%= data[0].area %></td>
+                    </tr>
+                    <tr>
+                        <td>Position: </td>
+                        <td><%= data[0].position %></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="spacing"></div>
 
-            <style>
-                th, td {
-                  border: 1px solid black;
-                }
-                table {
-                    border-collapse: collapse;
-                }
-                .button {
-                  border: none;
-                  color: white;
-                  padding: 10px 10px;
-                  text-align: center;
-                  margin: 5px;
-                  text-decoration: none;
-                  display: inline-block;
-                  font-size: 14px;
-                  cursor: pointer;
-                }
-                .button1 {background-color: #4CAF50;} /* Green */
-                .button2 {background-color: #FF0030;} /* Red */
-            </style>
         <footer>
             <%- include('./components/footer'); %>
         </footer>

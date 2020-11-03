@@ -3,18 +3,28 @@ form {
     flex-direction: column;
     background-color: white;
     width: 30%;
-    padding: 30px 10px 80px 10px;
+    padding: 20px 60px 60px 60px;
     border-radius: 20px;
 }
 
 input {
-    margin: 10px 0px;
     padding: 10px;
-    width:80%;
+    width:100%;
+}
+
+input#show-pw {
+    width: auto;
 }
 
 button {
-    width: 80%;
+    width: 100%;
+}
+
+div.content {
+    display: inline-flex;
+    align-items: center;
+
+    width: 100%;
 }
 
 div.aligner {
@@ -22,7 +32,14 @@ div.aligner {
     text-align: center;
 }
 
-#signupForm {
+div.input-group {
+    display: inline-flex;
+    flex-direction: column;
+
+    margin: 20px 0px;
+}
+
+#editProfileForm {
     display: inline-flex;
     justify-content: center;
 }
@@ -30,19 +47,4 @@ div.aligner {
 #title {
     text-align: center;
     margin: 40px 20px;
-}
-
-#phoneDiv {
-    width: 40%;
-}
-
-#areaDiv {
-    width: 55%;
-}
-
-#phone_area {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0 6%;
 }

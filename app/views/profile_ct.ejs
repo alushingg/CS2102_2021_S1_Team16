@@ -5,9 +5,6 @@
     </head>
 
     <body>
-
-        <!-- <%- include('./components/backToTopBtn'); %> -->
-
         <header>
             <%- include('./components/header'); %>
             <link rel='stylesheet' href='/css/profile.css' />
@@ -21,7 +18,7 @@
                     <h1><%= title %></h1>
                     <div class="button-group">
                         <button onclick="window.location.href='/edit_profile'">Edit Profile</button>
-                        <form method="POST" action="/profile" style="display:inline;">
+                        <form method="POST" action="/profile">
                             <button type="submit" class="red" onclick="return confirm('Are you sure to delete?');">Delete Profile</button>
                         </form>
                     </div>
@@ -71,7 +68,7 @@
                         <% for(var i=0; i<dataP.length; i++) { %>
                             <tr>
                                 <td><%= dataP[i].type %></td>
-                                <td><%= dataP[i].price %></td>
+                                <td>$<%= parseFloat(dataP[i].price).toFixed(2) %></td>
                                 <% if (data[0].rating >= 4) { %>
                                     <td style="border:transparent;">
                                         <button onclick="window.location.href='/ct/<%= encodeURIComponent(dataP[i].type)%>/set'">Set Price</button>
@@ -89,10 +86,10 @@
                 <div id="section-head">
                     <% if (data[0].job_type == 'Full Time') { %>
                         <h1>Leave</h1>
-                        <button onclick="window.location.href='/applyleave'">Add</button>
+                        <button onclick="window.location.href='/applyleave'">Apply Leave</button>
                     <% } else { %>
                         <h1>Availability</h1>
-                        <button class="button" onclick="window.location.href='/addAvailability'">Add</button>
+                        <button class="button" onclick="window.location.href='/addAvailability'">Declare Availability</button>
                     <% } %>
                 </div>
                 <hr>
@@ -124,7 +121,7 @@
                     <% } else { %>
                         <table>
                             <tr>
-                                <th>Date</th>
+                                <th>Date:</th>
                             </tr>
                             <% for(var i = dataA.length - 1; i >= 0; i--) { %>
                                 <tr>
@@ -140,7 +137,7 @@
 
         <div class="card box">
             <div id="section-head">
-                <h1>Review</h1>
+                <h1>Reviews</h1>
             </div>
             <hr>
 

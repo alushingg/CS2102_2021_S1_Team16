@@ -1,0 +1,27 @@
+div.content {
+    display: inline-flex;
+    align-items: center;
+
+    width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+td, th {
+    border-width: 1px;
+    padding: 10px;
+}
+
+hr {
+    width: 100%;
+}
+
+#summary {
+    width: 80%;
+}
+
+#summary td, th {
+    border-width: 0px;
+}

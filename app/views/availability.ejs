@@ -5,8 +5,7 @@
         <link rel='stylesheet' href='/css/availability.css' />
     </head>
 
-    <body>     
-        <!-- <%- include('./components/backToTopBtn'); %> -->
+    <body>
         <header>
             <%- include('./components/header'); %>
         </header>
@@ -43,7 +42,7 @@
                                 <% } else { %>
                                     <td><%= data[i].rating %></td>
                                 <% } %>
-                                <td><%= data[i].price %></td>
+                                <td>$<%= data[i].price %></td>
                                 <td><%= data[i].job_type %></td>
                                 <% if (auth && !isAdmin) { %>
                                 <td style="border: transparent;">
