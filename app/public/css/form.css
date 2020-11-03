@@ -1,0 +1,62 @@
+button {
+    width: 100%;
+}
+
+div.content {
+    display: inline-flex;
+    align-items: center;
+
+    width: 100%;
+}
+
+div.input-group {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+form {
+    display:flex;
+    flex-direction: column;
+    background-color: white;
+    width: 30%;
+    padding: 20px 60px 60px 60px;
+    border-radius: 20px;
+}
+
+hr {
+    width: 100%;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 10px;
+    width:100%;
+}
+
+input.checkbox, input.radio, #show-pw {
+    width: auto;
+}
+
+select {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+}
+
+tr, th, td {
+    border: 0px;
+    padding: 5px;
+}
+
+#title {
+    text-align: center;
+    margin: 40px 20px;
+}

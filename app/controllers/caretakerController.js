@@ -103,11 +103,12 @@ exports.showAvailability = function(user, callback) {
 };
 
 exports.showReview = function(user, callback) {
-  	const query = "SELECT t.username, t.review "
+  	const query = "SELECT t.username, t.review, t.rating "
 				+ "FROM take_care t "
 				+ "WHERE t.ctuname = '" + user + "' AND t.review IS NOT NULL;";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
+            console.log(result.body.rows);
             callback(result.body.rows);
         } else {
             console.log("Failed.");

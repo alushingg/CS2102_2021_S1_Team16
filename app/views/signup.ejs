@@ -3,7 +3,7 @@
   <head>
     <%- include('./components/htmlHead'); %>
     <link rel='stylesheet' href='/css/signup.css' />
-    <script src="js/editProfileScript.js"></script>
+    <script src="js/userDataValidation.js"></script>
   </head>
   <body>
     <div class="content">
@@ -48,7 +48,7 @@
           window.addEventListener('load', function() {
               var forms = [document.getElementById('signupForm')];
               var validation = Array.prototype.filter.call(forms, function(form) {
-                  form.addEventListener('submit', checkAdd, false);
+                  form.addEventListener('submit', checkAD, false);
               });
           }, false);
       })();

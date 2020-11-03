@@ -2,44 +2,43 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
+        <link rel='stylesheet' href='/css/form.css' />
     </head>
 
     <body>
-
-        <!-- <%- include('./components/backToTopBtn'); %> -->
 
         <header>
             <%- include('./components/header'); %>
         </header>
 
-        <!-- Content here -->
-        <body>
-        <h1><%= title %></h1>
-        <form method="POST" action="/addtype">
-          <div class="form-group">
-              <p>Pet Type: </p>
-              <p>
-                  <label><input type="radio" name="type" value="Cat" checked/> Cat</label><br>
-                  <label><input type="radio" name="type" value="Dog" /> Dog</label><br>
-                  <label><input type="radio" name="type" value="Rabbit" /> Rabbit</label><br>
-                  <label><input type="radio" name="type" value="Hamster" /> Hamster</label><br>
-                  <label><input type="radio" name="type" value="Fish" /> Fish</label><br>
-                  <label><input type="radio" name="type" value="Tortoise" /> Tortoise</label><br>
-                  <label><input type="radio" name="type" value="Frog" /> Frog</label><br>
-                  <label><input type="radio" name="type" value="Terappin" /> Terrapin</label><br>
-                  <label><input type="radio" name="type" value="Bird" /> Bird</label><br>
-                  <label><input type="radio" name="type" value="Insect" /> Insect</label><br>
-                  <label><input type="radio" name="type" value="Guinea Pig" /> Guinea Pig</label><br>
-                  <label><input type="radio" name="type" value="Reptile" /> Reptile</label><br>
-              </p>
-          </div>
-          <button type="submit" class="button">Submit</button>
-      </form>
-      <script>
-         if ("<%= error%>" != "") {
-              alert('<%= error%>');
-          }
-      </script>
+        <div class="spacing"></div>
+        <div class="content">
+            <form method="POST" action="/addtype">
+                <h3 id="title">Add Pet Type</h3>
+                <p>Pet Type: </p>
+                <select name="type" id="type">
+                    <option value="Cat">Cat</option>
+                    <option value="Dog">Dog</option>
+                    <option value="Rabbit">Rabbit</option>
+                    <option value="Hamster">Hamster</option>
+                    <option value="Fish">Fish</option>
+                    <option value="Tortoise">Tortoise</option>
+                    <option value="Frog">Frog</option>
+                    <option value="Terrapin">Terrapin</option>
+                    <option value="Bird">Bird</option>
+                    <option value="Insect">Insect</option>
+                    <option value="Guinea Pig">Guinea Pig</option>
+                    <option value="Reptile">Reptile</option>
+                </select>
+                <button type="submit" class="button">Submit</button>
+                </form>
+        </div>
+
+        <script>
+            if ("<%= error%>" != "") {
+                alert('<%= error%>');
+            }
+        </script>
 
         <footer>
             <%- include('./components/footer'); %>

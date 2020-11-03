@@ -18,7 +18,7 @@ function checkPO(event) {
 	}
 }
 
-function checkAdd(event) {
+function checkAD(event) {
 	// Get Values
 	var phone = document.getElementById('phone').value;
 
@@ -31,19 +31,7 @@ function checkAdd(event) {
 	}
 }
 
-function isValidPhone(phone) {
-    if (!/^\d{7,15}$/.test(phone))
-        return false;
-    return true;
-};
-
-function isValidCreditCard(creditcard) {
-    if (!/^\d{16}$/.test(creditcard))
-        return false;
-    return true;
-};
-
-function checkType(event) {
+function checkCT(event) {
 // Get Values
 	var phone = document.getElementById('phone').value;
 
@@ -66,3 +54,28 @@ function checkType(event) {
         return false;
     }
 }
+
+function checkCTProfile(event) {
+	var phone = document.getElementById('phone').value;
+
+	// Simple Check
+	if (phone && !isValidPhone(phone)) {
+		alert("Invalid phone number. Phone number should be between 7 and 15 digits.");
+		event.preventDefault();
+		event.stopPropagation();
+		return false;
+	}
+}
+
+
+function isValidPhone(phone) {
+    if (!/^\d{7,15}$/.test(phone))
+        return false;
+    return true;
+};
+
+function isValidCreditCard(creditcard) {
+    if (!/^\d{16}$/.test(creditcard))
+        return false;
+    return true;
+};
