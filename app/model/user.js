@@ -5,10 +5,10 @@ class User {
         this.name = userData.name;
         this.phone_no = userData.phone,
         this.area = userData.area,
-        this.is_owner = userData.isOwner;
-        this.is_caretaker = userData.isCaretaker;
-        this.is_admin = userData.isAdmin;
-        this.is_poct = userData.isPOCT;
+        this.isOwner = userData.isOwner;
+        this.isCaretaker = userData.isCaretaker;
+        this.isAdmin = userData.isAdmin;
+        this.isPOCT = userData.isPOCT;
     }
 
     getUsername() {

@@ -1,4 +1,3 @@
-const userController = require('./userController');
 const dbController = require('./dbController');
 
 // Login Controller

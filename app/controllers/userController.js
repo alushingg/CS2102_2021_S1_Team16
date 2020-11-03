@@ -1,37 +1,4 @@
 const User = require('../model/user');
-const { use } = require('../router');
-var user = undefined;
-
-exports.trackUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT) {
-    user = new User({
-        'username': userData.username,
-        'name': userData.name,
-        'phone': userData.phone_number,
-        'area': userData.area,
-        'isOwner': isOwner,
-        'isCaretaker': isCaretaker,
-        'isAdmin': isAdmin,
-        'isPOCT' : isPOCT
-    });
-    this.user = user;
-    console.log(user);
-};
-
-exports.logout = function() {
-    this.user = undefined;
-}
-
-exports.getUser = function() {
-    return this.user;
-};
-
-exports.getUsername = function() {
-    if(this.user === undefined) {
-        return null;
-    } else {
-        return this.user.username;
-    }
-};
 
 exports.newUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT) {
     return new User({
@@ -46,7 +13,10 @@ exports.newUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT) {
     });
 }
 
-exports.saveUserInSession = function(request) {
-    console.log(this.user);
-    request.session.user = this.user;
+exports.changeUser = function(user) {
+    if (user.isPOCT === 2) {
+        return this.newUser(user, true, false, false, 1);
+    } else if (user.isPOCT === 1) {
+        return this.newUser(user, false, true, false, 2);
+    }
 }

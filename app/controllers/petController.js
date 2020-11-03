@@ -1,12 +1,10 @@
 const dbController = require('./dbController');
-const userController = require('./userController');
 
 exports.trackPet = function(req, callback) {
-    const user = userController.getUser().getUsername();
     const { petname } = req.params;
     const query = "SELECT h.rtype, h.requirement" +
                     " FROM own_pet_belong o NATURAL JOIN has h" +
-                    " WHERE o.username = '" + user + "' AND o.name = '" + petname + "';";
+                    " WHERE o.username = '" + req.session.user.username + "' AND o.name = '" + petname + "';";
     dbController.queryGet(query, (result) => {
          if(result.status == 200) {
             console.log(query);
@@ -19,28 +17,28 @@ exports.trackPet = function(req, callback) {
      });
 };
 
-exports.addPet = function(requestBody, callback) {
-    const user = userController.getUser().getUsername();
+exports.addPet = function(username, requestBody, callback) {
+    
     console.log("Name: " + requestBody.petname + " Type: "+ requestBody.type +
             " Diet: " + requestBody.diet + " Walk: " + requestBody.walk);
-    var added = "INSERT INTO own_pet_belong VALUES ('" + user + "', '" + requestBody.petname + "', '" +
+    var added = "INSERT INTO own_pet_belong VALUES ('" + username + "', '" + requestBody.petname + "', '" +
                 requestBody.type + "');";
 
     if (requestBody.diet) {
         if (Array.isArray(requestBody.diet)) {
             for (var i = 0; i < requestBody.diet.length; i++) {
-                added = added + " INSERT INTO has VALUES ('" + user + "', '" + requestBody.petname + "', 'diet', '" +
+                added = added + " INSERT INTO has VALUES ('" + username + "', '" + requestBody.petname + "', 'diet', '" +
                         requestBody.diet[i] + "');";
             }
         } else {
-            added = added + " INSERT INTO has VALUES ('" + user + "', '" + requestBody.petname + "', 'diet', '" +
+            added = added + " INSERT INTO has VALUES ('" + username + "', '" + requestBody.petname + "', 'diet', '" +
                     requestBody.diet + "');";
 
         }
     }
 
     if (requestBody.walk != "None") {
-        added = added + " INSERT INTO has VALUES ('" + user + "', '" + requestBody.petname + "', 'walk', '" +
+        added = added + " INSERT INTO has VALUES ('" + username + "', '" + requestBody.petname + "', 'walk', '" +
              requestBody.walk + "');";
     }
 
@@ -57,28 +55,27 @@ exports.addPet = function(requestBody, callback) {
     });
 }
 
-exports.editPet = function(requestBody, requestParam, callback) {
-    const user = userController.getUser().getUsername();
+exports.editPet = function(username, requestBody, requestParam, callback) {
     const { petname } = requestParam;
     var modifiedfields = '';
     var updated = '';
     console.log("Name: " + petname + " Diet: " + requestBody.diet + " Walk: " + requestBody.walk);
 
-    updated = "DELETE FROM has WHERE username='" + user + "' AND name='" + petname + "';";
+    updated = "DELETE FROM has WHERE username='" + username + "' AND name='" + petname + "';";
     if (requestBody.diet) {
         if (Array.isArray(requestBody.diet)) {
             for (var i = 0; i < requestBody.diet.length; i++) {
-                updated = updated + " INSERT INTO has VALUES ('" + user + "', '" + petname + "', 'diet', '" +
+                updated = updated + " INSERT INTO has VALUES ('" + username + "', '" + petname + "', 'diet', '" +
                         requestBody.diet[i] + "');";
             }
         } else {
-            updated = updated + " INSERT INTO has VALUES ('" + user + "', '" + petname + "', 'diet', '" +
+            updated = updated + " INSERT INTO has VALUES ('" + username + "', '" + petname + "', 'diet', '" +
                     requestBody.diet + "');";
 
         }
     }
     if (requestBody.walk != 'None') {
-        updated = updated + "INSERT INTO has VALUES ('" + user + "', '" + petname + "', 'walk', '"
+        updated = updated + "INSERT INTO has VALUES ('" + username + "', '" + petname + "', 'walk', '"
                     + requestBody.walk + "');"
     }
 
@@ -97,10 +94,9 @@ exports.editPet = function(requestBody, requestParam, callback) {
 
 exports.deletePet = function(req, callback) {
     const { petname } = req.params;
-    const user = userController.getUser().getUsername();
     console.log("Name: " + petname);
 
-    const query = "DELETE from own_pet_belong WHERE username='" + user + "' AND name='" + petname + "';";
+    const query = "DELETE from own_pet_belong WHERE username='" + req.session.user.username + "' AND name='" + petname + "';";
     console.log("Query: " + query);
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
