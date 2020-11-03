@@ -19,7 +19,7 @@
                         <button onclick="window.location.href='/edit_profile'">Edit Profile</button>
                         <% if (data[0].username != 'root') { %>
                         <form method="POST" action="/profile">
-                            <button type="submit" class="red" onclick="return confirm('Are you sure to delete?');" >Delete Profile</button>
+                            <button type="submit" class="red" onclick="return confirm('Are you sure to delete?');" >Delete Account</button>
                         </form>
                         <% } %>
                     </div>

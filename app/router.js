@@ -1,7 +1,6 @@
 const express = require('express');
 const loginController = require('./controllers/loginController');
 const signupController = require('./controllers/signupController');
-const userController = require('./controllers/userController');
 const petownerController = require('./controllers/petownerController');
 const caretakerController = require('./controllers/caretakerController');
 const adminController = require('./controllers/adminController');
@@ -9,6 +8,7 @@ const editProfileController = require("./controllers/editProfileController");
 const petController = require('./controllers/petController');
 const availabilityController = require('./controllers/availabilityController');
 const bidController = require('./controllers/bidController');
+const userController = require('./controllers/userController');
 const router = express.Router();
 
 /* GET home page. */
@@ -176,8 +176,9 @@ router.get('/ct_signup', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res, next) {
-    req.session.destroy(loginController.logoutUser());
-    res.redirect('/');
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
 });
 
 router.get('/profile', function(req, res, next) {
@@ -187,24 +188,30 @@ router.get('/profile', function(req, res, next) {
   const isAdmin = req.session.user.isAdmin;
   const isPOCT = req.session.user && req.session.user.isPOCT;
 
+  console.log(req.session.user);
+  console.log(isOwner);
+  console.log(isCaretaker);
+  console.log(isAdmin);
+  console.log(isPOCT);
+
   if (isAdmin) {
-    adminController.showProfile((data) => {
+    adminController.showProfile(req.session.user.username, (data) => {
       res.render('profile_a', { title: 'Profile', auth: req.session.authenticated, user: req.session.user.username, isAdmin: true, isPOCT: isPOCT, data: data });
     })
   } else if (isOwner) {
-    petownerController.showProfile((data) => {
-      petownerController.showPet((dataP) => {
+    petownerController.showProfile(req.session.user.username, (data) => {
+      petownerController.showPet(req.session.user.username, (dataP) => {
         res.render('profile_po', { title: 'Profile', auth: req.session.authenticated, user: req.session.user.username, isAdmin: false, isPOCT: isPOCT, data: data, dataP: dataP });
       })
     })
   } else if (isCaretaker) {
-    const user = req.session.user.getUsername();
+    const user = req.session.user.username;
     const isPOCT = req.session.user && req.session.user.isPOCT;
     caretakerController.showProfile(user, (data) => {
       caretakerController.showPricing(user, (dataP) => {
         caretakerController.showAvailability(user, (dataA) => {
           caretakerController.showReview(user, (dataR) => {
-            res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, user: req.session.user.username, isAdmin: false,
+            res.render('profile_ct', { title: 'Profile', auth: req.session.authenticated, user: user, isAdmin: false,
               isPOCT: isPOCT, data: data, dataP: dataP, dataA: dataA, dataR: dataR });
           })
         })
@@ -212,7 +219,7 @@ router.get('/profile', function(req, res, next) {
     })
   }
 }).post('/profile', function(req, res, next) {
-    editProfileController.deleteProfile((result) => {
+    editProfileController.deleteProfile(req.session.user.username, (result) => {
         console.log("Delete profile Result: ")
         console.log(result);
     });
@@ -225,16 +232,16 @@ router.get('/edit_profile', function(req, res, next) {
   const isAdmin = req.session.user.isAdmin;
   const isPOCT = req.session.user && req.session.user.isPOCT;
   if (isAdmin) {
-    editProfileController.showCurrentAdminProfile(([data, usertype]) => {
+    editProfileController.showCurrentAdminProfile(req.session.user.username, ([data, usertype]) => {
       res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: req.session.user.username, isAdmin: true, isPOCT: isPOCT, data: data, usertype: usertype });
     })
   } else if (isOwner) {
-    editProfileController.showCurrentPOProfile(([data, usertype]) => {
+    editProfileController.showCurrentPOProfile(req.session.user.username, ([data, usertype]) => {
       res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: req.session.user.username, isAdmin: false, isPOCT: isPOCT, data: data, usertype: usertype });
     })
   }
  else if (isCaretaker) {
-  editProfileController.showCurrentCaretakerProfile(([data, usertype]) => {
+  editProfileController.showCurrentCaretakerProfile(req.session.user.username, ([data, usertype]) => {
     res.render('edit_profile', {title: 'Edit Profile', auth: req.session.authenticated, user: req.session.user.username, isAdmin: false, isPOCT: isPOCT, data: data, usertype: usertype });
   })
 }
@@ -243,18 +250,18 @@ router.get('/edit_profile', function(req, res, next) {
   const isCaretaker = req.session.user.isCaretaker;
   const isAdmin = req.session.user.isAdmin;
   if (isOwner) {
-    editProfileController.editPOProfile(req.body, (result) => {
+    editProfileController.editPOProfile(req.session.user.username, req.body, (result) => {
       console.log("Edit profile Result: ")
       console.log(result);
     });
   } else if (isAdmin) {
-    editProfileController.editAdminProfile(req.body, (result) => {
+    editProfileController.editAdminProfile(req.session.user.username, req.body, (result) => {
       console.log("Edit profile Result: ")
       console.log(result);
     });
   }
    else if (isCaretaker) {
-    editProfileController.editCaretakerProfile(req.body, (result) => {
+    editProfileController.editCaretakerProfile(req.session.user.username, req.body, (result) => {
       console.log("Edit profile Result: ")
       console.log(result);
     });
@@ -263,7 +270,6 @@ router.get('/edit_profile', function(req, res, next) {
 });
 
 router.get('/addtype', function(req, res, next) {
-  const user = req.session.user.getUsername();
   const isCaretaker = req.session.user.isCaretaker;
   const isPOCT = req.session.user && req.session.user.isPOCT;
   if (isCaretaker) {
@@ -271,7 +277,7 @@ router.get('/addtype', function(req, res, next) {
   }
 }).post('/addtype', function(req, res, next) {
     const isPOCT = req.session.user && req.session.user.isPOCT;
-     editProfileController.addType(req.body, (result, err) => {
+     editProfileController.addType(req.session.user.username, req.body, (result, err) => {
        console.log(result);
        if (err != "") {
             console.log(err);
@@ -283,7 +289,6 @@ router.get('/addtype', function(req, res, next) {
 });
 
 router.get('/ct/:type/set', function(req, res, next) {
-  const user = req.session.user.getUsername();
   const isCaretaker = req.session.user.isCaretaker;
   const isPOCT = req.session.user && req.session.user.isPOCT;
   if (isCaretaker) {
@@ -293,7 +298,7 @@ router.get('/ct/:type/set', function(req, res, next) {
 }).post('/ct/:type/set', function(req, res, next) {
   const isPOCT = req.session.user && req.session.user.isPOCT;
   const { type } = req.params;
-  editProfileController.setPrice(req.body, type, (result, err) => {
+  editProfileController.setPrice(req.session.user.username, req.body, type, (result, err) => {
    console.log(result);
    if (err != "") {
       console.log(err);
@@ -309,7 +314,7 @@ router.get('/pastorders', function(req, res, next) {
     const isCaretaker = req.session.user.isCaretaker;
     const isPOCT = req.session.user && req.session.user.isPOCT;
     if (isOwner) {
-        petownerController.showPastOrders((data) => {
+        petownerController.showPastOrders(req.session.user.username, (data) => {
             res.render('pastorders_po', {
                 title: 'Past Orders',
                 auth: req.session.authenticated,
@@ -320,8 +325,8 @@ router.get('/pastorders', function(req, res, next) {
             });
         })
     } else if (isCaretaker) {
-      caretakerController.showPastOrders((data) => {
-        caretakerController.showSummary((dataS) =>{
+      caretakerController.showPastOrders(req.session.user.username, (data) => {
+        caretakerController.showSummary(req.session.user.username, (dataS) =>{
           console.log(dataS);
           res.render('pastorders_ct', {
               title: 'Past Orders',
@@ -359,7 +364,7 @@ router.get('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, nex
                                      isAdmin: false, isPOCT: isPOCT, data: data, name: name, day: day, month: month, year: year, ctuname: ctuname});
     });
 }).post('/po/:name/:day/:month/:year/:ctuname/review', function(req, res, next) {
-    petownerController.postReview(req.body, req.params, (result) => {
+    petownerController.postReview(req.session.user.username, req.body, req.params, (result) => {
         console.log("Review and rate result: ")
         console.log(result);
     });
@@ -373,7 +378,7 @@ router.get('/pet/:petname/update', function(req, res, next) {
                                     isPOCT: isPOCT, data: data, petname: petname });
     });
 }).post('/pet/:petname/update', function(req, res, next) {
-     petController.editPet(req.body, req.params, (result) => {
+     petController.editPet(req.session.user.username, req.body, req.params, (result) => {
        console.log("Edit pet Result: ")
        console.log(result);
      });
@@ -385,7 +390,7 @@ router.get('/petadd', function(req, res, next) {
     res.render('petadd', { title: 'Add Pet', auth: req.session.authenticated, user: req.session.user.username, isAdmin: false, isPOCT: isPOCT, error: "" });
 }).post('/petadd', function(req, res, next) {
      const isPOCT = req.session.user && req.session.user.isPOCT;
-     petController.addPet(req.body, (result, err) => {
+     petController.addPet(req.session.user.username, req.body, (result, err) => {
        console.log("Add Pet Result: ")
        console.log(result);
        //if pet exists already, trigger will return error
@@ -434,7 +439,7 @@ router.get('/addAvailability', function(req, res, next) {
   }
 }).post('/addAvailability', function(req, res, next) {
   const isPOCT = req.session.user && req.session.user.isPOCT;
-  caretakerController.addAvailability(req.body, (msg) => {
+  caretakerController.addAvailability(req.session.user.username, req.body, (msg) => {
     if (msg != "Success!") {
       res.render('addAvailability', { title: 'Add Availability', auth: req.session.authenticated, user: req.session.user.username, isAdmin: false, isPOCT: isPOCT, msg: msg });
     } else {
@@ -450,7 +455,7 @@ router.get('/applyleave', function(req, res, next) {
   }
 }).post('/applyleave', function(req, res, next) {
   const isPOCT = req.session.user && req.session.user.isPOCT;
-  caretakerController.applyleave(req.body, (msg) => {
+  caretakerController.applyleave(req.session.user.username, req.body, (msg) => {
     if (msg != "Success!") {
       res.render('applyleave', { title: 'Apply Leave', auth: req.session.authenticated, user: req.session.user.username, isAdmin: false, isPOCT: isPOCT, msg: msg });
     } else {
@@ -499,18 +504,12 @@ router.get('/switch', function(req, res, next) {
 
     console.log(req.session.user.isOwner);
     if (isPOCT) {
-        req.session.user.changeUser();
+        req.session.user = userController.changeUser(req.session.user);
         console.log(req.session.user.isCaretaker);
         console.log(req.session.user.isOwner);
         console.log(req.session.user.isPOCT);
         res.redirect('/');
     }
-});
-
-router.get('/test', function(req, res, next) {
-  userController.saveUserInSession(req);
-  console.log(req.session.cookie.user.username);
-  res.redirect('/');
 });
 
 module.exports = router;

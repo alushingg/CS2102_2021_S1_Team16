@@ -1,7 +1,6 @@
 const dbController = require('./dbController');
-const userController = require('./userController');
 
-exports.showProfile = function(user, callback) {
+exports.showProfile = function(username, callback) {
   	const query = "SELECT u.username, u.name, u.phone_number, u.area, CAST(ratings.rating AS DECIMAL(3, 2)), "
 				    + "CASE "
 				    	+ "WHEN u.username IN (SELECT username FROM part_time) THEN 'Part Time' "
@@ -9,7 +8,7 @@ exports.showProfile = function(user, callback) {
 				    + "END AS job_type "
 				+ "FROM care_taker c natural join users u LEFT JOIN "
 					+ "(SELECT t.ctuname AS username, AVG(t.rating) AS rating FROM take_care t GROUP BY t.ctuname) AS ratings ON c.username = ratings.username "
-				+ "WHERE u.username = '" + user + "';"
+				+ "WHERE u.username = '" + username + "';"
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
@@ -21,10 +20,10 @@ exports.showProfile = function(user, callback) {
     });
 };
 
-exports.showPricing = function(user, callback) {
+exports.showPricing = function(username, callback) {
   	const query = "SELECT type, CAST(COALESCE(price, base_price) AS DECIMAL(100,2)) as price "
 				+ " FROM can_care NATURAL JOIN category "
-				+ " WHERE username = '" + user + "';";
+				+ " WHERE username = '" + username + "';";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
@@ -36,13 +35,12 @@ exports.showPricing = function(user, callback) {
     });
 };
 
-exports.addAvailability = function(requestBody, callback) {
-   const user = userController.getUser().getUsername();
-    var query1 = `SELECT p.username FROM part_time p WHERE p.username = '${user}';`;
+exports.addAvailability = function(username, requestBody, callback) {
+    var query1 = `SELECT p.username FROM part_time p WHERE p.username = '${username}';`;
     dbController.queryGet(query1, (result) => {
   //  console.log(query1);
     if(result.body.rows.length != 0){ // is part timer
-      const query = `INSERT INTO specify_availability VALUES ('${user}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}'));`;
+      const query = `INSERT INTO specify_availability VALUES ('${username}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}'));`;
       console.log("Query: " + query);
       dbController.queryGet(query, (result) => {
           if(result.status == 200) {
@@ -60,13 +58,12 @@ exports.addAvailability = function(requestBody, callback) {
   });
 }
 
-exports.applyleave = function(requestBody, callback) {
-  const user = userController.getUser().getUsername();
-   var query1 = `SELECT f.username FROM full_time f WHERE f.username = '${user}';`;
+exports.applyleave = function(username, requestBody, callback) {
+   var query1 = `SELECT f.username FROM full_time f WHERE f.username = '${username}';`;
    dbController.queryGet(query1, (result) => {
   //  console.log(query1);
    if(result.body.rows.length != 0){ // is full timer
-     const query = `INSERT INTO apply_leave VALUES ('${user}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}'), '${requestBody.reason}');`;
+     const query = `INSERT INTO apply_leave VALUES ('${username}', DATE('${requestBody.year}-${requestBody.month}-${requestBody.day}'), '${requestBody.reason}');`;
      console.log("Query: " + query);
      dbController.queryGet(query, (result) => {
          if(result.status == 200) {
@@ -84,12 +81,12 @@ exports.applyleave = function(requestBody, callback) {
   });
 }
 
-exports.showAvailability = function(user, callback) {
+exports.showAvailability = function(username, callback) {
   	const query = "SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, reason "
-  			+ "FROM apply_leave WHERE username = '" + user + "' "
+  			+ "FROM apply_leave WHERE username = '" + username + "' "
 				+ "UNION "
 				+ "SELECT EXTRACT(day FROM date) AS day, EXTRACT(month FROM date) AS month, EXTRACT(year FROM date) AS year, NULL "
-				+ "FROM specify_availability WHERE username = '" + user + "' "
+				+ "FROM specify_availability WHERE username = '" + username + "' "
 				+ "ORDER BY year DESC, month DESC, day DESC;";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
@@ -102,10 +99,10 @@ exports.showAvailability = function(user, callback) {
     });
 };
 
-exports.showReview = function(user, callback) {
+exports.showReview = function(username, callback) {
   	const query = "SELECT t.username, t.review, t.rating "
 				+ "FROM take_care t "
-				+ "WHERE t.ctuname = '" + user + "' AND t.review IS NOT NULL;";
+				+ "WHERE t.ctuname = '" + username + "' AND t.review IS NOT NULL;";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             console.log(result.body.rows);
@@ -118,12 +115,11 @@ exports.showReview = function(user, callback) {
     });
 };
 
-exports.showPastOrders = function(callback) {
-	const user = userController.getUser().getUsername();
+exports.showPastOrders = function(username, callback) {
 	const query = "SELECT t.username AS username, t.name AS name, EXTRACT(day FROM start_date) as start_day, EXTRACT(month FROM start_date) as start_month, EXTRACT(year FROM start_date) as start_year,"
       + "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, t.has_paid, t.is_completed, t.review AS review, t.rating AS rating  "
 				+ "FROM take_care t JOIN care_taker c ON t.ctuname = c.username "
-        +"WHERE c.username = '" + user + "' ;";
+        +"WHERE c.username = '" + username + "' ;";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
@@ -135,14 +131,13 @@ exports.showPastOrders = function(callback) {
     });
 };
 
-exports.showSummary = function(callback) {
-  const user = userController.getUser().getUsername();
+exports.showSummary = function(username, callback) {
   const query = "SELECT COUNT(*) AS transactions, COUNT(DISTINCT t.name) AS pets, "
                     + "SUM(t.end_date - t.start_date + 1) AS pet_days, 3000.00 AS salary "
                 + "FROM full_time f INNER JOIN "
                     + "(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t "
                     + "ON f.username = t.ctuname "
-                + "WHERE t.ctuname = '" + user + "' "
+                + "WHERE t.ctuname = '" + username + "' "
                     + "AND t.emonth = EXTRACT(month FROM NOW()) AND t.eyear = EXTRACT(year FROM NOW()) "
                 + "GROUP BY (f.username, t.emonth, t.eyear) "
                 + "HAVING COUNT(*) <= 60 "
@@ -159,7 +154,7 @@ exports.showSummary = function(callback) {
                 + "FROM full_time f INNER JOIN "
                     + "(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t "
                     + "ON f.username = t.ctuname "
-                + "WHERE t.ctuname = '" + user + "' "
+                + "WHERE t.ctuname = '" + username + "' "
                     + "AND t.emonth = EXTRACT(month FROM NOW()) AND t.eyear = EXTRACT(year FROM NOW()) "
                 + "GROUP BY (f.username, t.emonth, t.eyear) "
                 + "HAVING COUNT(*) > 60 "
@@ -173,7 +168,7 @@ exports.showSummary = function(callback) {
                 + "FROM part_time p INNER JOIN "
                     + "(SELECT *, EXTRACT(month FROM end_date) as emonth, EXTRACT(year FROM end_date) AS eyear FROM take_care) AS t "
                     + "ON p.username = t.ctuname "
-                + "WHERE t.ctuname = '" + user + "' "
+                + "WHERE t.ctuname = '" + username + "' "
                     + "AND t.emonth = EXTRACT(month FROM NOW()) AND t.eyear = EXTRACT(year FROM NOW()) "
                 + "GROUP BY (p.username, t.emonth, t.eyear);";
     dbController.queryGet(query, (result) => {
@@ -189,9 +184,8 @@ exports.showSummary = function(callback) {
 
 exports.updatePaid = function(req, callback) {
     const {name, pouname, day, month, year} = req.params;
-    const user = userController.getUser().getUsername();
     query = "UPDATE take_care SET has_paid = TRUE WHERE username = '" + pouname + "' AND name = '" + name + "' AND end_date = date '"
-        + year + "-" + month + "-" + day + "' AND ctuname = '" + user + "';";
+        + year + "-" + month + "-" + day + "' AND ctuname = '" + req.session.user.username + "';";
     dbController.queryGet(query, (result) => {
             if(result.status == 200) {
                 callback(result.body.rows);
@@ -205,9 +199,8 @@ exports.updatePaid = function(req, callback) {
 
 exports.updateCompleted = function(req, callback) {
     const {name, pouname, day, month, year} = req.params;
-    const user = userController.getUser().getUsername();
     query = "UPDATE take_care SET is_completed = TRUE WHERE username = '" + pouname + "' AND name = '" + name + "' AND end_date = date '"
-        + year + "-" + month + "-" + day + "' AND ctuname = '" + user + "';";
+        + year + "-" + month + "-" + day + "' AND ctuname = '" + req.session.user.username + "';";
     dbController.queryGet(query, (result) => {
          if(result.status == 200) {
              callback(result.body.rows);

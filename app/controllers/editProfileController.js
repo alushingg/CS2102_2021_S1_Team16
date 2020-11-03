@@ -1,11 +1,9 @@
 const dbController = require('./dbController');
-const userController = require('./userController');
 
-exports.showCurrentPOProfile = function(callback) {
-	const user = userController.getUser().getUsername();
+exports.showCurrentPOProfile = function(username, callback) {
   	const query = "SELECT u.username, u.password, u.name, u.phone_number, u.area, p.credit_card "
 				+ "FROM users u NATURAL JOIN pet_owner p "
-				+ "WHERE u.username = '" + user + "';"
+				+ "WHERE u.username = '" + username + "';"
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback([result.body.rows, 'Owner']);
@@ -17,12 +15,11 @@ exports.showCurrentPOProfile = function(callback) {
     });
 };
 
-exports.showCurrentAdminProfile = function(callback) {
-    const user = userController.getUser().getUsername();
+exports.showCurrentAdminProfile = function(username, callback) {
 
     const query = "SELECT u.username, u.password, u.name, u.phone_number, u.area, a.position "
         + "FROM users u NATURAL JOIN pcs_admin a "
-        + "WHERE u.username = '" + user + "';"
+        + "WHERE u.username = '" + username + "';"
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback([result.body.rows, 'Admin']);
@@ -33,11 +30,10 @@ exports.showCurrentAdminProfile = function(callback) {
         }
     });
 };
-exports.showCurrentCaretakerProfile = function(callback) {
-	const user = userController.getUser().getUsername();
+exports.showCurrentCaretakerProfile = function(username, callback) {
   	const query = "SELECT u.username, u.password, u.name, u.phone_number, u.area "
 				+ "FROM users u NATURAL JOIN care_taker c "
-				+ "WHERE u.username = '" + user + "';"
+				+ "WHERE u.username = '" + username + "';"
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback([result.body.rows, 'Caretaker']);
@@ -49,8 +45,7 @@ exports.showCurrentCaretakerProfile = function(callback) {
     });
 };
 
-exports.editPOProfile = function(requestBody, callback) {
-    const user = userController.getUser().getUsername();
+exports.editPOProfile = function(username, requestBody, callback) {
     var query ='';
     var modifiedfields = '';
     var updated = '';
@@ -95,14 +90,14 @@ exports.editPOProfile = function(requestBody, callback) {
     }
 
     if (requestBody.creditcard) {
-        query = "UPDATE pet_owner SET" + " credit_card = " + requestBody.creditcard + " WHERE username= '" + user + "';"
+        query = "UPDATE pet_owner SET" + " credit_card = " + requestBody.creditcard + " WHERE username= '" + username + "';"
     } else {
-        query = "UPDATE pet_owner SET" + " credit_card = NULL WHERE username= '" + user + "';"
+        query = "UPDATE pet_owner SET" + " credit_card = NULL WHERE username= '" + username + "';"
 
     }
 
     if (count > 0) {
-        query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + user + "';"
+        query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + username + "';"
     }
 
     console.log("Query: " + query);
@@ -117,8 +112,7 @@ exports.editPOProfile = function(requestBody, callback) {
     });
 }
 
-exports.editAdminProfile = function(requestBody, callback) {
-    const user = userController.getUser().getUsername();
+exports.editAdminProfile = function(username, requestBody, callback) {
     var query ='';
     var modifiedfields = '';
     var updated = '';
@@ -159,7 +153,7 @@ exports.editAdminProfile = function(requestBody, callback) {
     }
 
     if (requestBody.position) {
-        query = "UPDATE pcs_admin SET" + " position = '" + requestBody.position + "' WHERE username= '" + user + "';"
+        query = "UPDATE pcs_admin SET" + " position = '" + requestBody.position + "' WHERE username= '" + username + "';"
     }
 
     if (count > 1) {
@@ -168,7 +162,7 @@ exports.editAdminProfile = function(requestBody, callback) {
     }
 
     if (count > 0) {
-        query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + user + "';"
+        query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + username + "';"
     }
 		console.log("Query: " + query);
 			dbController.queryGet(query, (result) => {
@@ -182,8 +176,7 @@ exports.editAdminProfile = function(requestBody, callback) {
 			});
 	}
 
-	exports.editCaretakerProfile = function(requestBody, callback) {
-	    const user = userController.getUser().getUsername();
+	exports.editCaretakerProfile = function(username, requestBody, callback) {
 	    var query ='';
 	    var modifiedfields = '';
 	    var updated = '';
@@ -227,7 +220,7 @@ exports.editAdminProfile = function(requestBody, callback) {
 	        updated = "(" + updated + ")";
 	    }
 			if (count > 0) {
-					query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + user + "';"
+					query = query + "UPDATE users SET" + " " + modifiedfields + " = " + updated + " WHERE username= '" + username + "';"
 			}
 
 	    console.log("Query: " + query);
@@ -242,10 +235,9 @@ exports.editAdminProfile = function(requestBody, callback) {
 	    });
 	}
 
-exports.deleteProfile = function(callback) {
+exports.deleteProfile = function(username, callback) {
     console.log("Delete Profile")
-    const user = userController.getUser().getUsername();
-    const query = "DELETE" + " FROM users WHERE username = '" + user + "';"
+    const query = "DELETE" + " FROM users WHERE username = '" + username + "';"
     console.log("Query: " + query)
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
@@ -258,9 +250,8 @@ exports.deleteProfile = function(callback) {
     });
 };
 
-exports.addType = function(requestBody, callback) {
-    const user = userController.getUser().getUsername();
-    const query = "INSERT INTO can_care VALUES ('" + user + "', '" + requestBody.type + "', NULL);";
+exports.addType = function(username, requestBody, callback) {
+    const query = "INSERT INTO can_care VALUES ('" + username + "', '" + requestBody.type + "', NULL);";
     console.log("Query: " + query)
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
@@ -273,8 +264,7 @@ exports.addType = function(requestBody, callback) {
     });
 };
 
-exports.setPrice = function(requestBody, type, callback) {
-    const user = userController.getUser().getUsername();
+exports.setPrice = function(username, requestBody, type, callback) {
     const query = `SELECT base_price FROM category WHERE type = '${type}';`;
     console.log("Query: " + query)
     dbController.queryGet(query, (result) => {
@@ -282,7 +272,7 @@ exports.setPrice = function(requestBody, type, callback) {
             if (parseFloat(result.body.rows[0].base_price) > parseFloat(requestBody.price)) {
                 callback([], "Price should be higher than base price!");
             } else {
-                const query1 = `UPDATE can_care SET price = ${requestBody.price} WHERE username = '${user}' AND type = '${type}';`;
+                const query1 = `UPDATE can_care SET price = ${requestBody.price} WHERE username = '${username}' AND type = '${type}';`;
                 dbController.queryGet(query1, (result) => {
                     if(result.status == 200) {
                         callback(result.body.rows, "");

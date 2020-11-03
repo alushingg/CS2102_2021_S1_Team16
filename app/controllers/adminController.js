@@ -1,11 +1,9 @@
 const dbController = require('./dbController');
-const userController = require('./userController');
 
-exports.showProfile = function(callback) {
-	const user = userController.getUser().getUsername();
+exports.showProfile = function(username, callback) {
   	const query = "SELECT u.username, u.password, u.name, u.phone_number, u.area, a.position "
 				+ "FROM users u NATURAL JOIN pcs_admin a "
-				+ "WHERE a.username = '" + user + "';";
+				+ "WHERE a.username = '" + username + "';";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
@@ -573,7 +571,6 @@ exports.getSummary = function(callback) {
 };
 
 exports.addAdmin = function(requestBody, callback) {
-    const user = userController.getUser().getUsername();
     console.log("Username: " + requestBody.username + " Pwd: "+ requestBody.password +
             " Name: " + requestBody.name + " Phone: " + requestBody.phone +
             " Area: " + requestBody.area + " Position: " + requestBody.position);
@@ -593,7 +590,6 @@ exports.addAdmin = function(requestBody, callback) {
 }
 
 exports.addCaretaker = function(requestBody, callback) {
-    const user = userController.getUser().getUsername();
     if (requestBody.existing) {
         var query3 = `SELECT 1 FROM users WHERE username = '${requestBody.username}';`;
         dbController.queryGet(query3, (result) => {
