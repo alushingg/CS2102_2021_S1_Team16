@@ -39,7 +39,7 @@ exports.showPastOrders = function(callback) {
 				+ "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, "
 				+ "ctuname, "
 				+ "(CASE WHEN has_paid THEN 'Has Paid' ELSE 'Unpaid' END) as has_paid, "
-				+ "daily_price, is_completed, review, rating, transfer_method, payment_mode "
+				+ "CAST(daily_price AS DECIMAL(100,2)) AS daily_price, is_completed, review, rating, transfer_method, payment_mode "
 				+ "FROM take_care "
 				+ "WHERE username = '" + user + "' "
                 + "ORDER BY (start_date, end_date) DESC;";
@@ -58,7 +58,7 @@ exports.showOrder = function(req, callback) {
     const user = userController.getUser().getUsername();
     const { name, day, month, year, ctuname} = req.params;
     const query = "SELECT EXTRACT(day FROM start_date) as start_day, EXTRACT(month FROM start_date) as start_month, EXTRACT(year FROM start_date) as start_year, "
-        + "daily_price, transfer_method, payment_mode "
+        + "CAST(daily_price AS DECIMAL(100,2)) AS daily_price, transfer_method, payment_mode "
         + "FROM take_care "
         + "WHERE username = '" + user + "' AND name = '" + name + "' AND end_date = date '"
         + year + "-" + month + "-" + day + "' AND ctuname = '" + ctuname + "';";
