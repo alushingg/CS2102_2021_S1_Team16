@@ -16,12 +16,33 @@
         <div class="content">
             <div class="card box">
                 <h1><%= title%> : <%= ctuname%> </h1>
-                <p>Pet Name: <%= name %></p>
-                <p>Start Date: <%= data[0].start_day %>/<%= data[0].start_month %>/<%= data[0].start_year %></p>
-                <p>End Date: <%= day%>/<%= month%>/<%= year%></p>
-                <p>Daily Price: parseFloat(data[i].daily_price).toFixed(2)</p>
-                <p>Payment Mode: <%= data[0].payment_mode %></p>
-                <p>Transfer Method: <%= data[0].transfer_method %></p>
+                <hr>
+                <table>
+                    <tr>
+                        <td>Pet Name: </td>
+                        <td><%= name %></td>
+                    </tr>
+                    <tr>
+                        <td>Start Date: </td>
+                        <td><%= data[0].start_day %>/<%= data[0].start_month %>/<%= data[0].start_year %></td>
+                    </tr>
+                    <tr>
+                        <td>End Date: </td>
+                        <td><%= day%>/<%= month%>/<%= year%></td>
+                    </tr>
+                    <tr>
+                        <td>Daily Price: </td>
+                        <td>$<%= parseFloat(data[0].daily_price).toFixed(2)%></td>
+                    </tr>
+                    <tr>
+                        <td>Payment Mode: </td>
+                        <td><%= data[0].payment_mode %></td>
+                    </tr>
+                    <tr>
+                        <td>Transfer Method: </td>
+                        <td><%= data[0].transfer_method %></td>
+                    </tr>
+                </table>
             </div>
 
             <div class="spacing"></div>

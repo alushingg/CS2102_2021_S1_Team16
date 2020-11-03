@@ -117,9 +117,10 @@ exports.showReview = function(username, callback) {
 
 exports.showPastOrders = function(username, callback) {
 	const query = "SELECT t.username AS username, t.name AS name, EXTRACT(day FROM start_date) as start_day, EXTRACT(month FROM start_date) as start_month, EXTRACT(year FROM start_date) as start_year,"
-      + "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, t.has_paid, t.is_completed, t.review AS review, t.rating AS rating  "
+                + "EXTRACT(day FROM end_date) as end_day, EXTRACT(month FROM end_date) as end_month, EXTRACT(year FROM end_date) as end_year, t.has_paid, t.is_completed, t.review AS review, t.rating AS rating  "
 				+ "FROM take_care t JOIN care_taker c ON t.ctuname = c.username "
-        +"WHERE c.username = '" + username + "' ;";
+                + "WHERE c.username = '" + username + "' " 
+                + "ORDER BY (start_date, end_date) DESC;";
   	dbController.queryGet(query, (result) => {
         if(result.status == 200) {
             callback(result.body.rows);
