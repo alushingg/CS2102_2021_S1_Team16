@@ -70,6 +70,7 @@ exports.getUserType = function(username, callback) {
 
 exports.authUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT, session) {
     userController.trackUser(userData, isOwner, isCaretaker, isAdmin, isPOCT);
+    session.user = userController.newUser(userData, isOwner, isCaretaker, isAdmin, isPOCT);
     session.authenticated = true;
 }
 

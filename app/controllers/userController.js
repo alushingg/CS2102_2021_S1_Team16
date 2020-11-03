@@ -32,3 +32,21 @@ exports.getUsername = function() {
         return this.user.username;
     }
 };
+
+exports.newUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT) {
+    return new User({
+        'username': userData.username,
+        'name': userData.name,
+        'phone': userData.phone_number,
+        'area': userData.area,
+        'isOwner': isOwner,
+        'isCaretaker': isCaretaker,
+        'isAdmin': isAdmin,
+        'isPOCT' : isPOCT
+    });
+}
+
+exports.saveUserInSession = function(request) {
+    console.log(this.user);
+    request.session.user = this.user;
+}
