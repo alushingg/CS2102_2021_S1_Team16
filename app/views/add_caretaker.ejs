@@ -1,137 +1,150 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <%- include('./components/htmlHead'); %>
-    <script src="js/editProfileScript.js"></script>
-</head>
+    <head>
+        <%- include('./components/htmlHead'); %>
+        <link rel='stylesheet' href='/css/form.css' />
+        <script src="js/togglePassword.js"></script>
+        <script src="js/userDataValidation.js"></script>
+    </head>
 
-<body>
+    <body>
+        <header>
+            <%- include('./components/header'); %>
+        </header>
 
-<!-- <%- include('./components/backToTopBtn'); %> -->
-
-<header>
-    <%- include('./components/header'); %>
-</header>
-
-<!-- Content here -->
-<body>
-<h1 id="title"><%= title %></h1>
-<div class="content">
-    <div>
-        <form id="addCaretakerForm" method="POST" action="/addcaretaker">
-            <div id="existingDiv">
-                <input type="checkbox" id="existing" name="existing" onclick="exisitng()" checked>Existing user?
-            </div>
-            <script>
-                function exisitng() {
-                    var n = document.getElementById("nameDiv");
-                    if (n.style.display == "none") {
-                        n.style = "display:all;";
-                    } else {
-                        n.style = "display:none;";
-                    }
-                    var pw = document.getElementById("passwordDiv");
-                    if (pw.style.display == "none") {
-                        pw.style = "display:all;";
-                    } else {
-                        pw.style = "display:none;";
-                    }
-                    var p = document.getElementById("phoneDiv");
-                    if (p.style.display == "none") {
-                        p.style = "display:all;";
-                    } else {
-                        p.style = "display:none;";
-                    }
-                    var a = document.getElementById("areaDiv");
-                    if (a.style.display == "none") {
-                        a.style = "display:all;";
-                    } else {
-                        a.style = "display:none;";
-                    }
-                }
-            </script>
-            <div id="jobTypeDiv">
-                <p>Job Type: </p>
-                <label><input type="radio" name="type" value="fulltime" checked/> Full Time</label><br>
-                <label><input type="radio" name="type" value="parttime"/> Part Time</label><br>
-            </div>
-            <div class="aligner">
-                <div id="usernameDiv">
-                    <p>Username: </p>
+        <div class="spacing"></div>
+        <div class="content">
+            <form id="addCaretakerForm" method="POST" action="/addcaretaker">
+                <h3 id="title">Add New Caretaker</h3>
+                <div>
+                    <input class="checkbox" type="checkbox" id="existing" name="existing" onclick="exisitng()">
+                    <label for="existing">Existing user?</label>
+                </div>
+                <hr>
+                
+                <div class="input-group">
+                    <p>Username:</p>
                     <input type="text" id="username" name="username" placeholder="Userame" required>
                 </div>
 
-                <div style="display:none;" id="nameDiv">
-                    <p>Name: </p>
-                    <input type="text" id="name" name="name" placeholder="Name">
+                <div id="new-user-section">
+                    <div class="input-group">
+                        <p>Password: </p>
+                        <input type="password" id="password" name="password" placeholder="Password">
+                        <div>
+                            <input class="checkbox" type="checkbox" onclick="toggleMask()">
+                            <label>Show Password</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <p>Name: </p>
+                        <input type="text" id="name" name="name" placeholder="Name">
+                    </div>
+                    <div class="input-group">
+                        <p>Phone number: </p>
+                        <input type="text" id="phone" name="phone" placeholder="Phone number">
+                    </div>
+                    <div class="input-group">
+                        <p>Area: </p>
+                        <input type="text" id="area" name="area" placeholder="Area">
+                    </div>
                 </div>
-                <div style="display:none;" id="passwordDiv">
-                    <p>Password: </p>
-                    <input type="password" id="password" name="password" placeholder="Password">
-                    <input type="checkbox" onclick="myFunction()">Show Password
-                    <script>
-                        function myFunction() {
-                            var x = document.getElementById("password");
-                            if (x.type === "password") {
-                                x.type = "text";
-                            } else {
-                                x.type = "password";
-                            }
-                        }
-                    </script>
+                <div class="input-group">
+                    <p>Job Type: </p>
+                    <select name="type" id="type">
+                        <option value="fulltime">Full Time</option>
+                        <option value="parttime">Part Time</option>
+                    </select>
                 </div>
-                <div style="display:none;" id="phoneDiv">
-                    <p>Phone number: </p>
-                    <input type="text" id="phone" name="phone" placeholder="Phone number">
-                </div>
-                <div style="display:none;" id="areaDiv">
-                    <p>Area: </p>
-                    <input type="text" id="area" name="area" placeholder="Area">
-                </div>
-            </div>
-            <div>
-                <div class="form-group">
+                <hr>
+                <div class="input-group">
                     <p>Pet Type: </p>
-                    <p>
-                        <label><input type="checkbox" name="ptype" value="Cat" /> Cat</label><br>
-                        <label><input type="checkbox" name="ptype" value="Dog" /> Dog</label><br>
-                        <label><input type="checkbox" name="ptype" value="Rabbit" /> Rabbit</label><br>
-                        <label><input type="checkbox" name="ptype" value="Hamster" /> Hamster</label><br>
-                        <label><input type="checkbox" name="ptype" value="Fish" /> Fish</label><br>
-                        <label><input type="checkbox" name="ptype" value="Tortoise" /> Tortoise</label><br>
-                        <label><input type="checkbox" name="ptype" value="Frog" /> Frog</label><br>
-                        <label><input type="checkbox" name="ptype" value="Terappin" /> Terrapin</label><br>
-                        <label><input type="checkbox" name="ptype" value="Bird" /> Bird</label><br>
-                        <label><input type="checkbox" name="ptype" value="Insect" /> Insect</label><br>
-                        <label><input type="checkbox" name="ptype" value="Guinea Pig" /> Guinea Pig</label><br>
-                        <label><input type="checkbox" name="ptype" value="Reptile" /> Reptile</label><br>
-                    </p>
+                    <table>
+                        <tr>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Cat"/> Cat</label>
+                            </td>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Fish"/> Fish</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Dog"/> Dog</label>
+                            </td>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Tortoise"/> Tortoise</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Rabbit" /> Rabbit</label>
+                            </td>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Terrapin"/> Terrapin</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Hamster"/> Hamster</label>
+                            </td>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Frog"/> Frog</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Bird"/> Bird</label>
+                            </td>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Reptile"/> Reptile</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Guinea Pig"/> Guinea Pig</label>
+                            </td>
+                            <td>
+                                <label><input class="checkbox" type="checkbox" name="ptype" value="Insect"/> Insect</label>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-            </div>
-            <div class="aligner">
-                <p></p>
-                <input type="submit" value="Submit">
-            </div>
-        </form>
-    </div>
-</div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
 
-<script>
-    (function() {
-        window.addEventListener('load', function() {
-            var forms = [document.getElementById('addCaretakerForm')];
-            var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', checkType, false);
-            });
-        }, false);
-    })();
-    if ("<%= msg%>" != "") {
-        alert('<%= msg%>');
-    }
-</script>
+        <div class="spacing"></div>
 
-<footer>
-    <%- include('./components/footer'); %>
-</footer>
-</body>
+        <script>
+            window.addEventListener('load', function() {
+                var forms = [document.getElementById('addCaretakerForm')];
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', checkCT, false);
+                });
+            }, false);
+
+            if ("<%= msg%>" != "") {
+                alert('<%= msg%>');
+            }
+
+            function exisitng() {
+                const checkbox = document.getElementById("existing");
+                const newUserSection = document.getElementById("new-user-section");
+
+                console.log(checkbox);
+                console.log(newUserSection);
+
+                if (checkbox.checked) {
+                    newUserSection.style = "display: none;";
+                } else {
+                    newUserSection.style = "display: block;";
+                }
+            }
+        </script>
+
+        <footer>
+            <%- include('./components/footer'); %>
+        </footer>
+    </body>
 </html>

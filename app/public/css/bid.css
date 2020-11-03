@@ -15,35 +15,43 @@ select {
     padding: 10px;
 }
 
-th, td {
-    border: 1px solid black;
-    word-break: break-all;
-}
-
 table {
     border-collapse: collapse;
     table-layout: fixed;
-    width: 100%;
+}
+
+th, td {
+    border: 0px;
+    padding: 10px;
 }
 
 div.content {
     display: block;
 }
 
+div.profile-header {
+    display: inline-flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+div.card {
+    border-radius: 20px;
+}
+
 div#left-panel {
     float: left;
-    margin: 5%;
-    padding: 40px;
+    margin-left: 5%;
     width: 50%;
     border-radius: 20px;
 }
 
 div#right-panel {
     float: right;
-    margin: 5%;
+    margin-right: 5%;
     padding: 40px;
     width: 25%;
-    border-radius: 20px;
 }
 
 div#date {

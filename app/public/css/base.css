@@ -68,7 +68,8 @@ footer {
 
 hr {
   width: 90%;
-  color: #eeeeee
+  color: #cccccc;
+  border-color: #cccccc;
 }
 
 th, td {
@@ -114,6 +115,28 @@ div.content .card {
   padding: 40px;
   background-color: rgba(255, 255, 255, 0.6);
   border: 0px;
+}
+
+div.content .box {
+  width: 90%;
+  border-radius: 20px;
+}
+
+div.review {
+  background-color: #f1ece5;
+  border-radius: 20px;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+div.review .review-head {
+  display: inline-flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+
+  color: green;
+  font-weight: bolder;
 }
 
 .spacing {

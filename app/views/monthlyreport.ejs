@@ -2,63 +2,72 @@
 <html>
     <head>
         <%- include('./components/htmlHead'); %>
+        <link rel='stylesheet' href='/css/summary.css' />
     </head>
 
     <body>
-        
-        <!-- <%- include('./components/backToTopBtn'); %> -->
-        
+        <% var  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; %>
         <header>
             <%- include('./components/header'); %>
         </header>
 
-        <!-- Content here -->
-        <% var  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; %>
-        <h1><%= title %>: <%= months[month - 1] %> <%= year %></h1>
+        <div class="spacing"></div>
+        <div class="content">
+            <div class="card box">
+                <h1>Monthly Report: <%= months[month - 1] %> <%= year %></h1>
+                <hr>
+                <table id="summary">
+                    <tr>
+                        <td>Total number of transactions: <%= data[0].total_transactions %></td>
+                        <td>Total earnings: $<%= parseFloat(data[0].total_earnings).toFixed(2) %></td>
+                    </tr>
+                    <tr>
+                        <td>Total number of pets: <%= data[0].total_pets %></td>
+                        <td>Total salary to be paid: $<%= data[0].total_salary %></td>
+                    </tr>
+                    <tr>
+                        <td>Total number of pet days: <%= data[0].total_pet_days %></td>
+                        <td>
+                            Total profit: 
+                            <% if (data[0].total_profit < 0) { %>
+                                - $<%= Math.abs(data[0].total_profit).toFixed(2) %>
+                            <% } else { %>
+                                $<%= Math.abs(data[0].total_profit).toFixed(2) %>
+                            <% } %>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
 
-        <style>
-            table, th, td {
-              border: 1px solid black;
-              border-collapse: collapse;
-            }
-        </style>
+            <div class="spacing"></div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Care Taker Username</th>
-                    <th scope="col">Job Type</th>
-                    <th scope="col">Number of Transactions</th>
-                    <th scope="col">Number of Pets</th>
-                    <th scope="col">Number of Pet Days</th>
-                    <th scope="col">Salary</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for(var i=0; i<dataC.length; i++) { %>
-                <tr>
-                    <td><%= dataC[i].username %></td>
-                    <td><%= dataC[i].job_type %></td>
-                    <td><%= dataC[i].transactions %></td>
-                    <td><%= dataC[i].pets %></td>
-                    <td><%= dataC[i].pet_days %></td>
-                    <td><%= dataC[i].salary %></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+            <div class="card box">
+                <h3>Transactions</h3>
+                <table>
+                    <tr>
+                        <th>Care Taker Username</th>
+                        <th>Job Type</th>
+                        <th>Number of Transactions</th>
+                        <th>Number of Pets</th>
+                        <th>Number of Pet Days</th>
+                        <th>Salary</th>
+                    </tr>
+                    <% for(var i=0; i<dataC.length; i++) { %>
+                    <tr>
+                        <td><%= dataC[i].username %></td>
+                        <td><%= dataC[i].job_type %></td>
+                        <td><%= dataC[i].transactions %></td>
+                        <td><%= dataC[i].pets %></td>
+                        <td><%= dataC[i].pet_days %></td>
+                        <td>$<%= parseFloat(dataC[i].salary).toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+        </div>
 
-        <p>Total number of transactions: <%= data[0].total_transactions %></p>
-        <p>Total number of pets: <%= data[0].total_pets %></p>
-        <p>Total number of pet days: <%= data[0].total_pet_days %></p>
-        <p>Total salary to be paid: $<%= data[0].total_salary %></p>
-        <p>Total earnings: $<%= data[0].total_earnings %></p>
-        <% if (data[0].total_profit < 0) { %>
-            <p>Total profit: -$<%= Math.abs(data[0].total_profit).toFixed(2) %></p>
-        <% } else { %>
-            <p>Total profit: $<%= Math.abs(data[0].total_profit).toFixed(2) %></p>
-        <% } %>
-
+        <div class="spacing"></div>
         <footer>
             <%- include('./components/footer'); %>
         </footer>

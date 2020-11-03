@@ -1,0 +1,70 @@
+form {
+    display:flex;
+    flex-direction: column;
+    background-color: white;
+    width: 30%;
+    padding: 20px 60px 60px 60px;
+    border-radius: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 0px;
+    padding: 10px;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+input.checkbox {
+    width: auto;
+}
+
+button {
+    width: 100%;
+}
+
+select {
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+div.content {
+    display: inline-flex;
+    align-items: center;
+
+    width: 100%;
+}
+
+div.aligner {
+    display:block;
+    text-align: center;
+}
+
+div.form-group {
+    display: flex;
+    align-items: center;
+}
+
+div.input-group {
+    display: inline-flex;
+    flex-direction: column;
+
+    margin: 20px 0px;
+}
+
+#addPetForm {
+    display: inline-flex;
+    justify-content: center;
+}
+
+#title {
+    text-align: center;
+    margin: 40px 20px;
+}
