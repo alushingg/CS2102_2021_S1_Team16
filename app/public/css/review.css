@@ -7,3 +7,8 @@ div.content {
 hr {
     width: 100%;
 }
+
+th, td {
+    border: 0px;
+    padding: 10px;
+}
