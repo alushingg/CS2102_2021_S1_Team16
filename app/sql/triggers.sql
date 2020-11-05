@@ -329,14 +329,14 @@ CREATE OR REPLACE FUNCTION check_price()
         FROM category c
         WHERE c.type = NEW.type;
         
-        IF rating >= 4 AND NEW.price >= baseprice THEN
+        IF rating >= 4 AND (NEW.price IS NULL OR NEW.price >= baseprice) THEN
             RETURN NEW;
         ELSIF (rating < 4 OR rating IS NULL) AND NEW.price IS NULL THEN
             RETURN NEW;
         ELSIF (rating < 4 OR rating IS NULL) THEN
             RAISE EXCEPTION 'Your rating is too low!';
         ELSE
-            RAISE EXCEPTION 'Price should be higher than %!', baseprice;
+            RAISE EXCEPTION 'Price should be higher than base price $%!', baseprice;
         END IF;
     END;
     $$ LANGUAGE plpgsql;
