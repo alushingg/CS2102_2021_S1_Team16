@@ -84,7 +84,7 @@ CREATE OR REPLACE FUNCTION check_leave()
             RAISE EXCEPTION 'Only full timer need to apply for leave!';
         ELSIF NEW.date IN (SELECT date FROM apply_leave a WHERE a.username = NEW.username) THEN
             RAISE EXCEPTION 'Leave already applied on this date!';
-        ELSIF 1 = (SELECT 1 FROM take_care t WHERE NEW.username = t.ctuname AND (NEW.date >= t.start_date AND NEW.date <= t.end_date)) THEN
+        ELSIF (SELECT COUNT(*) FROM take_care t WHERE NEW.username = t.ctuname AND (NEW.date >= t.start_date AND NEW.date <= t.end_date)) > 0 THEN
             RAISE EXCEPTION 'There is a job on this date!';
         ELSE
             yr := EXTRACT(year FROM NEW.date);
