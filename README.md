@@ -1,7 +1,7 @@
 # CS2102_2021_S1_Team16 – Pet Caring Service (PCS)
 
-[Project Report](Documentation/Project%20Report.pdf)
-[Demo Video](Documentation/Demo.mp4)
+[Project Report](Documentation/Project%20Report.pdf) |
+[Demo Video](Documentation/Demo.mp4) |
 [Demo Video Link](https://drive.google.com/file/d/1VWdctg8ybNDJVkMz9oQdRybxHU2tRb1H/view?usp=sharing)
 
 ## What is PCS?
