@@ -79,6 +79,11 @@ table {
     border-collapse: collapse;
 }
 
+thead {
+  background-color: green;
+  color: white;
+}
+
 ul.nav_links  {
   margin: 0px;
   padding: 0px;
@@ -161,7 +166,7 @@ p.error_message {
 button {
 
   border: none;
-  background-color: #4CAF50;
+  background-color: green;
   
   padding: 10px;
   margin: 10px 0px;
@@ -175,7 +180,7 @@ button {
 }
 
 button.red {
-  background-color: #FF0030;
+  background-color: red;
 } /* Red */
 
 button:hover {

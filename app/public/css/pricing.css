@@ -1,0 +1,18 @@
+th, td {
+    border: 1px solid gray;
+    padding: 10px;
+}
+
+div.content table {
+    width: 400px;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: green;
+    color: white;
+}
+
+div.content .card {
+    display: block;
+}

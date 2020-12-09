@@ -56,11 +56,71 @@
                     </table>
                 <% } %>
             </div>
+
             <div class="spacing"></div>
+
+            <div class="card box">
+                <h1> Current Jobs </h1>
+                <hr>
+                <% if (currOrders.length == 0) { %>
+                    <p>No current orders.</p>
+                <% } else { %>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Pet Name</th>
+                                <th scope="col">Pet Owner</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Review</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i<currOrders.length; i++) { %>
+                            <tr>
+                                <td><%= currOrders[i].name %></td>
+                                <td><%= currOrders[i].username %></td>
+                                <td><%= currOrders[i].start_day %>/<%= currOrders[i].start_month %>/<%= currOrders[i].start_year %></td>
+                                <td><%= currOrders[i].end_day %>/<%= currOrders[i].end_month %>/<%= currOrders[i].end_year %></td>
+                                <td><%= currOrders[i].rating %></td>
+                                <td><%= currOrders[i].review %></td>
+                                <td>
+                                    <% if (currOrders[i].has_paid) { %>
+                                        Confirmed
+                                    <% } else if (currOrders[i].is_completed) { %>
+                                        Completed
+                                    <% } else { %>
+                                        Pending
+                                    <% } %> 
+                                </td>
+                                <% if (!currOrders[i].has_paid) { %>
+                                    <td style="border:transparent;">
+                                        <form method="POST" action="/ct/<%= encodeURIComponent(currOrders[i].name)%>/<%= encodeURIComponent(currOrders[i].username)%>/<%= encodeURIComponent(currOrders[i].end_day)%>/<%= encodeURIComponent(currOrders[i].end_month)%>/<%= encodeURIComponent(currOrders[i].end_year)%>/paid" style="display:inline;">
+                                            <button type="submit" class="button button2" onclick="return confirm('Are you sure the pet owner has paid?');" >Confirm</button>
+                                        </form>
+                                    </td>
+                                <% } else if (!currOrders[i].is_completed) {%>
+                                    <td style="border:transparent;">
+                                        <form method="POST" action="/ct/<%= encodeURIComponent(currOrders[i].name)%>/<%= encodeURIComponent(currOrders[i].username)%>/<%= encodeURIComponent(currOrders[i].end_day)%>/<%= encodeURIComponent(currOrders[i].end_month)%>/<%= encodeURIComponent(currOrders[i].end_year)%>/completed" style="display:inline;">
+                                            <button type="submit" class="button button2" onclick="return confirm('Are you sure the order is completed?');" >Complete</button>
+                                        </form>
+                                    </td>
+                                <% } %>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+
+            <div class="spacing"></div>
+            
             <div class="card box">
                 <h1> Past Jobs </h1>
                 <hr>
-                <% if (data.length == 0) { %>
+                <% if (pastOrders.length == 0) { %>
                     <p>No past orders.</p>
                 <% } else { %>
                     <table class="table">
@@ -72,30 +132,27 @@
                                 <th scope="col">End Date</th>
                                 <th scope="col">Rating</th>
                                 <th scope="col">Review</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% for(var i=0; i<data.length; i++) { %>
+                            <% for(var i=0; i<pastOrders.length; i++) { %>
                             <tr>
-                                <td><%= data[i].name %></td>
-                                <td><%= data[i].username %></td>
-                                <td><%= data[i].start_day %>/<%= data[i].start_month %>/<%= data[i].start_year %></td>
-                                <td><%= data[i].end_day %>/<%= data[i].end_month %>/<%= data[i].end_year %></td>
-                                <td><%= data[i].rating %></td>
-                                <td><%= data[i].review %></td>
-                                <% if (!data[i].has_paid) { %>
-                                    <td style="border:transparent;">
-                                        <form method="POST" action="/ct/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].username)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/paid" style="display:inline;">
-                                            <button type="submit" class="button button2" onclick="return confirm('Are you sure the pet owner has paid?');" >Paid</button>
-                                        </form>
-                                    </td>
-                                <% } else if (!data[i].is_completed) {%>
-                                    <td style="border:transparent;">
-                                        <form method="POST" action="/ct/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].username)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/completed" style="display:inline;">
-                                            <button type="submit" class="button button2" onclick="return confirm('Are you sure the order is completed?');" >Completed</button>
-                                        </form>
-                                    </td>
-                                <% } %>
+                                <td><%= pastOrders[i].name %></td>
+                                <td><%= pastOrders[i].username %></td>
+                                <td><%= pastOrders[i].start_day %>/<%= pastOrders[i].start_month %>/<%= pastOrders[i].start_year %></td>
+                                <td><%= pastOrders[i].end_day %>/<%= pastOrders[i].end_month %>/<%= pastOrders[i].end_year %></td>
+                                <td><%= pastOrders[i].rating %></td>
+                                <td><%= pastOrders[i].review %></td>
+                                <td>
+                                    <% if (pastOrders[i].has_paid) { %>
+                                        Confirmed
+                                    <% } else if (pastOrders[i].is_completed) { %>
+                                        Completed
+                                    <% } else { %>
+                                        Pending
+                                    <% } %> 
+                                </td>
                             </tr>
                             <% } %>
                         </tbody>

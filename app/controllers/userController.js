@@ -1,4 +1,6 @@
 const User = require('../model/user');
+const { use } = require('../router');
+const dbController = require('./dbController');
 
 exports.newUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT) {
     return new User({
@@ -10,6 +12,36 @@ exports.newUser = function(userData, isOwner, isCaretaker, isAdmin, isPOCT) {
         'isCaretaker': isCaretaker,
         'isAdmin': isAdmin,
         'isPOCT' : isPOCT
+    });
+}
+
+exports.getOwnedPetTypes = function(userData, callback) {
+    const query = "SELECT DISTINCT type FROM own_pet_belong WHERE username = '" + userData.username + "' ORDER BY type;"
+    console.log("Getting pet types:");
+    console.log(query);
+
+    dbController.queryGet(query, (result) => {
+        if (result.status === 200) {
+            callback(result.body.rows);
+        } else {
+            console.log("getPetTypes: Query Failed. Error code " + result.status);
+            callback(null);
+        }
+    });
+}
+
+exports.getCreditCard = function(username, callback) {
+    const query = "SELECT credit_card FROM pet_owner WHERE username = '" + username + "';"
+    console.log("Getting credit card details:");
+    console.log(query);
+
+    dbController.queryGet(query, (result) => {
+        if (result.status === 200) {
+            callback(result.body.rows[0].credit_card);
+        } else {
+            console.log("getCreditCard: Query Failed. Error code " + result.status);
+            callback([]);
+        }
     });
 }
 

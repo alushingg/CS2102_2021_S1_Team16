@@ -1,70 +1,60 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <%- include('./components/htmlHead'); %>
-        <link rel='stylesheet' href='/css/caretaker.css' />
-        <script src="js/findCaretakerScript.js"></script>
-    </head>
 
-    <body>
-      <header>
-          <%- include('./components/header'); %>
-      </header>
+<head>
+    <%- include('./components/htmlHead'); %>
+    <link rel='stylesheet' href='/css/caretaker.css' />
+    <script src="js/findCaretakerScript.js"></script>
+</head>
 
-      <div class="content">
+<body>
+    <header>
+        <%- include('./components/header'); %>
+    </header>
+
+    <div class="content">
         <div class="spacing"></div>
         <form id="findCaretakerForm" method="POST" action="/caretaker">
-          <h1>Find a Care Taker</h1>
-          <label for="type">Pet Type: </label>
-          <select name="type" id="type">
-            <option value="Cat">Cat</option>
-            <option value="Dog">Dog</option>
-            <option value="Rabbit">Rabbit</option>
-            <option value="Hamster">Hamster</option>
-            <option value="Fish">Fish</option>
-            <option value="Tortoise">Tortoise</option>
-            <option value="Frog">Frog</option>
-            <option value="Terrapin">Terrapin</option>
-            <option value="Bird">Bird</option>
-            <option value="Insect">Insect</option>
-            <option value="Guinea Pig">Guinea Pig</option>
-            <option value="Reptile">Reptile</option>
-          </select>
-          <br>
-          <br>
-          <div class="form-group">
-            <div id="start-date">
-              <label for="start_date">Start Date: </label>
-              <br>
-              <input type="date" id="start_date" name="start_date" placeholder="YYYY-MM-DD" required>
-            </div>
-            <div id="end-date">
-              <label for="end_date">End Date: </label>
-              <br>
-              <input type="date" id="end_date" name="end_date" placeholder="YYYY-MM-DD" required>
-            </div>
-          </div>
-          <br>
-          <br>
-          <button type="submit">Search</button>
+            <h1>Find a Care Taker</h1>
+            <% if (petTypes.length === 0) { %>
+                <label>You do not have any pets yet. Register a pet pet first before finding a caretaker.</label>
+                <button onclick="window.location.href='/petadd'"">Add a pet</button>
+            <% } else { %>
+                <label for="type">Pet Type: </label>
+                <select name="type" id="type">
+                    <% for(var i = 0; i < petTypes.length; i++) { %>
+                    <option value="<%= petTypes[i].type %>"><%= petTypes[i].type %></option>
+                    <% } %>
+                </select>
+                <div class="form-group">
+                    <div id="start-date">
+                        <label for="start_date">Start Date: </label>
+                        <input type="date" name="start_date" placeholder="YYYY-MM-DD" required>
+                    </div>
+                    <div id="end-date">
+                        <label for="end_date">End Date: </label>
+                        <input type="date" name="end_date" placeholder="YYYY-MM-DD" required>
+                    </div>
+                </div>
+                <br>
+                <button type="submit">Search</button>
+            <% } %>
         </form>
-      </div>
-      <footer>
-          <%- include('./components/footer'); %>
-      </footer>
+    </div>
+    <footer>
+        <%- include('./components/footer'); %>
+    </footer>
 
-      <script>
-        if ("<%= error%>" != "") {
-         alert('<%= error%>');
-        }
-       (function() {
-         window.addEventListener('load', function() {
-           var forms = [document.getElementById('findCaretakerForm')];
-           var validation = Array.prototype.filter.call(forms, function(form) {
-             form.addEventListener('submit', check, false);
-           });
-         }, false);
-       })();
-     </script>
-    </body>
+    <script>
+        (function () {
+            window.addEventListener('load', function () {
+                var forms = [document.getElementById('findCaretakerForm')];
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', check, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+
 </html>

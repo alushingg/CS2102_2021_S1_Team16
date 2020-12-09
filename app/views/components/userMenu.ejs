@@ -1,12 +1,17 @@
 <div id="menuContainer" class="nav_links nav_right">
     <div id="userTab">
-        Hi <%= user %>! ▼
+        Hi <%= cookie.user.username %>! ▼
     </div>
     <div id="menuItemGroup">
         <a href="/profile">
             <div class="menuItems">Profile</div>
         </a>
-        <%if (isAdmin) { %>
+        <% if (cookie.user.isOwner) { %>
+            <a href="/petadd">
+                <div class="menuItems">Add a pet</div>
+            </a>
+        <% } %>
+        <% if (cookie.user.isAdmin) { %>
             <a href="/summary">
                 <div class="menuItems">Summary</div>
             </a>
@@ -23,18 +28,22 @@
             <a href="/pastorders">
                 <div class="menuItems">Past Order</div>
             </a>
-<!--            <a href="/applyleave">-->
-<!--                <div class="menuItems">Apply Leave</div>-->
-<!--            </a>-->
-<!--            <a href="/addAvailability">-->
-<!--                <div class="menuItems">Add Availability</div>-->
-<!--            </a>-->
         <% } %>
-        <%if (isPOCT == 1) {%>
+        <!--
+        <% if (cookie.user.isCaretaker) { %>
+            <a href="/applyleave">
+                <div class="menuItems">Apply Leave</div>
+            </a>
+            <a href="/addAvailability">
+                <div class="menuItems">Add Availability</div>
+            </a>
+        <% } %>
+        -->
+        <%if (cookie.user.isPOCT == 1) {%>
             <a href="/switch">
                 <div class="menuItems">Switch to Care Taker</div>
             </a>
-        <% } else if (isPOCT == 2) {%>
+        <% } else if (cookie.user.isPOCT == 2) {%>
             <a href="/switch">
                 <div class="menuItems">Switch to Pet Owner</div>
             </a>

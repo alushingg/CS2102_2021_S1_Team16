@@ -30,3 +30,11 @@ th, td {
     justify-content: space-between;
 
 }
+
+#pet-table {
+    width: 95%;
+}
+
+#pet-table .action {
+    width: 15%;
+}

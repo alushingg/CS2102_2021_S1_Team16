@@ -7,7 +7,6 @@
     <body>
         <header>
             <%- include('./components/header'); %>
-            
         </header>
 
         <div class="spacing"></div>
@@ -58,13 +57,13 @@
             <div class="card box">
                 <div id="section-head">
                     <h1>Pet Information</h1>
-                    <button class="button button1" onclick="window.location.href='/petadd'">Add pet</button>
+                    <button onclick="window.location.href='/petadd'">Add pet</button>
                 </div>
                 <hr>
                 <% if (dataP.length == 0) { %>
                     <p>No pets.</p>
                 <% } else { %>
-                    <table style="width:100%;">
+                    <table id="pet-table">
                         <thead>
                             <tr>
                                 <th scope="col">Pet name</th>
@@ -92,11 +91,11 @@
                                         <td><%= dataP[i].name %></td>
                                         <td><%= dataP[i].type %></td>
                                         <td><%= diet = diet == ''? diet : diet.substring(0, diet.length - 2) %></td>
-                                        <td><%= walk = walk == ''? walk : walk.substring(0, walk.length - 2) %></td>
-                                        <td style="border:transparent;">
-                                            <button class="button button1" onclick="window.location.href='/pet/<%= encodeURIComponent(dataP[i].name)%>/update'">Edit</button>
+                                        <td><%= walk = walk == ''? 'None' : walk.substring(0, walk.length - 2) %></td>
+                                        <td class="action">
+                                            <button onclick="window.location.href='/pet/<%= encodeURIComponent(dataP[i].name)%>/update'">Edit</button>
                                             <form method="POST" action="/pet/<%= encodeURIComponent(dataP[i].name)%>/delete" style="display:inline;">
-                                                <button type="submit" class="button button2" onclick="return confirm('Are you sure to delete?');" >Delete</button>
+                                                <button type="submit" class="red" onclick="return confirm('Are you sure to delete?');" >Delete</button>
                                             </form>
                                         </td>
                                     </tr>

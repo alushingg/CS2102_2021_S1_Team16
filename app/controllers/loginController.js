@@ -5,11 +5,11 @@ const dbController = require('./dbController');
 const title = 'Login';
 
 // Gets the page info
-exports.getPageInfo = function() {
+exports.getPageInfo = function(parent) {
     return {
         'title': title,
         'error': false,
-        // add more data if required
+        'redirect': parent,
     }
 }
 
@@ -17,7 +17,7 @@ exports.getErrorPageInfo = function() {
     return {
         'title': title,
         'error': true,
-        // add more data if required
+        'redirect': '/',
     }
 }
 
@@ -25,7 +25,7 @@ exports.getCredentials = function(requestBody, callback) {
     const query = "SELECT * FROM users WHERE username = '" + requestBody.username + "' AND password = '" + requestBody.password + "';";
     dbController.queryGet(query, (result) => {
         if(result.status == 200) {
-            callback(result.body.rows);
+            callback(result.body.rows); 
         } else {
             console.log("Credential check failed.");
             console.log("Status code: " + result.status);

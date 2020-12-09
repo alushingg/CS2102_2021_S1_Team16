@@ -2,10 +2,14 @@
     <ul class="nav_links">
         <li><a href="/">Home</a></li>
         <li><a href="/pricing">Pricing</a></li>
-        <li><a href="/caretaker">Find a caretaker</a></li>
+        <%if (cookie.authenticated && !cookie.user.isOwner) { %>
+        <% // Don't render the caretaker option %>
+        <% } else { %>
+            <li><a href="/caretaker">Find a caretaker</a></li>
+        <% } %>
     </ul>
 </nav>
-<%if (auth === true) { %>
+<%if (cookie.authenticated) { %>
     <%- include('./userMenu'); %>
 <% } else { %>
     <a class="nav_links nav_right" href="/login">Login</a>

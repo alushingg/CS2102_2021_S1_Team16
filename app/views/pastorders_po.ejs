@@ -14,10 +14,10 @@
 
         <div class="content">
             <div class="card box">
-                <h1>Past Orders</h1>
+                <h1>Current Orders</h1>
                 <hr>
-                <% if (data.length == 0) { %>
-                    <p>No past orders.</p>
+                <% if (currOrders.length === 0) { %>
+                    <p>No current orders</p>
                 <% } else { %>
                     <table>
                         <tr>
@@ -32,21 +32,67 @@
                             <th>Rating</th>
                             <th>Review</th>
                         </tr>
-                        <% for(var i=0; i<data.length; i++) { %>
+                        <% for(var i=0; i<currOrders.length; i++) { %>
                             <tr>
-                                <td><%= data[i].name %></td>
-                                <td><%= data[i].start_day %>/<%= data[i].start_month %>/<%= data[i].start_year %></td>
-                                <td><%= data[i].end_day %>/<%= data[i].end_month %>/<%= data[i].end_year %></td>
-                                <td><%= data[i].ctuname %></td>
-                                <td>$<%= parseFloat(data[i].daily_price).toFixed(2) %></td>
-                                <td><%= data[i].has_paid %></td>
-                                <td><%= data[i].payment_mode %></td>
-                                <td><%= data[i].transfer_method %></td>
-                                <td><%= data[i].rating %></td>
-                                <td><%= data[i].review %></td>
+                                <td><%= currOrders[i].name %></td>
+                                <td><%= currOrders[i].start_day %>/<%= currOrders[i].start_month %>/<%= currOrders[i].start_year %></td>
+                                <td><%= currOrders[i].end_day %>/<%= currOrders[i].end_month %>/<%= currOrders[i].end_year %></td>
+                                <td><%= currOrders[i].ctuname %></td>
+                                <td>$<%= parseFloat(currOrders[i].daily_price).toFixed(2) %></td>
+                                <td><%= currOrders[i].has_paid %></td>
+                                <td><%= currOrders[i].payment_mode %></td>
+                                <td><%= currOrders[i].transfer_method %></td>
+                                <td><%= currOrders[i].rating %></td>
+                                <td><%= currOrders[i].review %></td>
                                 <td style="border:transparent;">
-                                    <% if (data[i].is_completed && data[i].rating == null) { %>
-                                        <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(data[i].name)%>/<%= encodeURIComponent(data[i].end_day)%>/<%= encodeURIComponent(data[i].end_month)%>/<%= encodeURIComponent(data[i].end_year)%>/<%= encodeURIComponent(data[i].ctuname)%>/review'">Rate & Review</button>
+                                    <% if (currOrders[i].is_completed && currOrders[i].rating == null) { %>
+                                        <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(currOrders[i].name)%>/<%= encodeURIComponent(currOrders[i].end_day)%>/<%= encodeURIComponent(currOrders[i].end_month)%>/<%= encodeURIComponent(currOrders[i].end_year)%>/<%= encodeURIComponent(currOrders[i].ctuname)%>/review'">Rate & Review</button>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </table>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="spacing"></div>
+
+        <div class="content">
+            <div class="card box">
+                <h1>Past Orders</h1>
+                <hr>
+                <% if (pastOrders.length === 0) { %>
+                    <p>No current orders</p>
+                <% } else { %>
+                    <table>
+                        <tr>
+                            <th>Pet Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Care Taker</th>
+                            <th>Daily Price</th>
+                            <th>Paid</th>
+                            <th>Payment Mode</th>
+                            <th>Transfer Method</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                        </tr>
+                        <% for(var i=0; i<pastOrders.length; i++) { %>
+                            <tr>
+                                <td><%= pastOrders[i].name %></td>
+                                <td><%= pastOrders[i].start_day %>/<%= pastOrders[i].start_month %>/<%= pastOrders[i].start_year %></td>
+                                <td><%= pastOrders[i].end_day %>/<%= pastOrders[i].end_month %>/<%= pastOrders[i].end_year %></td>
+                                <td><%= pastOrders[i].ctuname %></td>
+                                <td>$<%= parseFloat(pastOrders[i].daily_price).toFixed(2) %></td>
+                                <td><%= pastOrders[i].has_paid %></td>
+                                <td><%= pastOrders[i].payment_mode %></td>
+                                <td><%= pastOrders[i].transfer_method %></td>
+                                <td><%= pastOrders[i].rating %></td>
+                                <td><%= pastOrders[i].review %></td>
+                                <td style="border:transparent;">
+                                    <% if (pastOrders[i].is_completed && pastOrders[i].rating == null) { %>
+                                        <button class="button" onclick="window.location.href='/po/<%= encodeURIComponent(pastOrders[i].name)%>/<%= encodeURIComponent(pastOrders[i].end_day)%>/<%= encodeURIComponent(pastOrders[i].end_month)%>/<%= encodeURIComponent(pastOrders[i].end_year)%>/<%= encodeURIComponent(pastOrders[i].ctuname)%>/review'">Rate & Review</button>
                                     <% } %>
                                 </td>
                             </tr>

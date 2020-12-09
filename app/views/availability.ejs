@@ -29,8 +29,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% for(var i=0; i<data.length; i++) { %>
-                                <% if (data[i].username == user) { %>
+                            <% for (var i = 0; i < data.length; i++) { %>
+                                <% if (data[i].username == cookie.user.username) { %>
                                     <% continue; %>
                                 <% } %>
                             <tr>
@@ -44,9 +44,9 @@
                                 <% } %>
                                 <td>$<%= data[i].price %></td>
                                 <td><%= data[i].job_type %></td>
-                                <% if (auth && !isAdmin) { %>
+                                <% if (cookie.authenticated && !cookie.user.isAdmin) { %>
                                 <td style="border: transparent;">
-                                    <button class="button" onclick="window.location.href='/bid/<%= data[i].username%>'">Bid</button>
+                                    <button class="button" onclick="window.location.href='/bid/<%= data[i].username%>?type=<%= type %>&start=<%= start %>&end=<%= end %>'">Bid</button>
                                 </td>
                                 <% } %>
                             </tr>

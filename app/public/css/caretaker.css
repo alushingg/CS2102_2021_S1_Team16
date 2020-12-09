@@ -3,17 +3,22 @@ form {
     flex-direction: column;
 
     background-color: white;
-    margin: 0% 30%;
+    width: 35%;
     padding: 40px 60px 60px 60px;
     border-radius: 50px;
 }
 
 input {
+    width: 100%;
     padding: 10px;
 }
 
 select {
     padding: 10px;
+}
+
+div.content {
+    align-items: center;
 }
 
 div.form-group {
@@ -22,13 +27,15 @@ div.form-group {
 }
 
 label {
-    margin: 0px;
+    margin: 20px 0px;
 }
 
 #start-date {
     width: 50%;
+    padding-right: 40px;
 }
 
 #end-date {
     width: 50%;
+    padding-right: 40px;
 }

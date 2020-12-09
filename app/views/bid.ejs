@@ -75,6 +75,10 @@
                 <hr>
                 <% if (data.length) { %>
                 <form method="POST" action="/bid/<%= ctuname%>">
+                    <input type="hidden" name="type" value="<%= type %>">
+                    <input type="hidden" name="start" value="<%= start %>">
+                    <input type="hidden" name="end" value="<%= end %>">
+
                     <div class="form-group">
                         <% if (pet.length) { %>
                         <p>Pet name: </p>
@@ -103,8 +107,11 @@
                     <div class="form-group">
                         <p>Payment mode: </p>
                         <p>
-                            <label><input type="radio" name="payment" value="Card" checked/> Credit Card</label><br>
-                            <label><input type="radio" name="payment" value="Cash" /> Cash</label><br>
+                            <label><input type="radio" name="payment" value="Cash" checked /> Cash</label><br>
+                            <% if (hasCreditCard) { %>
+                                <label><input type="radio" name="payment" value="Card" /> Credit Card</label><br>
+                            <% } %>
+                            
                         </p>
                     </div>
                     <button type="submit" class="button">Submit</button>
